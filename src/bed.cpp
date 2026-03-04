@@ -1,6 +1,6 @@
 /**
  * Tibia GIMUD Server - a free and open-source MMORPG server emulator
- * Copyright (C) 2019 Sabrehaven and Mark Samman <mark.samman@gmail.com>
+ * Copyright (C) 2017  Alejandro Mujica <alejandrodemujica@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -219,7 +219,7 @@ void BedItem::regeneratePlayer(Player* player) const
 {
 	const uint32_t sleptTime = time(nullptr) - sleepStart;
 
-	/*Condition* condition = player->getCondition(CONDITION_REGENERATION, CONDITIONID_DEFAULT);
+	Condition* condition = player->getCondition(CONDITION_REGENERATION, CONDITIONID_DEFAULT);
 	if (condition) {
 		uint32_t regen;
 		if (condition->getTicks() != -1) {
@@ -236,7 +236,7 @@ void BedItem::regeneratePlayer(Player* player) const
 
 		player->changeHealth(regen, false);
 		player->changeMana(regen);
-	}*/
+	}
 
 	const int32_t soulRegen = sleptTime / (60 * 15);
 	player->changeSoul(soulRegen);

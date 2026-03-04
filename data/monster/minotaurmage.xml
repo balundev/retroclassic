@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF - 8"?>
-<monster name="Minotaur Mage" nameDescription="a minotaur mage" race="blood" experience="150" speed="45" manacost="0">
+<monster name="minotaur mage" nameDescription="a minotaur mage" race="blood" experience="150" speed="45" manacost="0">
 	<health now="155" max="155" />
-	<look type="23" head="0" body="0" legs="0" feet="0" corpse="5981" />
+	<look type="23" head="0" body="0" legs="0" feet="0" corpse="4047" />
 	<targetchange interval="1000" chance="50" />
 	<targetstrategy nearest="100" weakest="0" mostdamage="0" random="0" />
 	<flags>
@@ -51,9 +51,5 @@
 		<item id="3559" countmax="1" chance="150" /> <!-- leather legs -->
 		<item id="2920" countmax="2" chance="300" /> <!-- a torch -->
 		<item id="3073" countmax="1" chance="5" /> <!-- a wand of cosmic energy -->
-		<item id="5878" countmax="1" chance="10" /> <!-- minotaur leather -->
 	</loot>
-	<script>
-		<event name="KillingInTheNameOf" />
-	</script>
 </monster>

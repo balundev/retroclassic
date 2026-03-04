@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF - 8"?>
-<monster name="Bear" nameDescription="a bear" race="blood" experience="23" speed="38" manacost="300">
+<monster name="bear" nameDescription="a bear" race="blood" experience="23" speed="38" manacost="300">
 	<health now="80" max="80" />
-	<look type="16" head="0" body="0" legs="0" feet="0" corpse="5975" />
+	<look type="16" head="0" body="0" legs="0" feet="0" corpse="4030" />
 	<targetchange interval="1000" chance="0" />
 	<targetstrategy nearest="100" weakest="0" mostdamage="0" random="0" />
 	<flags>
@@ -28,10 +28,5 @@
 		<item id="3582" countmax="2" chance="400" /> <!-- ham -->
 		<item id="3577" countmax="4" chance="700" /> <!-- meat -->
 		<item id="3492" countmax="1" chance="50" /> <!-- a worm -->
-		<item id="5896" countmax="1" chance="25" /> <!-- bear paw -->
-		<item id="5902" countmax="1" chance="10" /> <!-- honeycomb -->
 	</loot>
-	<script>
-		<event name="KillingInTheNameOf" />
-	</script>
 </monster>

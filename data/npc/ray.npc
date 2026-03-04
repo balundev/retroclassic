@@ -2,7 +2,7 @@
 # ray.npc: Datenbank für den Postbeamten Ray
 
 Name = "Ray"
-Outfit = (128,10-96-106-115-0)
+Outfit = (128,10-96-106-115)
 Home = [32621,32747,6]
 Radius = 0
 

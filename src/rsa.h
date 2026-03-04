@@ -1,6 +1,6 @@
 /**
  * Tibia GIMUD Server - a free and open-source MMORPG server emulator
- * Copyright (C) 2019 Sabrehaven and Mark Samman <mark.samman@gmail.com>
+ * Copyright (C) 2017  Alejandro Mujica <alejandrodemujica@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,24 +20,24 @@
 #ifndef FS_RSA_H_C4E277DA8E884B578DDBF0566F504E91
 #define FS_RSA_H_C4E277DA8E884B578DDBF0566F504E91
 
-#include <cryptopp/rsa.h>
-
-#include <string>
+#include <gmp.h>
 
 class RSA
 {
-public:
-	RSA() = default;
+	public:
+		RSA();
+		~RSA();
 
-	// non-copyable
-	RSA(const RSA&) = delete;
-	RSA& operator=(const RSA&) = delete;
+		// non-copyable
+		RSA(const RSA&) = delete;
+		RSA& operator=(const RSA&) = delete;
 
-	void loadPEM(const std::string& filename);
-	void decrypt(char* msg) const;
+		void setKey(const char* pString, const char* qString);
+		void decrypt(char* msg) const;
 
-private:
-	CryptoPP::RSA::PrivateKey pk;
+	private:
+		//use only GMP
+		mpz_t n, d;
 };
 
 #endif

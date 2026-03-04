@@ -1,6 +1,6 @@
 /**
  * Tibia GIMUD Server - a free and open-source MMORPG server emulator
- * Copyright (C) 2019 Sabrehaven and Mark Samman <mark.samman@gmail.com>
+ * Copyright (C) 2017  Alejandro Mujica <alejandrodemujica@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -89,7 +89,7 @@ bool Spawns::loadFromXml(const std::string& filename)
 				spawnList.emplace_front(pos, radius);
 				Spawn& spawn = spawnList.front();
 
-				uint32_t interval = uniform_random(pugi::cast<uint32_t>(childNode.attribute("spawntime").value()) * g_config.getNumber(ConfigManager::MIN_RATE_SPAWN), pugi::cast<uint32_t>(childNode.attribute("spawntime").value()) * g_config.getNumber(ConfigManager::MAX_RATE_SPAWN));
+				uint32_t interval = pugi::cast<uint32_t>(childNode.attribute("spawntime").value()) * 1000;
 				if (interval > MINSPAWN_INTERVAL) {
 					uint32_t exInterval = g_config.getNumber(ConfigManager::RATE_SPAWN);
 					if (exInterval) {

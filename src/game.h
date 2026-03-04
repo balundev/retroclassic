@@ -1,6 +1,6 @@
 /**
  * Tibia GIMUD Server - a free and open-source MMORPG server emulator
- * Copyright (C) 2019 Sabrehaven and Mark Samman <mark.samman@gmail.com>
+ * Copyright (C) 2017  Alejandro Mujica <alejandrodemujica@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,6 +22,7 @@
 
 #include "account.h"
 #include "combat.h"
+#include "commands.h"
 #include "groups.h"
 #include "map.h"
 #include "position.h"
@@ -31,7 +32,6 @@
 #include "raids.h"
 #include "npc.h"
 #include "wildcardtree.h"
-#include "quests.h"
 
 class ServiceManager;
 class Creature;
@@ -126,11 +126,6 @@ class Game
 		void setWorldType(WorldType_t type);
 		WorldType_t getWorldType() const {
 			return worldType;
-		}
-
-		void setClientVersion(ClientVersion_t version);
-		ClientVersion_t getClientVersion() const {
-			return clientVersion;
 		}
 
 		Cylinder* internalGetCylinder(Player* player, const Position& pos) const;
@@ -250,7 +245,7 @@ class Game
 			return playersRecord;
 		}
 
-		LightInfo getWorldLightInfo() const;
+		void getWorldLightInfo(LightInfo& lightInfo) const;
 
 		ReturnValue internalMoveCreature(Creature* creature, Direction direction, uint32_t flags = 0);
 		ReturnValue internalMoveCreature(Creature& creature, Tile& toTile, uint32_t flags = 0);
@@ -328,7 +323,7 @@ class Game
 		  * \param text The text to say
 		  */
 		bool internalCreatureSay(Creature* creature, SpeakClasses type, const std::string& text,
-		                         bool ghostMode, SpectatorVec* spectatorsPtr = nullptr, const Position* pos = nullptr);
+		                         bool ghostMode, SpectatorVec* listPtr = nullptr, const Position* pos = nullptr);
 
 		void loadPlayersRecord();
 		void checkPlayersRecord();
@@ -388,8 +383,6 @@ class Game
 		void playerRequestRemoveVip(uint32_t playerId, uint32_t guid);
 		void playerTurn(uint32_t playerId, Direction dir);
 		void playerRequestOutfit(uint32_t playerId);
-		void playerShowQuestLog(uint32_t playerId);
-		void playerShowQuestLine(uint32_t playerId, uint16_t questId);
 		void playerSay(uint32_t playerId, uint16_t channelId, SpeakClasses type,
 		               const std::string& receiver, const std::string& text);
 		void playerChangeOutfit(uint32_t playerId, Outfit_t outfit);
@@ -435,7 +428,6 @@ class Game
 		void checkCreatureWalk(uint32_t creatureId);
 		void updateCreatureWalk(uint32_t creatureId);
 		void checkCreatureAttack(uint32_t creatureId);
-		void checkMonsterExtraAttack(uint32_t creatureId);
 		void checkCreatures(size_t index);
 		void checkLight();
 
@@ -444,7 +436,7 @@ class Game
 		void combatGetTypeInfo(CombatType_t combatType, Creature* target, TextColor_t& color, uint8_t& effect);
 
 		bool combatChangeHealth(Creature* attacker, Creature* target, CombatDamage& damage);
-		bool combatChangeMana(Creature* attacker, Creature* target, CombatDamage& damage);
+		bool combatChangeMana(Creature* attacker, Creature* target, int32_t manaChange);
 
 		//animation help functions
 		void addCreatureHealth(const Creature* target);
@@ -456,6 +448,9 @@ class Game
 		void addAnimatedText(const Position& pos, uint8_t color, const std::string& text);
 		static void addAnimatedText(const SpectatorVec& list, const Position& pos, uint8_t color, const std::string& text);
 		void addMonsterSayText(const Position& pos, const std::string& text);
+
+		void addCommandTag(char tag);
+		void resetCommandTag();
 
 		void startDecay(Item* item);
 		int32_t getLightHour() const {
@@ -493,13 +488,13 @@ class Game
 		BedItem* getBedBySleeper(uint32_t guid) const;
 		void setBedSleeper(BedItem* bed, uint32_t guid);
 		void removeBedSleeper(uint32_t guid);
-		bool reload(ReloadTypes_t reloadType);
+
 		Groups groups;
 		Map map;
 		Raids raids;
-		Quests quests;
 
 	protected:
+		bool playerSayCommand(Player* player, const std::string& text);
 		bool playerSaySpell(Player* player, SpeakClasses type, const std::string& text);
 		void playerWhisper(Player* player, const std::string& text);
 		bool playerYell(Player* player, const std::string& text);
@@ -523,6 +518,7 @@ class Game
 
 		std::vector<Creature*> ToReleaseCreatures;
 		std::vector<Item*> ToReleaseItems;
+		std::vector<char> commandTags;
 
 		size_t lastBucket = 0;
 
@@ -536,6 +532,8 @@ class Game
 
 		std::map<uint32_t, BedItem*> bedSleepersMap;
 
+		Commands commands;
+
 		static constexpr int32_t LIGHT_LEVEL_DAY = 250;
 		static constexpr int32_t LIGHT_LEVEL_NIGHT = 40;
 		static constexpr int32_t SUNSET = 1305;
@@ -543,7 +541,6 @@ class Game
 
 		GameState_t gameState = GAME_STATE_NORMAL;
 		WorldType_t worldType = WORLD_TYPE_PVP;
-		ClientVersion_t clientVersion;
 
 		LightState_t lightState = LIGHT_STATE_DAY;
 		uint8_t lightLevel = LIGHT_LEVEL_DAY;

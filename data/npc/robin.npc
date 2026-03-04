@@ -2,7 +2,7 @@
 # robin.npc: Datenbank für den Jäger Robin
 
 Name = "Robin"
-Outfit = (129,77-118-118-115-0)
+Outfit = (129,77-118-118-115)
 Home = [32287,32252,6]
 Radius = 3
 

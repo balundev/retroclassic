@@ -1,6 +1,6 @@
 /**
  * Tibia GIMUD Server - a free and open-source MMORPG server emulator
- * Copyright (C) 2019 Sabrehaven and Mark Samman <mark.samman@gmail.com>
+ * Copyright (C) 2017  Alejandro Mujica <alejandrodemujica@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,14 +22,11 @@
 
 #include "tile.h"
 #include "monsters.h"
-#include "configmanager.h"
 
 class Creature;
 class Game;
 class Spawn;
 class Combat;
-
-extern ConfigManager g_config;
 
 typedef std::unordered_set<Creature*> CreatureHashSet;
 typedef std::list<Creature*> CreatureList;
@@ -129,7 +126,6 @@ class Monster final : public Creature
 		}
 
 		void onAttackedCreature(Creature* creature) final;
-		void onAttackedCreatureDisappear(bool isLogout) override;
 
 		void onCreatureAppear(Creature* creature, bool isLogin) final;
 		void onRemoveCreature(Creature* creature, bool isLogout) final;
@@ -150,11 +146,7 @@ class Monster final : public Creature
 		void setNormalCreatureLight() final;
 		bool getCombatValues(int32_t& min, int32_t& max) final;
 
-		void doExtraMeleeAttack();
 		void doAttacking(uint32_t interval) final;
-		bool hasExtraSwing() override {
-			return extraMeleeAttack;
-		}
 
 		bool searchTarget(TargetSearchType_t searchType);
 		bool selectTarget(Creature* creature);
@@ -205,7 +197,6 @@ class Monster final : public Creature
 		Position masterPos;
 
 		bool isIdle = true;
-		bool extraMeleeAttack = false;
 		bool isMasterInRange = false;
 		bool egibleToDance = true;
 
@@ -260,13 +251,6 @@ class Monster final : public Creature
 			return skillLoss ? mType->info.experience : 0;
 		}
 		uint16_t getLookCorpse() const final {
-			if (!g_config.getBoolean(ConfigManager::CORPSE_OWNER_ENABLED)) {
-				const ItemType& itemtype = Item::items[mType->info.lookcorpse];
-				if (itemtype.decayTo != 0) {
-					return itemtype.decayTo;
-				}
-			}
-
 			return mType->info.lookcorpse;
 		}
 		void dropLoot(Container* corpse, Creature* lastHitCreature) final;

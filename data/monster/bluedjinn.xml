@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF - 8"?>
-<monster name="Blue Djinn" nameDescription="a blue djinn" race="blood" experience="190" speed="70" manacost="0">
+<monster name="blue djinn" nameDescription="a blue djinn" race="blood" experience="190" speed="70" manacost="0">
 	<health now="330" max="330" />
-	<look type="80" head="0" body="0" legs="0" feet="0" corpse="6020" />
+	<look type="80" head="0" body="0" legs="0" feet="0" corpse="4182" />
 	<targetchange interval="1000" chance="0" />
 	<targetstrategy nearest="100" weakest="0" mostdamage="0" random="0" />
 	<flags>
@@ -59,9 +59,5 @@
 		<item id="3574" countmax="1" chance="1" /> <!-- a mystic turban -->
 		<item id="2933" countmax="1" chance="75" /> <!-- a small oil lamp -->
 		<item id="3029" countmax="4" chance="25" /> <!-- a small sapphire -->
-		<item id="5912" countmax="1" chance="10" /> <!-- a blue piece of cloth -->
 	</loot>
-	<script>
-		<event name="KillingInTheNameOf" />
-	</script>
 </monster>

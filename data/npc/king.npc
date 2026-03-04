@@ -2,12 +2,11 @@
 # king.npc: Datenbank für den König von Tibia
 
 Name = "King Tibianus"
-Outfit = (130,21-87-107-95-0)
+Outfit = (130,21-87-107-95)
 Home = [32311,32171,6]
 Radius = 1
 
 Behaviour = {
-ADDRESS,"hail","tibianus",!  -> "Long live the Tibianus!"
 ADDRESS,"hello","king",!       -> "I greet thee, my loyal subject."
 ADDRESS,"hail","king",!        -> *
 ADDRESS,"salutations","king",! -> *

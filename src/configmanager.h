@@ -1,6 +1,6 @@
 /**
  * Tibia GIMUD Server - a free and open-source MMORPG server emulator
- * Copyright (C) 2019 Sabrehaven and Mark Samman <mark.samman@gmail.com>
+ * Copyright (C) 2017  Alejandro Mujica <alejandrodemujica@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,11 +20,7 @@
 #ifndef FS_CONFIGMANAGER_H_6BDD23BD0B8344F4B7C40E8BE6AF6F39
 #define FS_CONFIGMANAGER_H_6BDD23BD0B8344F4B7C40E8BE6AF6F39
 
-#if __has_include("luajit/lua.hpp")
-#include <luajit/lua.hpp>
-#else
 #include <lua.hpp>
-#endif
 
 class ConfigManager
 {
@@ -33,7 +29,6 @@ class ConfigManager
 			SHOW_MONSTER_LOOT,
 			ALLOW_CHANGEOUTFIT,
 			ONE_PLAYER_ON_ACCOUNT,
-			AIMBOT_HOTKEY_ENABLED,
 			REMOVE_RUNE_CHARGES,
 			EXPERIENCE_FROM_PLAYERS,
 			FREE_PREMIUM,
@@ -41,17 +36,12 @@ class ConfigManager
 			ALLOW_CLONES,
 			BIND_ONLY_GLOBAL_ADDRESS,
 			OPTIMIZE_DATABASE,
-			STAMINA_SYSTEM,
 			WARN_UNSAFE_SCRIPTS,
 			CONVERT_UNSAFE_SCRIPTS,
 			TELEPORT_NEWBIES,
 			STACK_CUMULATIVES,
-			BLOCK_HEIGHT,
-			UH_TRAP,
-			DROP_ITEMS,
-			DISTANCE_WEAPONS_DROP_ON_GROUND,
-			CORPSE_OWNER_ENABLED,
-			ROPE_SPOT_BLOCK,
+			QUERY_PLAYER_CONTAINERS,
+
 			LAST_BOOLEAN_CONFIG /* this must be the last one */
 		};
 
@@ -89,8 +79,6 @@ class ConfigManager
 			RATE_LOOT,
 			RATE_MAGIC,
 			RATE_SPAWN,
-			MIN_RATE_SPAWN,
-			MAX_RATE_SPAWN,
 			BAN_LENGTH,
 			MAX_MESSAGEBUFFER,
 			ACTIONS_DELAY_INTERVAL,
@@ -98,8 +86,6 @@ class ConfigManager
 			KICK_AFTER_MINUTES,
 			PROTECTION_LEVEL,
 			DEATH_LOSE_PERCENT,
-			KNIGHT_CLOSE_ATTACK_DAMAGE_INCREASE_PERCENT,
-			PALADIN_RANGE_ATTACK_DAMAGE_INCREASE_PERCENT,
 			STATUSQUERY_TIMEOUT,
 			WHITE_SKULL_TIME,
 			RED_SKULL_TIME,
@@ -118,7 +104,6 @@ class ConfigManager
 			NEWBIE_TOWN,
 			NEWBIE_LEVEL_THRESHOLD,
 			MONEY_RATE,
-			CLIENT_VERSION,
 
 			LAST_INTEGER_CONFIG /* this must be the last one */
 		};

@@ -1,6 +1,6 @@
 /**
  * Tibia GIMUD Server - a free and open-source MMORPG server emulator
- * Copyright (C) 2019 Sabrehaven and Mark Samman <mark.samman@gmail.com>
+ * Copyright (C) 2017  Alejandro Mujica <alejandrodemujica@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -68,22 +68,16 @@ bool ConfigManager::load()
 	boolean[SHOW_MONSTER_LOOT] = getGlobalBoolean(L, "showMonsterLoot", true);
 	boolean[ALLOW_CHANGEOUTFIT] = getGlobalBoolean(L, "allowChangeOutfit", true);
 	boolean[ONE_PLAYER_ON_ACCOUNT] = getGlobalBoolean(L, "onePlayerOnlinePerAccount", true);
-	boolean[AIMBOT_HOTKEY_ENABLED] = getGlobalBoolean(L, "hotkeyAimbotEnabled", true);
 	boolean[REMOVE_RUNE_CHARGES] = getGlobalBoolean(L, "removeChargesFromRunes", true);
 	boolean[EXPERIENCE_FROM_PLAYERS] = getGlobalBoolean(L, "experienceByKillingPlayers", false);
 	boolean[FREE_PREMIUM] = getGlobalBoolean(L, "freePremium", false);
 	boolean[REPLACE_KICK_ON_LOGIN] = getGlobalBoolean(L, "replaceKickOnLogin", true);
 	boolean[ALLOW_CLONES] = getGlobalBoolean(L, "allowClones", false);
-	boolean[STAMINA_SYSTEM] = getGlobalBoolean(L, "staminaSystem", true);
 	boolean[WARN_UNSAFE_SCRIPTS] = getGlobalBoolean(L, "warnUnsafeScripts", true);
 	boolean[CONVERT_UNSAFE_SCRIPTS] = getGlobalBoolean(L, "convertUnsafeScripts", true);
 	boolean[TELEPORT_NEWBIES] = getGlobalBoolean(L, "teleportNewbies", true);
 	boolean[STACK_CUMULATIVES] = getGlobalBoolean(L, "autoStackCumulatives", false);
-	boolean[BLOCK_HEIGHT] = getGlobalBoolean(L, "blockHeight", false);
-	boolean[UH_TRAP] = getGlobalBoolean(L, "uhTrap", false);
-	boolean[ROPE_SPOT_BLOCK] = getGlobalBoolean(L, "ropeSpotBlock", false);
-	boolean[DROP_ITEMS] = getGlobalBoolean(L, "dropItems", false);
-	boolean[DISTANCE_WEAPONS_DROP_ON_GROUND] = getGlobalBoolean(L, "distanceWeaponsDropOnGround", true);
+	boolean[QUERY_PLAYER_CONTAINERS] = getGlobalBoolean(L, "queryPlayerContainers", false);
 
 	string[DEFAULT_PRIORITY] = getGlobalString(L, "defaultPriority", "high");
 	string[SERVER_NAME] = getGlobalString(L, "serverName", "");
@@ -103,8 +97,6 @@ bool ConfigManager::load()
 	integer[RATE_LOOT] = getGlobalNumber(L, "rateLoot", 2);
 	integer[RATE_MAGIC] = getGlobalNumber(L, "rateMagic", 3);
 	integer[RATE_SPAWN] = getGlobalNumber(L, "rateSpawn", 1);
-	integer[MIN_RATE_SPAWN] = getGlobalNumber(L, "minRateSpawn", 100);
-	integer[MAX_RATE_SPAWN] = getGlobalNumber(L, "maxRateSpawn", 200);
 	integer[BAN_LENGTH] = getGlobalNumber(L, "banLength", 30 * 24 * 60 * 60);
 	integer[ACTIONS_DELAY_INTERVAL] = getGlobalNumber(L, "timeBetweenActions", 200);
 	integer[EX_ACTIONS_DELAY_INTERVAL] = getGlobalNumber(L, "timeBetweenExActions", 1000);
@@ -112,9 +104,6 @@ bool ConfigManager::load()
 	integer[KICK_AFTER_MINUTES] = getGlobalNumber(L, "kickIdlePlayerAfterMinutes", 15);
 	integer[PROTECTION_LEVEL] = getGlobalNumber(L, "protectionLevel", 1);
 	integer[DEATH_LOSE_PERCENT] = getGlobalNumber(L, "deathLosePercent", -1);
-	integer[KNIGHT_CLOSE_ATTACK_DAMAGE_INCREASE_PERCENT] = getGlobalNumber(L, "knightCloseAttackDamageIncreasePercent", -1);
-	integer[PALADIN_RANGE_ATTACK_DAMAGE_INCREASE_PERCENT] = getGlobalNumber(L, "paladinRangeAttackDamageIncreasePercent", -1);
-	integer[CORPSE_OWNER_ENABLED] = getGlobalBoolean(L, "corpseOwnerEnabled", true);
 	integer[STATUSQUERY_TIMEOUT] = getGlobalNumber(L, "statusTimeout", 5000);
 	integer[WHITE_SKULL_TIME] = getGlobalNumber(L, "whiteSkullTime", 15 * 60);
 	integer[RED_SKULL_TIME] = getGlobalNumber(L, "redSkullTime", 30 * 24 * 60 * 60);
@@ -130,7 +119,6 @@ bool ConfigManager::load()
 	integer[NEWBIE_TOWN] = getGlobalNumber(L, "newbieTownId", 1);
 	integer[NEWBIE_LEVEL_THRESHOLD] = getGlobalNumber(L, "newbieLevelThreshold", 5);
 	integer[MONEY_RATE] = getGlobalNumber(L, "moneyRate", 1);
-	integer[CLIENT_VERSION] = getGlobalNumber(L, "clientVersion");
 
 	loaded = true;
 	lua_close(L);

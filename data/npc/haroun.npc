@@ -2,7 +2,7 @@
 # haroun.npc: Datenbank für den Maridhändler Haroun (Magische Gegenstände, Marid)
 
 Name = "Haroun"
-Outfit = (80,0-0-0-0-0)
+Outfit = (80,0-0-0-0)
 Home = [33108,32525,4]
 Radius = 1
 
@@ -172,33 +172,5 @@ Topic=11,"yes",Count(Type)>=Amount -> "Thank you. Here is your money.", Delete(T
 Topic=11,"yes"                             -> "You do not have one."
 Topic=11,"yes",Amount>1                    -> "You do not have that many."
 Topic=11                                   -> "I understand. Perhaps another time then."
-
-"fighting","spirit"          -> Type=3392, Amount=2,  "I need two royal helmets to extract one container of fighting spirit. Would you like me to perform the extraction?", Topic=12
-Topic=12,QuestValue(283)<3,!     -> "I'm sorry, human. But you need Gabel's permission to trade with me."
-Topic=12,"yes",Count(Type)>=Amount -> "Here you are.", Delete(Type), Type=5884, Amount=1, Create(Type)
-Topic=12,"yes"                             -> "You do not have one."
-Topic=12,"yes",Amount>1                    -> "You do not have that many."
-Topic=12                                   -> "I understand. Perhaps another time then."
-
-"magic","sulphur"          -> Type=3280, Amount=3,  "I need three fire sword to extract one magic sulphur. Would you like me to perform the extraction?", Topic=13
-Topic=13,QuestValue(283)<3,!     -> "I'm sorry, human. But you need Gabel's permission to trade with me."
-Topic=13,"yes",Count(Type)>=Amount -> "Here you are.", Delete(Type), Type=5904, Amount=1, Create(Type)
-Topic=13,"yes"                             -> "You do not have one."
-Topic=13,"yes",Amount>1                    -> "You do not have that many."
-Topic=13                                   -> "I understand. Perhaps another time then."
-
-"warrior","sweat"          -> Type=3369, Amount=4,  "I need four warrior helmets to extract one flask of warrior's sweat. Would you like me to perform the extraction?", Topic=14
-Topic=14,QuestValue(283)<3,!     -> "I'm sorry, human. But you need Gabel's permission to trade with me."
-Topic=14,"yes",Count(Type)>=Amount -> "Here you are.", Delete(Type), Type=5885, Amount=1, Create(Type)
-Topic=14,"yes"                             -> "You do not have one."
-Topic=14,"yes",Amount>1                    -> "You do not have that many."
-Topic=14                                   -> "I understand. Perhaps another time then."
-
-"chicken","wing"          -> Type=3079, Amount=1,  "I need one pair of boots of haste to extract one enchanted chicken wing. Would you like me to perform the extraction?", Topic=15
-Topic=15,QuestValue(283)<3,!     -> "I'm sorry, human. But you need Gabel's permission to trade with me."
-Topic=15,"yes",Count(Type)>=Amount -> "Here you are.", Delete(Type), Type=5891, Amount=1, Create(Type)
-Topic=15,"yes"                             -> "You do not have one."
-Topic=15,"yes",Amount>1                    -> "You do not have that many."
-Topic=15                                   -> "I understand. Perhaps another time then."
 
 }

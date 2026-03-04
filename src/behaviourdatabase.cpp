@@ -1,6 +1,6 @@
 /**
 * Tibia GIMUD Server - a free and open-source MMORPG server emulator
-* Copyright (C) 2019 Sabrehaven and Mark Samman <mark.samman@gmail.com>
+* Copyright (C) 2017  Alejandro Mujica <alejandrodemujica@gmail.com>
 *
 * This program is free software; you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -19,7 +19,6 @@
 
 #include "otpch.h"
 
-#include "iologindata.h"
 #include "behaviourdatabase.h"
 #include "npc.h"
 #include "player.h"
@@ -140,9 +139,6 @@ bool BehaviourDatabase::loadConditions(ScriptReader& script, NpcBehaviour* behav
 			} else if (identifier == "premium") {
 				condition->type = BEHAVIOUR_TYPE_ISPREMIUM;
 				searchTerm = true;
-			} else if (identifier == "realpremium") {
-				condition->type = BEHAVIOUR_TYPE_ISREALPREMIUM;
-				searchTerm = true;
 			} else if (identifier == "pvpenforced") {
 				condition->type = BEHAVIOUR_TYPE_PVPENFORCED;
 				searchTerm = true;
@@ -154,9 +150,6 @@ bool BehaviourDatabase::loadConditions(ScriptReader& script, NpcBehaviour* behav
 				searchTerm = true;
 			} else if (identifier == "pzblock") {
 				condition->type = BEHAVIOUR_TYPE_PZLOCKED;
-				searchTerm = true;
-			} else if (identifier == "pzfree") {
-				condition->type = BEHAVIOUR_TYPE_PZFREE;
 				searchTerm = true;
 			} else if (identifier == "promoted") {
 				condition->type = BEHAVIOUR_TYPE_PROMOTED;
@@ -177,9 +170,6 @@ bool BehaviourDatabase::loadConditions(ScriptReader& script, NpcBehaviour* behav
 				priorityBehaviour = behaviour;
 			} else if (script.getSpecial() == '%') {
 				condition->setCondition(BEHAVIOUR_TYPE_MESSAGE_COUNT, script.readNumber(), "");
-				searchTerm = true;
-			} else if (script.getSpecial() == '$') {
-				condition->setCondition(BEHAVIOUR_TYPE_MESSAGE_COUNT_NO_LIMIT, script.readNumber(), "");
 				searchTerm = true;
 			} else if (script.getSpecial() == ',') {
 				script.nextToken();
@@ -295,17 +285,8 @@ bool BehaviourDatabase::loadActions(ScriptReader& script, NpcBehaviour* behaviou
 			} else if (identifier == "withdraw") {
 				action->type = BEHAVIOUR_TYPE_WITHDRAW;
 				searchType = BEHAVIOUR_PARAMETER_ONE;
-			} else if (identifier == "guildwithdraw") {
-				action->type = BEHAVIOUR_TYPE_GUILDWITHDRAW;
-				searchType = BEHAVIOUR_PARAMETER_ONE;
 			} else if (identifier == "deposit") {
 				action->type = BEHAVIOUR_TYPE_DEPOSIT;
-				searchType = BEHAVIOUR_PARAMETER_ONE;
-			} else if (identifier == "guilddeposit") {
-				action->type = BEHAVIOUR_TYPE_GUILDDEPOSIT;
-				searchType = BEHAVIOUR_PARAMETER_ONE;
-			} else if (identifier == "transfer") {
-				action->type = BEHAVIOUR_TYPE_TRANSFER;
 				searchType = BEHAVIOUR_PARAMETER_ONE;
 			} else if (identifier == "bless") {
 				action->type = BEHAVIOUR_TYPE_BLESS;
@@ -322,9 +303,6 @@ bool BehaviourDatabase::loadActions(ScriptReader& script, NpcBehaviour* behaviou
 			} else if (identifier == "delete") {
 				action->type = BEHAVIOUR_TYPE_DELETE;
 				searchType = BEHAVIOUR_PARAMETER_ONE;
-			} else if (identifier == "deleteamount") {
-				action->type = BEHAVIOUR_TYPE_DELETEAMOUNT;
-				searchType = BEHAVIOUR_PARAMETER_TWO;
 			} else if (identifier == "teachspell") {
 				action->type = BEHAVIOUR_TYPE_TEACHSPELL;
 				searchType = BEHAVIOUR_PARAMETER_ONE;
@@ -343,21 +321,9 @@ bool BehaviourDatabase::loadActions(ScriptReader& script, NpcBehaviour* behaviou
 			} else if (identifier == "burning") {
 				action->type = BEHAVIOUR_TYPE_BURNING;
 				searchType = BEHAVIOUR_PARAMETER_TWO;
-			} else if (identifier == "drunk") {
-				action->type = BEHAVIOUR_TYPE_BURNING;
-				searchType = BEHAVIOUR_PARAMETER_TWO;
 			} else if (identifier == "setquestvalue") {
 				action->type = BEHAVIOUR_TYPE_QUESTVALUE;
 				searchType = BEHAVIOUR_PARAMETER_TWO;
-			} else if (identifier == "setexpiringquestvalue") {
-				action->type = BEHAVIOUR_TYPE_EXPIRINGQUESTVALUE;
-				searchType = BEHAVIOUR_PARAMETER_TWO;
-			} else if (identifier == "addoutfitaddon") {
-				action->type = BEHAVIOUR_TYPE_ADDOUTFITADDON;
-				searchType = BEHAVIOUR_PARAMETER_TWO;
-			} else if (identifier == "addoutfit") {
-				action->type = BEHAVIOUR_TYPE_ADDOUTFIT;
-				searchType = BEHAVIOUR_PARAMETER_ONE;
 			} else if (identifier == "poison") {
 				action->type = BEHAVIOUR_TYPE_POISON;
 				searchType = BEHAVIOUR_PARAMETER_TWO;
@@ -487,24 +453,16 @@ NpcBehaviourNode* BehaviourDatabase::readValue(ScriptReader& script)
 	}
 
 	if (script.Token == SPECIAL) {
-		if (script.getSpecial() == '%') {
-			NpcBehaviourNode* node = new NpcBehaviourNode();
-			node->type = BEHAVIOUR_TYPE_MESSAGE_COUNT;
-			node->number = script.readNumber();
-			script.nextToken();
-			return node;
+		if (script.getSpecial() != '%') {
+			script.error("illegal character");
+			return nullptr;
 		}
 
-		if (script.getSpecial() == '$') {
-			NpcBehaviourNode* node = new NpcBehaviourNode();
-			node->type = BEHAVIOUR_TYPE_MESSAGE_COUNT_NO_LIMIT;
-			node->number = script.readNumber();
-			script.nextToken();
-			return node;
-		}
-
-		script.error("illegal character");
-		return nullptr;
+		NpcBehaviourNode* node = new NpcBehaviourNode();
+		node->type = BEHAVIOUR_TYPE_MESSAGE_COUNT;
+		node->number = script.readNumber();
+		script.nextToken();
+		return node;
 	}
 
 	NpcBehaviourNode* node = nullptr;
@@ -538,27 +496,15 @@ NpcBehaviourNode* BehaviourDatabase::readValue(ScriptReader& script)
 	} else if (identifier == "burning") {
 		node = new NpcBehaviourNode();
 		node->type = BEHAVIOUR_TYPE_BURNING;
-	} else if (identifier == "drunk") {
-		node = new NpcBehaviourNode();
-		node->type = BEHAVIOUR_TYPE_DRUNK;
 	} else if (identifier == "level") {
 		node = new NpcBehaviourNode();
 		node->type = BEHAVIOUR_TYPE_LEVEL;
-	} else if (identifier == "guildlevel") {
-		node = new NpcBehaviourNode();
-		node->type = BEHAVIOUR_TYPE_GUILDLEVEL;
 	} else if (identifier == "poison") {
 		node = new NpcBehaviourNode();
 		node->type = BEHAVIOUR_TYPE_POISON;
 	} else if (identifier == "balance") {
 		node = new NpcBehaviourNode();
 		node->type = BEHAVIOUR_TYPE_BALANCE;
-	} else if (identifier == "guildbalance") {
-		node = new NpcBehaviourNode();
-		node->type = BEHAVIOUR_TYPE_GUILDBALANCE;
-	} else if (identifier == "transfertoplayernamestate") {
-		node = new NpcBehaviourNode();
-		node->type = BEHAVIOUR_TYPE_MESSAGE_TRANSFERTOPLAYERNAME_STATE;
 	} else if (identifier == "spellknown") {
 		node = new NpcBehaviourNode();
 		node->type = BEHAVIOUR_TYPE_SPELLKNOWN;
@@ -571,29 +517,14 @@ NpcBehaviourNode* BehaviourDatabase::readValue(ScriptReader& script)
 		node = new NpcBehaviourNode();
 		node->type = BEHAVIOUR_TYPE_QUESTVALUE;
 		searchType = BEHAVIOUR_PARAMETER_ONE;
-	} else if (identifier == "expiringquestvalue") {
-		node = new NpcBehaviourNode();
-		node->type = BEHAVIOUR_TYPE_EXPIRINGQUESTVALUE;
-		searchType = BEHAVIOUR_PARAMETER_ONE;
 	} else if (identifier == "count") {
 		node = new NpcBehaviourNode();
 		node->type = BEHAVIOUR_TYPE_COUNT;
-		searchType = BEHAVIOUR_PARAMETER_ONE;
-	} else if (identifier == "experiencestage") {
-		node = new NpcBehaviourNode();
-		node->type = BEHAVIOUR_TYPE_EXPERIENCESTAGE;
 		searchType = BEHAVIOUR_PARAMETER_ONE;
 	} else if (identifier == "random") {
 		node = new NpcBehaviourNode();
 		node->type = BEHAVIOUR_TYPE_RANDOM;
 		searchType = BEHAVIOUR_PARAMETER_TWO;
-	} else if (identifier == "slotitem") {
-		node = new NpcBehaviourNode();
-		node->type = BEHAVIOUR_TYPE_SLOTITEM;
-		searchType = BEHAVIOUR_PARAMETER_ONE;
-	} else if (identifier == "clientversion") {
-		node = new NpcBehaviourNode();
-		node->type = BEHAVIOUR_TYPE_CLIENTVERSION;
 	}
 
 	if (searchType == BEHAVIOUR_PARAMETER_ONE) {
@@ -646,28 +577,6 @@ NpcBehaviourNode* BehaviourDatabase::readFactor(ScriptReader& script, NpcBehavio
 		NpcBehaviourNode* headNode = new NpcBehaviourNode();
 		headNode->type = BEHAVIOUR_TYPE_OPERATION;
 		headNode->number = BEHAVIOUR_OPERATOR_MULTIPLY;
-		headNode->left = nextNode;
-
-		script.nextToken();
-		nextNode = readValue(script);
-
-		headNode->right = nextNode;
-		nextNode = headNode;
-	}
-
-	// / operator
-	while (true) {
-		if (script.Token != SPECIAL) {
-			break;
-		}
-
-		if (script.getSpecial() != '/') {
-			break;
-		}
-
-		NpcBehaviourNode* headNode = new NpcBehaviourNode();
-		headNode->type = BEHAVIOUR_TYPE_OPERATION;
-		headNode->number = BEHAVIOUR_OPERATOR_DIVIDE;
 		headNode->left = nextNode;
 
 		script.nextToken();
@@ -771,13 +680,6 @@ bool BehaviourDatabase::checkCondition(const NpcBehaviourCondition* condition, P
 		}
 		break;
 	}
-	case BEHAVIOUR_TYPE_MESSAGE_COUNT_NO_LIMIT: {
-		int32_t value = searchDigitNoLimit(message);
-		if (value < condition->number) {
-			return false;
-		}
-		break;
-	}
 	case BEHAVIOUR_TYPE_STRING:
 		if (!searchWord(condition->string, message)) {
 			return false;
@@ -804,9 +706,6 @@ bool BehaviourDatabase::checkCondition(const NpcBehaviourCondition* condition, P
 		}
 		break;
 	case BEHAVIOUR_TYPE_ISPREMIUM:
-
-		break;
-	case BEHAVIOUR_TYPE_ISREALPREMIUM:
 		if (!player->isPremium()) {
 			return false;
 		}
@@ -828,11 +727,6 @@ bool BehaviourDatabase::checkCondition(const NpcBehaviourCondition* condition, P
 		break;
 	case BEHAVIOUR_TYPE_PZLOCKED:
 		if (!player->isPzLocked()) {
-			return false;
-		}
-		break;
-	case BEHAVIOUR_TYPE_PZFREE:
-		if (player->isPzLocked()) {
 			return false;
 		}
 		break;
@@ -926,8 +820,12 @@ void BehaviourDatabase::checkAction(const NpcBehaviourAction* action, Player* pl
 				}
 			} while (amount);
 		} else {
+			if (it.charges) {
+				data = it.charges;
+			}
+
 			for (int32_t i = 0; i < std::max<int32_t>(1, amount); i++) {
-				Item* item = Item::CreateItem(itemId, data == -1 ? 0 : data);
+				Item* item = Item::CreateItem(itemId, data);
 				if (!item) {
 					break;
 				}
@@ -944,19 +842,6 @@ void BehaviourDatabase::checkAction(const NpcBehaviourAction* action, Player* pl
 	}
 	case BEHAVIOUR_TYPE_DELETE: {
 		type = evaluate(action->expression, player, message);
-		const ItemType& itemType = Item::items[type];
-		if (itemType.stackable || !itemType.hasSubType()) {
-			data = -1;
-		}
-
-		if (!player->removeItemOfType(type, amount, data, true)) {
-			player->removeItemOfType(type, amount, data, false);
-		}
-		break;
-	}
-	case BEHAVIOUR_TYPE_DELETEAMOUNT: {
-		type = evaluate(action->expression, player, message);
-		int32_t amount = evaluate(action->expression2, player, message);
 		const ItemType& itemType = Item::items[type];
 		if (itemType.stackable || !itemType.hasSubType()) {
 			data = -1;
@@ -1017,24 +902,6 @@ void BehaviourDatabase::checkAction(const NpcBehaviourAction* action, Player* pl
 		player->addStorageValue(questNumber, questValue);
 		break;
 	}
-	case BEHAVIOUR_TYPE_EXPIRINGQUESTVALUE: {
-		int32_t questNumber = evaluate(action->expression, player, message);
-		int32_t ticks = evaluate(action->expression2, player, message);
-		player->addStorageValue(questNumber, OTSYS_TIME_MINUTES() + (ticks / 60 / 1000));
-		break;
-	}
-	case BEHAVIOUR_TYPE_ADDOUTFITADDON: {
-		int32_t lookType = evaluate(action->expression, player, message);
-		int32_t addon = evaluate(action->expression2, player, message);
-		player->addOutfit(lookType, addon);
-		break;
-	}
-	case BEHAVIOUR_TYPE_ADDOUTFIT: {
-		int32_t lookType = evaluate(action->expression, player, message);
-
-		player->addOutfit(lookType, 0);
-		break;
-	}
 	case BEHAVIOUR_TYPE_TELEPORT: {
 		Position pos;
 		pos.x = evaluate(action->expression, player, message);
@@ -1070,7 +937,7 @@ void BehaviourDatabase::checkAction(const NpcBehaviourAction* action, Player* pl
 	}
 	case BEHAVIOUR_TYPE_EXPERIENCE: {
 		int32_t experience = evaluate(action->expression, player, message);
-		player->addExperience(nullptr, experience, false);
+		player->addExperience(experience, true, false);
 		break;
 	}
 	case BEHAVIOUR_TYPE_WITHDRAW: {
@@ -1078,82 +945,9 @@ void BehaviourDatabase::checkAction(const NpcBehaviourAction* action, Player* pl
 		player->setBankBalance(player->getBankBalance() - money);
 		break;
 	}
-	case BEHAVIOUR_TYPE_GUILDWITHDRAW: {
-		int32_t money = evaluate(action->expression, player, message);
-		const Guild* playerGuild = player->getGuild();
-		if (!playerGuild) {
-			break;
-		}
-
-		if (player->getGuildRank()->level <= 1) {
-			break;
-		}
-
-		if (money <= 0) {
-			break;
-		}
-
-
-		if (IOGuild::getGuildBalance(playerGuild->getId()) < static_cast<uint64_t>(money)) {
-			break;
-		}
-
-		if (IOGuild::decreaseGuildBankBalance(playerGuild->getId(), money)) {
-			player->setBankBalance(player->getBankBalance() + money);
-		}
-
-		break;
-	}
 	case BEHAVIOUR_TYPE_DEPOSIT: {
 		int32_t money = evaluate(action->expression, player, message);
 		player->setBankBalance(player->getBankBalance() + money);
-		break;
-	}
-	case BEHAVIOUR_TYPE_GUILDDEPOSIT: {
-		int32_t money = evaluate(action->expression, player, message);
-		const Guild* playerGuild = player->getGuild();
-		if (!playerGuild) {
-			break;
-		}
-
-		if (money <= 0) {
-			break;
-		}
-
-		if (player->getBankBalance() < static_cast<uint64_t>(money)) {
-			break;
-		}
-
-		if (IOGuild::increaseGuildBankBalance(playerGuild->getId(), money)) {
-			player->setBankBalance(player->getBankBalance() - money);
-		}
-
-		break;
-	}
-	case BEHAVIOUR_TYPE_TRANSFER: {
-		int32_t money = evaluate(action->expression, player, message);
-		uint16_t state = 0;
-		Player* transferToPlayer = g_game.getPlayerByName(string);
-		if (!transferToPlayer) {
-			state = IOLoginData::canTransferMoneyToByName(string);
-		}
-		else {
-			state = transferToPlayer->getVocationId() == 0 ? 1 : 2;
-		}
-
-		if (state != 2) {
-			break;
-		}
-
-		player->setBankBalance(player->getBankBalance() - money);
-
-		if (!transferToPlayer) {
-			IOLoginData::increaseBankBalance(string, money);
-		}
-		else {
-			transferToPlayer->setBankBalance(transferToPlayer->getBankBalance() + money);
-		}
-
 		break;
 	}
 	case BEHAVIOUR_TYPE_BLESS: {
@@ -1178,7 +972,7 @@ void BehaviourDatabase::checkAction(const NpcBehaviourAction* action, Player* pl
 
 			Container* realContainer = container->getContainer();
 			for (int32_t c = 0; c < std::max<int32_t>(1, realContainer->capacity()); c++) {
-				Item* item = Item::CreateItem(itemId, data == -1 ? 0 : data);
+				Item* item = Item::CreateItem(itemId, data);
 				if (!item) {
 					std::cout << "[Error - BehaviourDatabase::checkAction]: CreateContainer - failed to create item" << std::endl;
 					break;
@@ -1227,10 +1021,6 @@ int32_t BehaviourDatabase::evaluate(NpcBehaviourNode* node, Player* player, cons
 		}
 		return player->getItemTypeCount(itemId, data);
 	}
-	case BEHAVIOUR_TYPE_EXPERIENCESTAGE: {
-		int32_t level = evaluate(node->left, player, message);
-		return g_game.getExperienceStage(level);
-	}
 	case BEHAVIOUR_TYPE_COUNTMONEY:
 		return player->getMoney();
 	case BEHAVIOUR_TYPE_BURNING: {
@@ -1245,14 +1035,6 @@ int32_t BehaviourDatabase::evaluate(NpcBehaviourNode* node, Player* player, cons
 		}
 
 		return damage->getTotalDamage();
-	}
-	case BEHAVIOUR_TYPE_DRUNK: {
-		Condition* condition = player->getCondition(CONDITION_DRUNK);
-		if (!condition) {
-			return false;
-		}
-
-		return true;
 	}
 	case BEHAVIOUR_TYPE_POISON: {
 		Condition* condition = player->getCondition(CONDITION_POISON);
@@ -1269,18 +1051,10 @@ int32_t BehaviourDatabase::evaluate(NpcBehaviourNode* node, Player* player, cons
 	}
 	case BEHAVIOUR_TYPE_LEVEL:
 		return player->getLevel();
-	case BEHAVIOUR_TYPE_GUILDLEVEL: {
-		const Guild* playerGuild = player->getGuild();
-		if (!playerGuild) {
-			return -1;
-		}
-
-		return player->getGuildRank()->level;
-	}
 	case BEHAVIOUR_TYPE_RANDOM: {
 		int32_t min = evaluate(node->left, player, message);
 		int32_t max = evaluate(node->right, player, message);
-		return uniform_random(min, max);
+		return normal_random(min, max);
 	}
 	case BEHAVIOUR_TYPE_QUESTVALUE: {
 		int32_t questNumber = evaluate(node->left, player, message);
@@ -1288,36 +1062,8 @@ int32_t BehaviourDatabase::evaluate(NpcBehaviourNode* node, Player* player, cons
 		player->getStorageValue(questNumber, questValue);
 		return questValue;
 	}
-	case BEHAVIOUR_TYPE_SLOTITEM: {
-		int32_t slot = evaluate(node->left, player, message);
-		
-		Thing* thing = player->getThing(slot);
-		if (!thing) {
-			return 0;
-		}
-
-		Item* item = thing->getItem();
-		if (!item) {
-			return 0;
-		}
-
-		return item->getID();
-	}
-	case BEHAVIOUR_TYPE_EXPIRINGQUESTVALUE: {
-		int32_t questNumber = evaluate(node->left, player, message);
-		int32_t questValue;
-		player->getStorageValue(questNumber, questValue);
-		return questValue - OTSYS_TIME_MINUTES();
-	}
 	case BEHAVIOUR_TYPE_MESSAGE_COUNT: {
 		int32_t value = searchDigit(message);
-		if (value < node->number) {
-			return false;
-		}
-		return value;
-	}
-	case BEHAVIOUR_TYPE_MESSAGE_COUNT_NO_LIMIT: {
-		int32_t value = searchDigitNoLimit(message);
 		if (value < node->number) {
 			return false;
 		}
@@ -1327,32 +1073,6 @@ int32_t BehaviourDatabase::evaluate(NpcBehaviourNode* node, Player* player, cons
 		return checkOperation(player, node, message);
 	case BEHAVIOUR_TYPE_BALANCE:
 		return player->getBankBalance();
-	case BEHAVIOUR_TYPE_GUILDBALANCE: {
-		const Guild* playerGuild = player->getGuild();
-		if (!playerGuild) {
-			return false;
-		}
-
-		return IOGuild::getGuildBalance(playerGuild->getId());
-	}
-	case BEHAVIOUR_TYPE_CLIENTVERSION:
-		return g_game.getClientVersion();
-	case BEHAVIOUR_TYPE_MESSAGE_TRANSFERTOPLAYERNAME_STATE: {
-		std::string lowerMessage = asLowerCaseString(message);
-		if (lowerMessage.find("to ") != std::string::npos) {
-			string = asCamelCaseString(message.substr(lowerMessage.find("to ") + 3, message.size()));
-		}
-		else {
-			string = asCamelCaseString(message);
-		}
-
-		Player* transferToPlayer = g_game.getPlayerByName(string);
-		if (!transferToPlayer) {
-			return IOLoginData::canTransferMoneyToByName(string);
-		}
-
-		return transferToPlayer->getVocationId() == 0 ? 1 : 2;
-	}
 	case BEHAVIOUR_TYPE_SPELLKNOWN: {
 		if (player->hasLearnedInstantSpell(string)) {
 			return true;
@@ -1396,8 +1116,6 @@ int32_t BehaviourDatabase::checkOperation(Player* player, NpcBehaviourNode* node
 		return leftResult != rightResult;
 	case BEHAVIOUR_OPERATOR_MULTIPLY:
 		return leftResult * rightResult;
-	case BEHAVIOUR_OPERATOR_DIVIDE:
-		return leftResult / rightResult;
 	case BEHAVIOUR_OPERATOR_SUM:
 		return leftResult + rightResult;
 	case BEHAVIOUR_OPERATOR_RES:
@@ -1409,17 +1127,6 @@ int32_t BehaviourDatabase::checkOperation(Player* player, NpcBehaviourNode* node
 }
 
 int32_t BehaviourDatabase::searchDigit(const std::string& message)
-{
-	int32_t value = searchDigitNoLimit(message);
-
-	if (value > 500) {
-		value = 500;
-	}
-
-	return value;
-}
-
-int32_t BehaviourDatabase::searchDigitNoLimit(const std::string& message)
 {
 	int32_t start = -1;
 	int32_t end = -1;
@@ -1440,11 +1147,15 @@ int32_t BehaviourDatabase::searchDigitNoLimit(const std::string& message)
 	try {
 		value = std::stoi(message.substr(start, end).c_str());
 	}
-	catch (std::invalid_argument const&) {
+	catch (std::invalid_argument) {
 		return 0;
 	}
-	catch (std::out_of_range const&) {
+	catch (std::out_of_range) {
 		return 0;
+	}
+
+	if (value > 500) {
+		value = 500;
 	}
 
 	return value;
@@ -1498,8 +1209,7 @@ std::string BehaviourDatabase::parseResponse(Player* player, const std::string& 
 	replaceString(response, "%D", std::to_string(data));
 	replaceString(response, "%N", player->getName());
 	replaceString(response, "%P", std::to_string(price));
-	replaceString(response, "%S", string);
-
+	
 	int32_t worldTime = g_game.getLightHour();
 	int32_t hours = std::floor<int32_t>(worldTime / 60);
 	int32_t minutes = worldTime % 60;

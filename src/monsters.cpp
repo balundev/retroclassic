@@ -1,6 +1,6 @@
 /**
  * Tibia GIMUD Server - a free and open-source MMORPG server emulator
- * Copyright (C) 2019 Sabrehaven and Mark Samman <mark.samman@gmail.com>
+ * Copyright (C) 2017  Alejandro Mujica <alejandrodemujica@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -52,7 +52,7 @@ void MonsterType::createLoot(Container* corpse)
 		return;
 	}
 
-	Item* bagItem = Item::CreateItem(ITEM_BAG, 1);
+	Item* bagItem = Item::CreateItem(2853, 1);
 	if (!bagItem) {
 		return;
 	}
@@ -372,18 +372,6 @@ bool Monsters::deserializeSpell(const pugi::xml_node& node, spellBlock_t& sb, co
 			combat->setParam(COMBAT_PARAM_TYPE, COMBAT_PHYSICALDAMAGE);
 			combat->setParam(COMBAT_PARAM_BLOCKARMOR, 1);
 			combat->setParam(COMBAT_PARAM_BLOCKSHIELD, 1);
-			uint32_t tD = this->getMonsterType(description)->info.targetDistance;
-			if (tD == 1) {
-				if (sb.range > 1) {
-					combat->setOrigin(ORIGIN_RANGED);
-				}
-				else {
-					combat->setOrigin(ORIGIN_MELEE);
-				}
-			}
-			else if (tD > 1 && sb.range > 1) {
-				combat->setOrigin(ORIGIN_RANGED);
-			}
 		} else if (tmpName == "bleed") {
 			combat->setParam(COMBAT_PARAM_TYPE, COMBAT_PHYSICALDAMAGE);
 		} else if (tmpName == "poison" || tmpName == "earth") {
@@ -392,8 +380,6 @@ bool Monsters::deserializeSpell(const pugi::xml_node& node, spellBlock_t& sb, co
 			combat->setParam(COMBAT_PARAM_TYPE, COMBAT_FIREDAMAGE);
 		} else if (tmpName == "energy") {
 			combat->setParam(COMBAT_PARAM_TYPE, COMBAT_ENERGYDAMAGE);
-		} else if (tmpName == "drown") {
-			combat->setParam(COMBAT_PARAM_TYPE, COMBAT_DROWNDAMAGE);
 		} else if (tmpName == "lifedrain") {
 			combat->setParam(COMBAT_PARAM_TYPE, COMBAT_LIFEDRAIN);
 		} else if (tmpName == "manadrain") {
@@ -482,7 +468,7 @@ bool Monsters::deserializeSpell(const pugi::xml_node& node, spellBlock_t& sb, co
 		} else if (tmpName == "firecondition" || tmpName == "energycondition" ||
 		           tmpName == "earthcondition" || tmpName == "poisoncondition" ||
 		           tmpName == "icecondition" || tmpName == "freezecondition" ||
-		           tmpName == "physicalcondition" || tmpName == "drowncondition") {
+		           tmpName == "physicalcondition") {
 			ConditionType_t conditionType = CONDITION_NONE;
 
 			if (tmpName == "firecondition") {
@@ -491,8 +477,6 @@ bool Monsters::deserializeSpell(const pugi::xml_node& node, spellBlock_t& sb, co
 				conditionType = CONDITION_POISON;
 			} else if (tmpName == "energycondition") {
 				conditionType = CONDITION_ENERGY;
-			} else if (tmpName == "drowncondition") {
-				conditionType = CONDITION_DROWN;
 			}
 
 			int32_t cycle = 0;
@@ -690,8 +674,6 @@ bool Monsters::loadMonster(const std::string& file, const std::string& monsterNa
 				mType->info.targetDistance = std::max<int32_t>(1, pugi::cast<int32_t>(attr.value()));
 			} else if (strcasecmp(attrName, "runonhealth") == 0) {
 				mType->info.runAwayHealth = pugi::cast<int32_t>(attr.value());
-			} else if (strcasecmp(attrName, "hidehealth") == 0) {
-				mType->info.hiddenHealth = attr.as_bool();
 			} else {
 				std::cout << "[Warning - Monsters::loadMonster] Unknown flag attribute: " << attrName << ". " << file << std::endl;
 			}
@@ -765,10 +747,6 @@ bool Monsters::loadMonster(const std::string& file, const std::string& monsterNa
 			if ((attr = node.attribute("feet"))) {
 				mType->info.outfit.lookFeet = pugi::cast<uint16_t>(attr.value());
 			}
-
-			if ((attr = node.attribute("addons"))) {
-				mType->info.outfit.lookAddons = pugi::cast<uint16_t>(attr.value());
-			}
 		} else if ((attr = node.attribute("typeex"))) {
 			mType->info.outfit.lookTypeEx = pugi::cast<uint16_t>(attr.value());
 		} else {
@@ -834,9 +812,6 @@ bool Monsters::loadMonster(const std::string& file, const std::string& monsterNa
 				} else if (tmpStrValue == "fire") {
 					mType->info.damageImmunities |= COMBAT_FIREDAMAGE;
 					mType->info.conditionImmunities |= CONDITION_FIRE;
-				} else if (tmpStrValue == "drown") {
-					mType->info.damageImmunities |= COMBAT_DROWNDAMAGE;
-					mType->info.conditionImmunities |= CONDITION_DROWN;
 				} else if (tmpStrValue == "poison" ||
 							tmpStrValue == "earth") {
 					mType->info.damageImmunities |= COMBAT_EARTHDAMAGE;
@@ -869,11 +844,6 @@ bool Monsters::loadMonster(const std::string& file, const std::string& monsterNa
 				if (attr.as_bool()) {
 					mType->info.damageImmunities |= COMBAT_FIREDAMAGE;
 					mType->info.conditionImmunities |= CONDITION_FIRE;
-				}
-			} else if ((attr = immunityNode.attribute("drown"))) {
-				if (attr.as_bool()) {
-					mType->info.damageImmunities |= COMBAT_DROWNDAMAGE;
-					mType->info.conditionImmunities |= CONDITION_DROWN;
 				}
 			} else if ((attr = immunityNode.attribute("poison")) || (attr = immunityNode.attribute("earth"))) {
 				if (attr.as_bool()) {

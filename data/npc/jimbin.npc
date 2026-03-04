@@ -2,7 +2,7 @@
 # jimbin.npc: Datenbank für den Wirt Jimbin
 
 Name = "Jimbin"
-Outfit = (160,97-69-58-76-0)
+Outfit = (160,97-69-58-76)
 Home = [32636,31886,9]
 Radius = 3
 

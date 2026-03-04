@@ -1,6 +1,6 @@
 /**
  * Tibia GIMUD Server - a free and open-source MMORPG server emulator
- * Copyright (C) 2019 Sabrehaven and Mark Samman <mark.samman@gmail.com>
+ * Copyright (C) 2017  Alejandro Mujica <alejandrodemujica@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -56,7 +56,7 @@ class Spells final : public BaseEvents
 		TalkActionResult_t playerSaySpell(Player* player, std::string& words);
 
 		static Position getCasterPosition(Creature* creature, Direction dir);
-		std::string getScriptBaseName() const override;
+		std::string getScriptBaseName() const final;
 
 	protected:
 		void clear() final;
@@ -94,9 +94,9 @@ class CombatSpell final : public Event, public BaseSpell
 		CombatSpell(const CombatSpell&) = delete;
 		CombatSpell& operator=(const CombatSpell&) = delete;
 
-		bool castSpell(Creature* creature) override;
-		bool castSpell(Creature* creature, Creature* target) override;
-		bool configureEvent(const pugi::xml_node&) override {
+		bool castSpell(Creature* creature) final;
+		bool castSpell(Creature* creature, Creature* target) final;
+		bool configureEvent(const pugi::xml_node&) final {
 			return true;
 		}
 
@@ -109,7 +109,7 @@ class CombatSpell final : public Event, public BaseSpell
 		}
 
 	protected:
-		std::string getScriptEventName() const override {
+		std::string getScriptEventName() const final {
 			return "onCastSpell";
 		}
 
@@ -209,7 +209,7 @@ class InstantSpell : public TalkAction, public Spell
 		//scripting
 		bool executeCastSpell(Creature* creature, const LuaVariant& var);
 
-		bool isInstant() const override {
+		bool isInstant() const final {
 			return true;
 		}
 		bool getHasParam() const {
@@ -291,13 +291,13 @@ class RuneSpell final : public Action, public Spell
 			return targetCreature;
 		}
 
-		bool executeUse(Player* player, Item* item, const Position& fromPosition, Thing* target, const Position& toPosition, bool isHotkey) override;
+		bool executeUse(Player* player, Item* item, const Position& fromPosition, Thing* target, const Position& toPosition) final;
 
 		bool castSpell(Creature* creature) final;
 		bool castSpell(Creature* creature, Creature* target) final;
 
 		//scripting
-		bool executeCastSpell(Creature* creature, const LuaVariant& var, bool isHotkey);
+		bool executeCastSpell(Creature* creature, const LuaVariant& var);
 
 		bool isInstant() const final {
 			return false;
@@ -312,7 +312,7 @@ class RuneSpell final : public Action, public Spell
 		static RuneSpellFunction Illusion;
 		static RuneSpellFunction Convince;
 
-		bool internalCastSpell(Creature* creature, const LuaVariant& var, bool isHotkey);
+		bool internalCastSpell(Creature* creature, const LuaVariant& var);
 
 		RuneSpellFunction* runeFunction = nullptr;
 		uint16_t runeId = 0;

@@ -1,6 +1,6 @@
 /**
  * Tibia GIMUD Server - a free and open-source MMORPG server emulator
- * Copyright (C) 2019 Sabrehaven and Mark Samman <mark.samman@gmail.com>
+ * Copyright (C) 2017  Alejandro Mujica <alejandrodemujica@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -100,25 +100,6 @@ bool Tile::hasHeight(uint32_t n) const
 	return false;
 }
 
-int32_t Tile::getHeight() {
-	int32_t height = 0;
-	if (ground) {
-		if (ground->hasProperty(CONST_PROP_HASHEIGHT)) {
-			++height;
-		}
-	}
-
-	if (const TileItemVector* items = getItemList()) {
-		for (ItemVector::const_iterator it = items->begin(); it != items->end(); ++it) {
-			if ((*it)->hasProperty(CONST_PROP_HASHEIGHT)) {
-				++height;
-			}
-		}
-	}
-
-	return std::min(height, 4);
-}
-
 size_t Tile::getCreatureCount() const
 {
 	if (const CreatureVector* creatures = getCreatures()) {
@@ -212,27 +193,6 @@ Mailbox* Tile::getMailbox() const
 	return nullptr;
 }
 
-DepotLocker* Tile::getDepotLocker() const
-{
-	if (!hasFlag(TILESTATE_DEPOT)) {
-		return nullptr;
-	}
-
-	if (ground && ground->getDepotLocker()) {
-		return ground->getDepotLocker();
-	}
-
-	if (const TileItemVector* items = getItemList()) {
-		for (auto it = items->rbegin(), end = items->rend(); it != end; ++it) {
-			if ((*it)->getDepotLocker()) {
-				return (*it)->getDepotLocker();
-			}
-		}
-	}
-	return nullptr;
-}
-
-
 BedItem* Tile::getBedItem() const
 {
 	if (!hasFlag(TILESTATE_BED)) {
@@ -258,16 +218,6 @@ Creature* Tile::getTopCreature() const
 	if (const CreatureVector* creatures = getCreatures()) {
 		if (!creatures->empty()) {
 			return *creatures->begin();
-		}
-	}
-	return nullptr;
-}
-
-Creature* Tile::getBottomCreatureUH() const
-{
-	if (const CreatureVector* creatures = getCreatures()) {
-		if (!creatures->empty()) {
-			return *creatures->rbegin();
 		}
 	}
 	return nullptr;
@@ -303,35 +253,6 @@ Creature* Tile::getTopVisibleCreature(const Creature* creature) const
 					const Player* player = tileCreature->getPlayer();
 					if (!player || !player->isInGhostMode()) {
 						return tileCreature;
-					}
-				}
-			}
-		}
-	}
-	return nullptr;
-}
-
-Creature* Tile::getBottomVisibleCreatureUH(const Creature* creature) const
-{
-	if (const CreatureVector* creatures = getCreatures()) {
-		if (creature) {
-			const Player* player = creature->getPlayer();
-			if (player && player->isAccessPlayer()) {
-				return getBottomCreatureUH();
-			}
-
-			for (auto it = creatures->rbegin(), end = creatures->rend(); it != end; ++it) {
-				if (creature->canSeeCreature(*it)) {
-					return *it;
-				}
-			}
-		}
-		else {
-			for (auto it = creatures->rbegin(), end = creatures->rend(); it != end; ++it) {
-				if (!(*it)->isInvisible()) {
-					const Player* player = (*it)->getPlayer();
-					if (!player || !player->isInGhostMode()) {
-						return *it;
 					}
 				}
 			}
@@ -556,20 +477,6 @@ ReturnValue Tile::queryAdd(int32_t, const Thing& thing, uint32_t, uint32_t flags
 
 			if (hasFlag(TILESTATE_BLOCKSOLID) || (hasBitSet(FLAG_PATHFINDING, flags) && hasFlag(TILESTATE_NOFIELDBLOCKPATH))) {
 				if (!(monster->canPushItems() || hasBitSet(FLAG_IGNOREBLOCKITEM, flags))) {
-					return RETURNVALUE_NOTPOSSIBLE;
-				}
-			}
-
-			if (monster->hasCondition(CONDITION_AGGRESSIVE) && !monster->canPushItems()) {
-				if (hasFlag(TILESTATE_FIREDAMAGE) && !monster->isImmune(COMBAT_FIREDAMAGE)) {
-					return RETURNVALUE_NOTPOSSIBLE;
-				}
-
-				if (hasFlag(TILESTATE_POISONDAMAGE) && !monster->isImmune(COMBAT_EARTHDAMAGE)) {
-					return RETURNVALUE_NOTPOSSIBLE;
-				}
-
-				if (hasFlag(TILESTATE_ENERGYDAMAGE) && !monster->isImmune(COMBAT_ENERGYDAMAGE)) {
 					return RETURNVALUE_NOTPOSSIBLE;
 				}
 			}
@@ -1552,16 +1459,22 @@ bool Tile::isMoveableBlocking() const
 	return !ground || hasFlag(TILESTATE_BLOCKSOLID);
 }
 
-Item* Tile::getUseItem(int32_t index) const
+Item* Tile::getUseItem() const
 {
 	const TileItemVector* items = getItemList();
 	if (!items || items->size() == 0) {
 		return ground;
 	}
 
-	if (Thing* thing = getThing(index)) {
-		return thing->getItem();
+	for (Item* item : boost::adaptors::reverse(*items)) {
+		if (Item::items[item->getID()].forceUse) {
+			return item;
+		}
 	}
 
-	return nullptr;
+	Item* item = items->getTopDownItem();
+	if (!item) {
+		item = items->getTopTopItem();
+	}
+	return item;
 }

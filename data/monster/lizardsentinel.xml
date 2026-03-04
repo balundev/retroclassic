@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF - 8"?>
-<monster name="Lizard Sentinel" nameDescription="a lizard sentinel" race="blood" experience="105" speed="50" manacost="560">
+<monster name="lizard sentinel" nameDescription="a lizard sentinel" race="blood" experience="105" speed="50" manacost="560">
 	<health now="265" max="265" />
-	<look type="114" head="0" body="0" legs="0" feet="0" corpse="6040" />
+	<look type="114" head="0" body="0" legs="0" feet="0" corpse="4324" />
 	<targetchange interval="1000" chance="50" />
 	<targetstrategy nearest="100" weakest="0" mostdamage="0" random="0" />
 	<flags>
@@ -39,10 +39,5 @@
 		<item id="3444" countmax="1" chance="3" /> <!-- a sentinel shield -->
 		<item id="3028" countmax="1" chance="1" /> <!-- a small diamond -->
 		<item id="3277" countmax="3" chance="100" /> <!-- a spear -->
-		<item id="5876" countmax="1" chance="9" /> <!-- lizard leather -->
-		<item id="5881" countmax="1" chance="9" /><!-- lizard scale -->
 	</loot>
-	<script>
-		<event name="KillingInTheNameOf" />
-	</script>
 </monster>

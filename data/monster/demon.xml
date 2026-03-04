@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF - 8"?>
-<monster name="Demon" nameDescription="a demon" race="fire" experience="6000" speed="80" manacost="0">
+<monster name="demon" nameDescription="a demon" race="fire" experience="6000" speed="80" manacost="0">
 	<health now="8200" max="8200" />
-	<look type="35" head="0" body="0" legs="0" feet="0" corpse="5995" />
+	<look type="35" head="0" body="0" legs="0" feet="0" corpse="4097" />
 	<targetchange interval="1000" chance="10" />
 	<targetstrategy nearest="70" weakest="10" mostdamage="10" random="10" />
 	<flags>
@@ -78,10 +78,5 @@
 		<item id="3032" countmax="1" chance="110" /> <!-- a small emerald -->
 		<item id="3049" countmax="1" chance="14" /> <!-- a stealth ring -->
 		<item id="3034" countmax="1" chance="35" /> <!-- a talon -->
-		<item id="5954" countmax="1" chance="100" /> <!-- a demon horn -->
-		<item id="5776" countmax="1" chance="1" /> <!-- a Tibianus talon -->
 	</loot>
-	<script>
-		<event name="KillingInTheNameOf" />
-	</script>
 </monster>

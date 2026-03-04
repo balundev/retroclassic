@@ -2,7 +2,7 @@
 # smiley.npc: Datenbank für den Magiehändler Smiley
 
 Name = "Smiley"
-Outfit = (37,0-0-0-0-0)
+Outfit = (37,0-0-0-0)
 Home = [32979,32087,6]
 Radius = 1
 

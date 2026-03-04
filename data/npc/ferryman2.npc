@@ -2,7 +2,7 @@
 # ferryman2.npc: Fährmann Anderson auf Senja (Ice)
 
 Name = "Anderson"
-Outfit = (129,79-113-68-67-0)
+Outfit = (129,79-113-68-67)
 Home = [32127,31660,7]
 Radius = 1
 
@@ -42,6 +42,10 @@ VANISH,!                  -> "Good bye. You are welcome."
 "folda" -> Price=10, "Do you want a passage to Folda for %P gold?", Topic=1
 "vega"  -> Price=10, "Do you want a passage to Vega for %P gold?", Topic=2
 "tibia" -> Price=0,  "Do you want a free passage back to Tibia?", Topic=3
+
+Topic=1,"yes",PZBlock,! -> "First get rid of those blood stains! You are not going to ruin my vehicle!"
+Topic=2,"yes",PZBlock,! -> *
+Topic=3,"yes",PZBlock,! -> *
 
 
 Topic=1,"yes",CountMoney>=Price -> "Have a nice trip!", DeleteMoney, Idle, EffectOpp(11), Teleport(32048,31582,7), EffectOpp(11)

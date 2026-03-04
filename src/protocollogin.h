@@ -1,6 +1,6 @@
 /**
  * Tibia GIMUD Server - a free and open-source MMORPG server emulator
- * Copyright (C) 2019 Sabrehaven and Mark Samman <mark.samman@gmail.com>
+ * Copyright (C) 2017  Alejandro Mujica <alejandrodemujica@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,7 +21,6 @@
 #define FS_PROTOCOLLOGIN_H_1238F4B473074DF2ABC595C29E81C46D
 
 #include "protocol.h"
-#include "tools.h"
 
 class NetworkMessage;
 class OutputMessage;
@@ -32,19 +31,20 @@ class ProtocolLogin : public Protocol
 		// static protocol information
 		enum {server_sends_first = false};
 		enum {protocol_identifier = 0x01};
+		enum {use_checksum = true};
 		static const char* protocol_name() {
 			return "login protocol";
 		}
 
 		explicit ProtocolLogin(Connection_ptr connection) : Protocol(connection) {}
 
-		void onRecvFirstMessage(NetworkMessage& msg) override;
-		bool isProtocolAllowed(uint16_t version);
+		void onRecvFirstMessage(NetworkMessage& msg);
 
-	private:
-		void disconnectClient(const std::string& message, uint16_t version);
+	protected:
+		void sendUpdateRequest();
+		void disconnectClient(const std::string& message);
 
-		void getCharacterList(uint32_t accountNumber, const std::string& password, uint16_t version);
+		void getCharacterList(uint32_t accountNumber, const std::string& password);
 };
 
 #endif

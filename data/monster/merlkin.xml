@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF - 8"?>
-<monster name="Merlkin" nameDescription="a merlkin" race="blood" experience="135" speed="57" manacost="0">
+<monster name="merlkin" nameDescription="a merlkin" race="blood" experience="135" speed="57" manacost="0">
 	<health now="230" max="230" />
-	<look type="117" head="0" body="0" legs="0" feet="0" corpse="6044" />
+	<look type="117" head="0" body="0" legs="0" feet="0" corpse="4336" />
 	<targetchange interval="1000" chance="50" />
 	<targetstrategy nearest="100" weakest="0" mostdamage="0" random="0" />
 	<flags>
@@ -52,9 +52,5 @@
 		<item id="3586" countmax="5" chance="10" /> <!-- an orange -->
 		<item id="3033" countmax="1" chance="5" /> <!-- a small amethyst -->
 		<item id="3072" countmax="1" chance="10" /> <!-- a wand of plague -->
-		<item id="5883" countmax="1" chance="8" /> <!-- ape fur -->
 	</loot>
-	<script>
-		<event name="KillingInTheNameOf" />
-	</script>
 </monster>

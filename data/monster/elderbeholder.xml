@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF - 8"?>
-<monster name="Elder Beholder" nameDescription="an elder beholder" race="blood" experience="280" speed="45" manacost="0">
+<monster name="elder beholder" nameDescription="an elder beholder" race="blood" experience="280" speed="45" manacost="0">
 	<health now="500" max="500" />
-	<look type="108" head="0" body="0" legs="0" feet="0" corpse="6037" />
+	<look type="108" head="0" body="0" legs="0" feet="0" corpse="4233" />
 	<targetchange interval="1000" chance="50" />
 	<targetstrategy nearest="100" weakest="0" mostdamage="0" random="0" />
 	<flags>
@@ -71,9 +71,5 @@
 		<item id="3059" countmax="1" chance="10" /> <!-- a spellbook -->
 		<item id="3409" countmax="1" chance="60" /> <!-- a steel shield -->
 		<item id="3265" countmax="1" chance="60" /> <!-- a two handed sword -->
-		<item id="5898" countmax="1" chance="8" /> <!-- beholder eye -->
 	</loot>
-	<script>
-		<event name="KillingInTheNameOf" />
-	</script>
 </monster>

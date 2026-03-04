@@ -1,6 +1,6 @@
 /**
  * Tibia GIMUD Server - a free and open-source MMORPG server emulator
- * Copyright (C) 2019 Sabrehaven and Mark Samman <mark.samman@gmail.com>
+ * Copyright (C) 2017  Alejandro Mujica <alejandrodemujica@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -131,7 +131,6 @@ Condition* Condition::createCondition(ConditionId_t id, ConditionType_t type, in
 		case CONDITION_POISON:
 		case CONDITION_FIRE:
 		case CONDITION_ENERGY:
-		case CONDITION_DROWN:
 			return new ConditionDamage(id, type, subId);
 
 		case CONDITION_HASTE:
@@ -228,7 +227,7 @@ bool Condition::isPersistent() const
 		return false;
 	}
 
-	if (!(id == CONDITIONID_DEFAULT || id == CONDITIONID_COMBAT || conditionType == CONDITION_MUTED)) {
+	if (!(id == CONDITIONID_DEFAULT || id == CONDITIONID_COMBAT)) {
 		return false;
 	}
 
@@ -656,9 +655,7 @@ bool ConditionRegeneration::executeCondition(Creature* creature, int32_t interva
 
 		if (internalManaTicks >= manaTicks) {
 			internalManaTicks = 0;
-			if (Player* player = creature->getPlayer()) {
-				player->changeMana(manaGain);
-			}
+			creature->changeMana(manaGain);
 		}
 	}
 
@@ -759,6 +756,8 @@ bool ConditionSoul::setParam(ConditionParam_t param, int32_t value)
 
 bool ConditionDamage::setParam(ConditionParam_t param, int32_t value)
 {
+	Condition::setParam(param, value);
+
 	switch (param) {
 		case CONDITION_PARAM_OWNER:
 			owner = value;
@@ -873,10 +872,6 @@ bool ConditionDamage::startCondition(Creature* creature)
 bool ConditionDamage::executeCondition(Creature* creature, int32_t)
 {
 	if (conditionType == CONDITION_FIRE) {
-		if (creature->isImmune(CONDITION_FIRE)) {
-			return false;
-		}
-
 		const int32_t r_cycle = cycle;
 		if (r_cycle) {
 			if (count <= 0) {
@@ -890,10 +885,6 @@ bool ConditionDamage::executeCondition(Creature* creature, int32_t)
 			return false;
 		}
 	} else if (conditionType == CONDITION_POISON) {
-		if (creature->isImmune(CONDITION_POISON)) {
-			return false;
-		}
-
 		const int32_t r_cycle = cycle;
 		if (r_cycle) {
 			if (count <= 0) {
@@ -912,10 +903,6 @@ bool ConditionDamage::executeCondition(Creature* creature, int32_t)
 			return false;
 		}
 	} else if (conditionType == CONDITION_ENERGY) {
-		if (creature->isImmune(CONDITION_ENERGY)) {
-			return false;
-		}
-
 		const int32_t r_cycle = cycle;
 		if (r_cycle) {
 			if (count <= 0) {
@@ -926,28 +913,6 @@ bool ConditionDamage::executeCondition(Creature* creature, int32_t)
 				--count;
 			}
 		} else {
-			return false;
-		}
-	} else if (conditionType == CONDITION_DROWN) {
-		if (isFirstCycle && count - max_count == -2) {
-			doDamage(creature, -20);
-			isFirstCycle = false;
-			count = max_count;
-			return true;
-		}
-		
-		const int32_t r_cycle = cycle;
-		if (r_cycle) {
-			if (count <= 0) {
-				count = max_count;
-				cycle = r_cycle + 2 * (r_cycle <= 0) - 1;
-				doDamage(creature, -20);
-			}
-			else {
-				--count;
-			}
-		}
-		else {
 			return false;
 		}
 	}
@@ -962,7 +927,6 @@ bool ConditionDamage::doDamage(Creature* creature, int32_t healthChange)
 	}
 
 	CombatDamage damage;
-	damage.origin = ORIGIN_CONDITION;
 	damage.value = healthChange;
 	damage.type = Combat::ConditionToDamageType(conditionType);
 
@@ -1027,10 +991,6 @@ uint32_t ConditionDamage::getIcons() const
 
 		case CONDITION_POISON:
 			icons |= ICON_POISON;
-			break;
-
-		case CONDITION_DROWN:
-			icons |= ICON_DROWNING;
 			break;
 
 		default:
@@ -1235,11 +1195,12 @@ bool ConditionLight::executeCondition(Creature* creature, int32_t interval)
 
 	if (internalLightTicks >= lightChangeInterval) {
 		internalLightTicks = 0;
-		LightInfo lightInfo = creature->getCreatureLight();
+		LightInfo creatureLight;
+		creature->getCreatureLight(creatureLight);
 
-		if (lightInfo.level > 0) {
-			--lightInfo.level;
-			creature->setCreatureLight(lightInfo);
+		if (creatureLight.level > 0) {
+			--creatureLight.level;
+			creature->setCreatureLight(creatureLight);
 			g_game.changeLight(creature);
 		}
 	}

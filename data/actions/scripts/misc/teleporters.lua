@@ -3,7 +3,7 @@ local downstairs = {
 }
 
 local upstairs = {
-	1948, 1968, 5542
+	1948, 1968
 }
 
 function onUse(player, item, fromPosition, target, toPosition)

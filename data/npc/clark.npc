@@ -2,7 +2,7 @@
 # clark.npc: Datenbank für den captain der Wache clark
 
 Name = "Clark"
-Outfit = (129,19-79-98-95-0)
+Outfit = (129,19-79-98-95)
 Home = [32636,32796,7]
 Radius = 2
 

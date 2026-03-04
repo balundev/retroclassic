@@ -2,7 +2,7 @@
 # kroox.npc: Datenbank für den Rüstungshändler Kroox
 
 Name = "Kroox"
-Outfit = (160,0-100-105-76-0)
+Outfit = (160,0-100-105-76)
 Home = [32650,31887,9]
 Radius = 6
 

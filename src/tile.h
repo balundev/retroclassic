@@ -1,6 +1,6 @@
 /**
  * Tibia GIMUD Server - a free and open-source MMORPG server emulator
- * Copyright (C) 2019 Sabrehaven and Mark Samman <mark.samman@gmail.com>
+ * Copyright (C) 2017  Alejandro Mujica <alejandrodemujica@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,7 +29,6 @@
 class Creature;
 class Teleport;
 class Mailbox;
-class DepotLocker;
 class MagicField;
 class QTreeLeafNode;
 class BedItem;
@@ -170,14 +169,11 @@ class Tile : public Cylinder
 		MagicField* getFieldItem() const;
 		Teleport* getTeleportItem() const;
 		Mailbox* getMailbox() const;
-		DepotLocker* getDepotLocker() const;
 		BedItem* getBedItem() const;
 
 		Creature* getTopCreature() const;
-		Creature* getBottomCreatureUH() const;
 		const Creature* getBottomCreature() const;
 		Creature* getTopVisibleCreature(const Creature* creature) const;
-		Creature* getBottomVisibleCreatureUH(const Creature* creature) const;
 		const Creature* getBottomVisibleCreature(const Creature* creature) const;
 		Item* getTopTopItem() const;
 		Item* getTopDownItem() const;
@@ -224,7 +220,6 @@ class Tile : public Cylinder
 		}
 
 		bool hasHeight(uint32_t n) const;
-		int32_t getHeight();
 
 		std::string getDescription(int32_t lookDistance) const final;
 
@@ -270,7 +265,7 @@ class Tile : public Cylinder
 			return false;
 		}
 
-		Item* getUseItem(int32_t index) const;
+		Item* getUseItem() const;
 
 		Item* getGround() const {
 			return ground;

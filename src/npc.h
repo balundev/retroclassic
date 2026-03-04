@@ -1,6 +1,6 @@
 /**
  * Tibia GIMUD Server - a free and open-source MMORPG server emulator
- * Copyright (C) 2019 Sabrehaven and Mark Samman <mark.samman@gmail.com>
+ * Copyright (C) 2017  Alejandro Mujica <alejandrodemujica@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -85,9 +85,6 @@ class Npc final : public Creature
 		int32_t getMasterRadius() const {
 			return masterRadius;
 		}
-		int32_t getClientVersion() const {
-			return clientVersion;
-		}
 		const Position& getMasterPos() const {
 			return masterPos;
 		}
@@ -144,7 +141,6 @@ class Npc final : public Creature
 		uint32_t lastTalkCreature;
 		uint32_t focusCreature;
 		uint32_t masterRadius;
-		uint16_t clientVersion = 0;
 
 		int64_t conversationStartTime;
 		int64_t conversationEndTime;

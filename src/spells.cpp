@@ -1,6 +1,6 @@
 /**
  * Tibia GIMUD Server - a free and open-source MMORPG server emulator
- * Copyright (C) 2019 Sabrehaven and Mark Samman <mark.samman@gmail.com>
+ * Copyright (C) 2017  Alejandro Mujica <alejandrodemujica@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -212,7 +212,7 @@ InstantSpell* Spells::getInstantSpell(const std::string& words)
 		if (words.length() > resultWords.length()) {
 			size_t spellLen = resultWords.length();
 			size_t paramLen = words.length() - spellLen;
-			if (paramLen < 2 || words[spellLen] != ' ') {
+			if (paramLen < 2 || (words[spellLen] != ' ' || words[spellLen + 1] != '"')) {
 				return nullptr;
 			}
 		}
@@ -398,7 +398,6 @@ bool Spell::configureSpell(const pugi::xml_node& node)
 		"firecondition",
 		"poisoncondition",
 		"energycondition",
-		"drowncondition",
 	};
 
 	//static size_t size = sizeof(reservedList) / sizeof(const char*);
@@ -688,36 +687,31 @@ bool Spell::playerRuneSpellCheck(Player* player, const Position& toPos)
 		return false;
 	}
 
-	const Creature* visibleCreature = tile->getTopCreature();
-	if (g_config.getBoolean(ConfigManager::UH_TRAP)) {
-		visibleCreature = tile->getBottomCreature();
-	}
-	if (blockingCreature && visibleCreature) {
+	const Creature* topVisibleCreature = tile->getTopCreature();
+	if (blockingCreature && topVisibleCreature) {
 		player->sendCancelMessage(RETURNVALUE_NOTENOUGHROOM);
 		g_game.addMagicEffect(player->getPosition(), CONST_ME_POFF);
 		return false;
-	}
-	else if (blockingSolid && tile->hasFlag(TILESTATE_BLOCKSOLID)) {
+	} else if (blockingSolid && tile->hasProperty(CONST_PROP_BLOCKPROJECTILE) && tile->hasProperty(CONST_PROP_IMMOVABLEBLOCKSOLID)) {
 		player->sendCancelMessage(RETURNVALUE_NOTENOUGHROOM);
 		g_game.addMagicEffect(player->getPosition(), CONST_ME_POFF);
 		return false;
 	}
 
-	if (needTarget && !visibleCreature) {
+	if (needTarget && !topVisibleCreature) {
 		player->sendCancelMessage(RETURNVALUE_CANONLYUSETHISRUNEONCREATURES);
 		g_game.addMagicEffect(player->getPosition(), CONST_ME_POFF);
 		return false;
 	}
 
-	if (aggressive && needTarget && visibleCreature && player->hasSecureMode()) {
-		const Player* targetPlayer = visibleCreature->getPlayer();
+	if (aggressive && needTarget && topVisibleCreature && player->hasSecureMode()) {
+		const Player* targetPlayer = topVisibleCreature->getPlayer();
 		if (targetPlayer && targetPlayer != player && player->getSkullClient(targetPlayer) == SKULL_NONE && !Combat::isInPvpZone(player, targetPlayer)) {
 			player->sendCancelMessage(RETURNVALUE_TURNSECUREMODETOATTACKUNMARKEDPLAYERS);
 			g_game.addMagicEffect(player->getPosition(), CONST_ME_POFF);
 			return false;
 		}
 	}
-
 	return true;
 }
 
@@ -1805,7 +1799,7 @@ ReturnValue RuneSpell::canExecuteAction(const Player* player, const Position& to
 	return RETURNVALUE_NOERROR;
 }
 
-bool RuneSpell::executeUse(Player* player, Item* item, const Position&, Thing* target, const Position& toPosition, bool isHotkey)
+bool RuneSpell::executeUse(Player* player, Item* item, const Position&, Thing* target, const Position& toPosition)
 {
 	if (!playerRuneSpellCheck(player, toPosition)) {
 		return false;
@@ -1822,24 +1816,19 @@ bool RuneSpell::executeUse(Player* player, Item* item, const Position&, Thing* t
 				Tile* toTile = g_game.map.getTile(toPosition);
 				if (toTile) {
 					const Creature* visibleCreature = toTile->getTopCreature();
-					if (g_config.getBoolean(ConfigManager::UH_TRAP)) {
-						visibleCreature = toTile->getBottomCreature();
-					}
 					if (visibleCreature) {
 						var.number = visibleCreature->getID();
 					}
 				}
-			}
-			else {
+			} else {
 				var.number = target->getCreature()->getID();
 			}
-		}
-		else {
+		} else {
 			var.type = VARIANT_POSITION;
 			var.pos = toPosition;
 		}
 
-		result = internalCastSpell(player, var, isHotkey);
+		result = internalCastSpell(player, var);
 	} else if (runeFunction) {
 		result = runeFunction(this, player, toPosition);
 	}
@@ -1861,7 +1850,7 @@ bool RuneSpell::castSpell(Creature* creature)
 	LuaVariant var;
 	var.type = VARIANT_NUMBER;
 	var.number = creature->getID();
-	return internalCastSpell(creature, var, false);
+	return internalCastSpell(creature, var);
 }
 
 bool RuneSpell::castSpell(Creature* creature, Creature* target)
@@ -1869,24 +1858,23 @@ bool RuneSpell::castSpell(Creature* creature, Creature* target)
 	LuaVariant var;
 	var.type = VARIANT_NUMBER;
 	var.number = target->getID();
-	return internalCastSpell(creature, var, false);
+	return internalCastSpell(creature, var);
 }
 
-bool RuneSpell::internalCastSpell(Creature* creature, const LuaVariant& var, bool isHotkey)
+bool RuneSpell::internalCastSpell(Creature* creature, const LuaVariant& var)
 {
 	bool result;
 	if (scripted) {
-		result = executeCastSpell(creature, var, isHotkey);
-	}
-	else {
+		result = executeCastSpell(creature, var);
+	} else {
 		result = false;
 	}
 	return result;
 }
 
-bool RuneSpell::executeCastSpell(Creature* creature, const LuaVariant& var, bool isHotkey)
+bool RuneSpell::executeCastSpell(Creature* creature, const LuaVariant& var)
 {
-	//onCastSpell(creature, var, isHotkey)
+	//onCastSpell(creature, var)
 	if (!scriptInterface->reserveScriptEnv()) {
 		std::cout << "[Error - RuneSpell::executeCastSpell] Call stack overflow" << std::endl;
 		return false;
@@ -1904,7 +1892,5 @@ bool RuneSpell::executeCastSpell(Creature* creature, const LuaVariant& var, bool
 
 	LuaScriptInterface::pushVariant(L, var);
 
-	LuaScriptInterface::pushBoolean(L, isHotkey);
-
-	return scriptInterface->callFunction(3);
+	return scriptInterface->callFunction(2);
 }

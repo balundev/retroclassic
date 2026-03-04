@@ -2,7 +2,7 @@
 # Gamel.npc: Datenbank für den Gauner Gamel
 
 Name = "Gamel"
-Outfit = (129,79-132-115-116-0)
+Outfit = (129,79-132-115-116)
 Home = [32337,32207,8]
 Radius = 3
 

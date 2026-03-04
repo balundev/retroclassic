@@ -1,6 +1,6 @@
 /**
  * Tibia GIMUD Server - a free and open-source MMORPG server emulator
- * Copyright (C) 2019 Sabrehaven and Mark Samman <mark.samman@gmail.com>
+ * Copyright (C) 2017  Alejandro Mujica <alejandrodemujica@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -99,27 +99,6 @@ bool IOMapSerialize::saveHouseItems()
 				}
 				stream.clear();
 			}
-
-			static const Direction directions[] = { DIRECTION_EAST, DIRECTION_WEST, DIRECTION_NORTH, DIRECTION_SOUTH };
-			for (Direction direction : directions) {
-				Position position = getNextPosition(direction, tile->getPosition());
-				Tile* nextTile = g_game.map.getTile(position);
-				if (nextTile && nextTile->hasFlag(TILESTATE_BLOCKSOLID) && !nextTile->hasFlag(TILESTATE_PROTECTIONZONE)) {
-					saveTile(stream, nextTile);
-
-					size_t attributesSize;
-					const char* attributes = stream.getStream(attributesSize);
-					if (attributesSize > 0) {
-						query << house->getId() << ',' << db->escapeBlob(attributes, attributesSize);
-						if (!stmt.addRow(query)) {
-							return false;
-						}
-						stream.clear();
-					}
-
-					nextTile->setFlag(TILESTATE_PROTECTIONZONE);
-				}
-			}
 		}
 	}
 
@@ -198,9 +177,6 @@ bool IOMapSerialize::loadItem(PropStream& propStream, Cylinder* parent)
 				} else if (iType.isBed() && findItem->getBed()) {
 					item = findItem;
 					break;
-				} else if (!iType.moveable && iType.changeUse && findItem->getID() == iType.transformToOnUse) {
-					item = findItem;
-					break;
 				}
 			}
 		}
@@ -271,7 +247,7 @@ void IOMapSerialize::saveTile(PropWriteStream& stream, const Tile* tile)
 		const ItemType& it = Item::items[item->getID()];
 
 		// Note that these are NEGATED, ie. these are the items that will be saved.
-		if (!(it.moveable || item->getDoor() || (item->getContainer() && !item->getContainer()->empty()) || it.canWriteText || it.isHangable || item->getBed())) {
+		if (!(it.moveable || item->getDoor() || (item->getContainer() && !item->getContainer()->empty()) || it.canWriteText || item->getBed())) {
 			continue;
 		}
 

@@ -2,7 +2,7 @@
 # maryza.npc: Datenbank für die Wirtin Maryza
 
 Name = "Maryza"
-Outfit = (160,60-110-58-76-0)
+Outfit = (160,60-110-58-76)
 Home = [32634,31889,9]
 Radius = 3
 

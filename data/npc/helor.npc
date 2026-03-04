@@ -2,9 +2,9 @@
 # helor.npc: Datenbank für den Paladinlehrer Helor
 
 Name = "Helor"
-Outfit = (134,57-79-95-98-0)
+Outfit = (134,57-79-95-98)
 Home = [32572,32753,6]
-Radius = 1
+Radius = 0
 
 Behaviour = {
 ADDRESS,"hello$",! -> "Be greeted in the name of the gods, traveller."

@@ -1,43 +1,27 @@
--- Custom
-clientVersion = 792
-knightCloseAttackDamageIncreasePercent = 15
-paladinRangeAttackDamageIncreasePercent = 10
--- Min/Max rate spawn is a multiplication of the map spawntime in spawns.xml Regular monster spawn time is 600. The formula would be randomValue = random(600*100, 600*200) which varies between 60s and 120s
-minRateSpawn = 100
-maxRateSpawn = 200
-corpseOwnerEnabled = false
-uhTrap = true
-ropeSpotBlock = false
-showMonsterLoot = true
-blockHeight = true
-dropItems = false
-
 -- Combat settings
 -- NOTE: valid values for worldType are: "pvp", "no-pvp" and "pvp-enforced"
 worldType = "pvp"
-hotkeyAimbotEnabled = true
 protectionLevel = 1
 pzLocked = 60000
 removeChargesFromRunes = true
 stairJumpExhaustion = 0
-experienceByKillingPlayers = true
-expFromPlayersLevelRange = 50
-distanceWeaponsDropOnGround = true
+experienceByKillingPlayers = false
+expFromPlayersLevelRange = 75
 
 -- Skull System
-banLength = 2 * 24 * 60 * 60
+banLength = 30 * 24 * 60 * 60
 whiteSkullTime = 15 * 60
-redSkullTime = 2 * 24 * 60 * 60
-killsDayRedSkull = 4
-killsWeekRedSkull = 12
-killsMonthRedSkull = 35
-killsDayBanishment = 7
-killsWeekBanishment = 18
-killsMonthBanishment = 60
+redSkullTime = 30 * 24 * 60 * 60
+killsDayRedSkull = 3
+killsWeekRedSkull = 5
+killsMonthRedSkull = 10
+killsDayBanishment = 6
+killsWeekBanishment = 10
+killsMonthBanishment = 20
 
 -- Connection Config
 -- NOTE: maxPlayers set to 0 means no limit
-ip = "127.0.0.1"
+ip = "85.9.200.37"
 bindOnlyGlobalAddress = false
 loginProtocolPort = 7171
 gameProtocolPort = 7172
@@ -57,7 +41,7 @@ moneyRate = 1
 -- NOTE: Leave deathLosePercent as -1 if you want to use the default
 -- death penalty formula. For the old formula, set it to 10. For
 -- no skill/experience loss, set it to 0.
-deathLosePercent = 10
+deathLosePercent = -1
 
 -- Houses
 houseRentPeriod = "monthly"
@@ -78,12 +62,13 @@ mysqlPass = "twojehaslo"
 mysqlDatabase = "retroclassic"
 mysqlPort = 3306
 mysqlSock = ""
-
 -- Misc.
 allowChangeOutfit = true
 freePremium = true
 kickIdlePlayerAfterMinutes = 15
-maxMessageBuffer = 8
+maxMessageBuffer = 4
+showMonsterLoot = false
+queryPlayerContainers = false
 
 -- Character Rooking
 -- Level threshold is the level requirement to teleport players back to newbie town
@@ -94,9 +79,9 @@ newbieLevelThreshold = 5
 -- Rates
 -- NOTE: rateExp is not used if you have enabled stages in data/XML/stages.xml
 rateExp = 100
-rateSkill = 30
-rateLoot = 7
-rateMagic = 20
+rateSkill = 15
+rateLoot = 10
+rateMagic = 50
 rateSpawn = 0
 
 -- Monsters
@@ -114,7 +99,7 @@ defaultPriority = "high"
 startupDatabaseOptimization = true
 
 -- Status server information
-ownerName = "Erikas"
+ownerName = ""
 ownerEmail = ""
-url = "https://tibianus.com/"
-location = "Poland"
+url = "https://otland.net/"
+location = "Sweden"
