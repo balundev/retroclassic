@@ -2,7 +2,7 @@
 # uso.npc: Datenbank für den Zwerg Uso der auch Knights trainiert
 
 Name = "Uso"
-Outfit = (160,79-39-77-115-0)
+Outfit = (160,79-39-77-115)
 Home = [32580,32756,8]
 Radius = 2
 

@@ -2,7 +2,7 @@
 # oldadall.npc: Datenbank für den Fährman old adall
 
 Name = "Old Adall"
-Outfit = (130,95-26-115-76-0)
+Outfit = (130,95-26-115-76)
 Home = [32628,32772,7]
 Radius = 2
 
@@ -61,6 +61,9 @@ VANISH,!           -> "Bye."
 "east"       -> Price=7, "Do you seek a passage to the east end of Port Hope for %P gold?", Topic=1
 "west"       -> Price=7, "Do you seek a passage to the west end of Port Hope for %P gold?", Topic=2
 
+
+Topic=1,"yes",PZBlock,! -> "First get rid of those blood stains! You are not going to ruin my vehicle!"
+Topic=2,"yes",PZBlock,! -> "First get rid of those blood stains! You are not going to ruin my vehicle!"
 
 Topic=1,"yes",Premium,CountMoney>=Price   -> "Here we go!", DeleteMoney, Idle, EffectOpp(11), Teleport(32679,32777,7), EffectOpp(11)
 Topic=1,"yes",CountMoney<Price            -> "Sorry, you do not have enough gold."

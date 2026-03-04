@@ -2,7 +2,7 @@
 # nezil.npc: Datenbank für den Händler Nezil
 
 Name = "Nezil"
-Outfit = (160,115-78-116-57-0)
+Outfit = (160,115-78-116-57)
 Home = [32661,31912,9]
 Radius = 8
 

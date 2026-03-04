@@ -1,6 +1,6 @@
 /**
  * Tibia GIMUD Server - a free and open-source MMORPG server emulator
- * Copyright (C) 2019 Sabrehaven and Mark Samman <mark.samman@gmail.com>
+ * Copyright (C) 2017  Alejandro Mujica <alejandrodemujica@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -255,8 +255,6 @@ class ConditionDamage final : public Condition
 				count = max_count = 8;
 			} else if (type == CONDITION_ENERGY) {
 				count = max_count = 10;
-			} else if (type == CONDITION_DROWN) {
-				count = max_count = 3;
 			}
 		}
 
@@ -283,7 +281,7 @@ class ConditionDamage final : public Condition
 		int32_t max_count = 0;
 		int32_t factor_percent = -1;
 		int32_t hit_damage = 0;
-		bool isFirstCycle = true;
+
 		uint32_t owner = 0;
 
 		bool doDamage(Creature* creature, int32_t healthChange);

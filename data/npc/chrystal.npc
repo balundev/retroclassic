@@ -2,7 +2,7 @@
 # chyrstal.npc: Datenbank für die Postfrau Chrystal
 
 Name = "Chrystal"
-Outfit = (136,116-79-117-76-0)
+Outfit = (136,116-79-117-76)
 Home = [33174,31811,7]
 Radius = 2
 

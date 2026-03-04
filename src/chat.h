@@ -1,6 +1,6 @@
 /**
  * Tibia GIMUD Server - a free and open-source MMORPG server emulator
- * Copyright (C) 2019 Sabrehaven and Mark Samman <mark.samman@gmail.com>
+ * Copyright (C) 2017  Alejandro Mujica <alejandrodemujica@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -41,10 +41,8 @@ class ChatChannel
 
 		bool addUser(Player& player);
 		bool removeUser(const Player& player);
-		bool hasUser(const Player& player);
 
 		bool talk(const Player& fromPlayer, SpeakClasses type, const std::string& text);
-		void sendToAll(const std::string& message, SpeakClasses type) const;
 
 		const std::string& getName() const {
 			return name;

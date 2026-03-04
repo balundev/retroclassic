@@ -2,7 +2,7 @@
 # vera.npc: Möbelverkäuferin Vera auf Senja
 
 Name = "Vera"
-Outfit = (136,59-96-115-95-0)
+Outfit = (136,59-96-115-95)
 Home = [32138,31672,7]
 Radius = 1
 

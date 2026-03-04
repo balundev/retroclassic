@@ -1,6 +1,6 @@
 /**
  * Tibia GIMUD Server - a free and open-source MMORPG server emulator
- * Copyright (C) 2019 Sabrehaven and Mark Samman <mark.samman@gmail.com>
+ * Copyright (C) 2017  Alejandro Mujica <alejandrodemujica@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -31,14 +31,13 @@ Account IOLoginData::loadAccount(uint32_t accno)
 	Account account;
 
 	std::ostringstream query;
-	query << "SELECT `id`, `name`, `password`, `type`, `premdays`, `lastday` FROM `accounts` WHERE `id` = " << accno;
+	query << "SELECT `id`, `password`, `type`, `premdays`, `lastday` FROM `accounts` WHERE `id` = " << accno;
 	DBResult_ptr result = Database::getInstance()->storeQuery(query.str());
 	if (!result) {
 		return account;
 	}
 
 	account.id = result->getNumber<uint32_t>("id");
-	account.name = result->getNumber<uint32_t>("name");
 	account.accountType = static_cast<AccountType_t>(result->getNumber<int32_t>("type"));
 	account.premiumDays = result->getNumber<uint16_t>("premdays");
 	account.lastDay = result->getNumber<time_t>("lastday");
@@ -52,12 +51,12 @@ bool IOLoginData::saveAccount(const Account& acc)
 	return Database::getInstance()->executeQuery(query.str());
 }
 
-bool IOLoginData::loginserverAuthentication(uint32_t accountName, const std::string& password, Account& account)
+bool IOLoginData::loginserverAuthentication(uint32_t accountNumber, const std::string& password, Account& account)
 {
 	Database* db = Database::getInstance();
 
 	std::ostringstream query;
-	query << "SELECT `id`, `name`, `password`, `type`, `premdays`, `lastday` FROM `accounts` WHERE `name` = " << accountName;
+	query << "SELECT `id`, `password`, `type`, `premdays`, `lastday` FROM `accounts` WHERE `id` = " << accountNumber;
 	DBResult_ptr result = db->storeQuery(query.str());
 	if (!result) {
 		return false;
@@ -68,7 +67,6 @@ bool IOLoginData::loginserverAuthentication(uint32_t accountName, const std::str
 	}
 
 	account.id = result->getNumber<uint32_t>("id");
-	account.name = result->getNumber<uint32_t>("name");
 	account.accountType = static_cast<AccountType_t>(result->getNumber<int32_t>("type"));
 	account.premiumDays = result->getNumber<uint16_t>("premdays");
 	account.lastDay = result->getNumber<time_t>("lastday");
@@ -87,12 +85,12 @@ bool IOLoginData::loginserverAuthentication(uint32_t accountName, const std::str
 	return true;
 }
 
-uint32_t IOLoginData::gameworldAuthentication(uint32_t accountName, const std::string& password, std::string& characterName)
+uint32_t IOLoginData::gameworldAuthentication(uint32_t accountNumber, const std::string& password, std::string& characterName)
 {
 	Database* db = Database::getInstance();
 
 	std::ostringstream query;
-	query << "SELECT `id`, `password` FROM `accounts` WHERE `name` = " << accountName;
+	query << "SELECT `id`, `password` FROM `accounts` WHERE `id` = " << accountNumber;
 	DBResult_ptr result = db->storeQuery(query.str());
 	if (!result) {
 		return 0;
@@ -190,7 +188,7 @@ bool IOLoginData::preloadPlayer(Player* player, const std::string& name)
 bool IOLoginData::loadPlayerById(Player* player, uint32_t id)
 {
 	std::ostringstream query;
-	query << "SELECT `id`, `name`, `account_id`, `group_id`, `sex`, `vocation`, `experience`, `level`, `maglevel`, `health`, `healthmax`, `blessings`, `mana`, `manamax`, `manaspent`, `soul`, `lookbody`, `lookfeet`, `lookhead`, `looklegs`, `looktype`, `lookaddons`, `posx`, `posy`, `posz`, `cap`, `lastlogin`, `lastlogout`, `lastip`, `conditions`, `skulltime`, `skull`, `town_id`, `balance`, `offlinetraining_time`, `offlinetraining_skill`, `stamina`, `skill_fist`, `skill_fist_tries`, `skill_club`, `skill_club_tries`, `skill_sword`, `skill_sword_tries`, `skill_axe`, `skill_axe_tries`, `skill_dist`, `skill_dist_tries`, `skill_shielding`, `skill_shielding_tries`, `skill_fishing`, `skill_fishing_tries`, `fake_player` FROM `players` WHERE `id` = " << id;
+	query << "SELECT `id`, `name`, `account_id`, `group_id`, `sex`, `vocation`, `experience`, `level`, `maglevel`, `health`, `healthmax`, `blessings`, `mana`, `manamax`, `manaspent`, `soul`, `lookbody`, `lookfeet`, `lookhead`, `looklegs`, `looktype`, `posx`, `posy`, `posz`, `cap`, `lastlogin`, `lastlogout`, `lastip`, `conditions`, `skulltime`, `skull`, `town_id`, `balance`, `skill_fist`, `skill_fist_tries`, `skill_club`, `skill_club_tries`, `skill_sword`, `skill_sword_tries`, `skill_axe`, `skill_axe_tries`, `skill_dist`, `skill_dist_tries`, `skill_shielding`, `skill_shielding_tries`, `skill_fishing`, `skill_fishing_tries` FROM `players` WHERE `id` = " << id;
 	return loadPlayer(player, Database::getInstance()->storeQuery(query.str()));
 }
 
@@ -198,7 +196,7 @@ bool IOLoginData::loadPlayerByName(Player* player, const std::string& name)
 {
 	Database* db = Database::getInstance();
 	std::ostringstream query;
-	query << "SELECT `id`, `name`, `account_id`, `group_id`, `sex`, `vocation`, `experience`, `level`, `maglevel`, `health`, `healthmax`, `blessings`, `mana`, `manamax`, `manaspent`, `soul`, `lookbody`, `lookfeet`, `lookhead`, `looklegs`, `looktype`, `lookaddons`, `posx`, `posy`, `posz`, `cap`, `lastlogin`, `lastlogout`, `lastip`, `conditions`, `skulltime`, `skull`, `town_id`, `balance`, `offlinetraining_time`, `offlinetraining_skill`, `stamina`, `skill_fist`, `skill_fist_tries`, `skill_club`, `skill_club_tries`, `skill_sword`, `skill_sword_tries`, `skill_axe`, `skill_axe_tries`, `skill_dist`, `skill_dist_tries`, `skill_shielding`, `skill_shielding_tries`, `skill_fishing`, `skill_fishing_tries`, `fake_player` FROM `players` WHERE `name` = " << db->escapeString(name);
+	query << "SELECT `id`, `name`, `account_id`, `group_id`, `sex`, `vocation`, `experience`, `level`, `maglevel`, `health`, `healthmax`, `blessings`, `mana`, `manamax`, `manaspent`, `soul`, `lookbody`, `lookfeet`, `lookhead`, `looklegs`, `looktype`, `posx`, `posy`, `posz`, `cap`, `lastlogin`, `lastlogout`, `lastip`, `conditions`, `skulltime`, `skull`, `town_id`, `balance`, `skill_fist`, `skill_fist_tries`, `skill_club`, `skill_club_tries`, `skill_sword`, `skill_sword_tries`, `skill_axe`, `skill_axe_tries`, `skill_dist`, `skill_dist_tries`, `skill_shielding`, `skill_shielding_tries`, `skill_fishing`, `skill_fishing_tries` FROM `players` WHERE `name` = " << db->escapeString(name);
 	return loadPlayer(player, db->storeQuery(query.str()));
 }
 
@@ -298,7 +296,6 @@ bool IOLoginData::loadPlayer(Player* player, DBResult_ptr result)
 	player->defaultOutfit.lookBody = result->getNumber<uint16_t>("lookbody");
 	player->defaultOutfit.lookLegs = result->getNumber<uint16_t>("looklegs");
 	player->defaultOutfit.lookFeet = result->getNumber<uint16_t>("lookfeet");
-	player->defaultOutfit.lookAddons = result->getNumber<uint16_t>("lookaddons");
 	player->currentOutfit = player->defaultOutfit;
 
 	if (g_game.getWorldType() != WORLD_TYPE_PVP_ENFORCED) {
@@ -320,10 +317,6 @@ bool IOLoginData::loadPlayer(Player* player, DBResult_ptr result)
 
 	player->lastLoginSaved = result->getNumber<time_t>("lastlogin");
 	player->lastLogout = result->getNumber<time_t>("lastlogout");
-	player->isFakePlayer = result->getNumber<int32_t>("fake_player") == 1;
-
-	player->offlineTrainingTime = result->getNumber<int32_t>("offlinetraining_time") * 1000;
-	player->offlineTrainingSkill = result->getNumber<int32_t>("offlinetraining_skill");
 
 	Town* town = g_game.map.towns.getTown(result->getNumber<uint32_t>("town_id"));
 	if (!town) {
@@ -337,8 +330,6 @@ bool IOLoginData::loadPlayer(Player* player, DBResult_ptr result)
 	if (loginPos.x == 0 && loginPos.y == 0 && loginPos.z == 0) {
 		player->loginPosition = player->getTemplePosition();
 	}
-
-	player->staminaMinutes = result->getNumber<uint16_t>("stamina");
 
 	static const std::string skillNames[] = {"skill_fist", "skill_club", "skill_sword", "skill_axe", "skill_dist", "skill_shielding", "skill_fishing"};
 	static const std::string skillNameTries[] = {"skill_fist_tries", "skill_club_tries", "skill_sword_tries", "skill_axe_tries", "skill_dist_tries", "skill_shielding_tries", "skill_fishing_tries"};
@@ -499,7 +490,7 @@ bool IOLoginData::loadPlayer(Player* player, DBResult_ptr result)
 	query << "SELECT `key`, `value` FROM `player_storage` WHERE `player_id` = " << player->getGUID();
 	if ((result = db->storeQuery(query.str()))) {
 		do {
-			player->addStorageValue(result->getNumber<uint32_t>("key"), result->getNumber<int32_t>("value"), true);
+			player->addStorageValue(result->getNumber<uint32_t>("key"), result->getNumber<int32_t>("value"));
 		} while (result->next());
 	}
 
@@ -625,7 +616,6 @@ bool IOLoginData::savePlayer(Player* player)
 	query << "`lookhead` = " << static_cast<uint32_t>(player->defaultOutfit.lookHead) << ',';
 	query << "`looklegs` = " << static_cast<uint32_t>(player->defaultOutfit.lookLegs) << ',';
 	query << "`looktype` = " << player->defaultOutfit.lookType << ',';
-	query << "`lookaddons` = " << static_cast<uint32_t>(player->defaultOutfit.lookAddons) << ',';
 	query << "`maglevel` = " << player->magLevel << ',';
 	query << "`mana` = " << player->mana << ',';
 	query << "`manamax` = " << player->manaMax << ',';
@@ -664,9 +654,6 @@ bool IOLoginData::savePlayer(Player* player)
 
 	query << "`lastlogout` = " << player->getLastLogout() << ',';
 	query << "`balance` = " << player->bankBalance << ',';
-	query << "`offlinetraining_time` = " << player->getOfflineTrainingTime() / 1000 << ',';
-	query << "`offlinetraining_skill` = " << player->getOfflineTrainingSkill() << ',';
-	query << "`stamina` = " << player->getStaminaMinutes() << ',';
 
 	query << "`skill_fist` = " << player->skills[SKILL_FIST].level << ',';
 	query << "`skill_fist_tries` = " << player->skills[SKILL_FIST].tries << ',';
@@ -789,7 +776,6 @@ bool IOLoginData::savePlayer(Player* player)
 	query.str(std::string());
 
 	DBInsert storageQuery("INSERT INTO `player_storage` (`player_id`, `key`, `value`) VALUES ");
-	player->genReservedStorageRange();
 
 	for (const auto& it : player->storageMap) {
 		query << player->getGUID() << ',' << it.first << ',' << it.second;
@@ -828,20 +814,6 @@ uint32_t IOLoginData::getGuidByName(const std::string& name)
 		return 0;
 	}
 	return result->getNumber<uint32_t>("id");
-}
-
-// Return 0 means player not found, 1 player is without vocation, 2 player with vocation
-uint16_t IOLoginData::canTransferMoneyToByName(const std::string& name)
-{
-	Database* db = Database::getInstance();
-
-	std::ostringstream query;
-	query << "SELECT `vocation` FROM `players` WHERE `name` = " << db->escapeString(name);
-	DBResult_ptr result = db->storeQuery(query.str());
-	if (!result) {
-		return 0;
-	}
-	return result->getNumber<uint16_t>("vocation") == 0 ? 1 : 2;
 }
 
 bool IOLoginData::getGuidByNameEx(uint32_t& guid, bool& specialVip, std::string& name)
@@ -917,15 +889,6 @@ void IOLoginData::increaseBankBalance(uint32_t guid, uint64_t bankBalance)
 	std::ostringstream query;
 	query << "UPDATE `players` SET `balance` = `balance` + " << bankBalance << " WHERE `id` = " << guid;
 	Database::getInstance()->executeQuery(query.str());
-}
-
-void IOLoginData::increaseBankBalance(std::string name, uint64_t bankBalance)
-{
-	Database* db = Database::getInstance();
-
-	std::ostringstream query;
-	query << "UPDATE `players` SET `balance` = `balance` + " << bankBalance << " WHERE `name` = " << db->escapeString(name);
-	db->executeQuery(query.str());
 }
 
 bool IOLoginData::hasBiddedOnHouse(uint32_t guid)

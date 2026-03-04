@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF - 8"?>
-<monster name="Beholder" nameDescription="a beholder" race="blood" experience="170" speed="35" manacost="0">
+<monster name="beholder" nameDescription="a beholder" race="blood" experience="170" speed="35" manacost="0">
 	<health now="260" max="260" />
-	<look type="17" head="0" body="0" legs="0" feet="0" corpse="5992" />
+	<look type="17" head="0" body="0" legs="0" feet="0" corpse="4089" />
 	<targetchange interval="1000" chance="50" />
 	<targetstrategy nearest="100" weakest="0" mostdamage="0" random="0" />
 	<flags>
@@ -65,9 +65,5 @@
 		<item id="3409" countmax="1" chance="40" /> <!-- a steel shield -->
 		<item id="3265" countmax="1" chance="40" /> <!-- a two handed sword -->
 		<item id="3412" countmax="1" chance="30" /> <!-- a wooden shield -->
-		<item id="5898" countmax="1" chance="8" /> <!-- beholder eye -->
 	</loot>
-	<script>
-		<event name="KillingInTheNameOf" />
-	</script>
 </monster>

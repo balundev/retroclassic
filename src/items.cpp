@@ -1,6 +1,6 @@
 /**
  * Tibia GIMUD Server - a free and open-source MMORPG server emulator
- * Copyright (C) 2019 Sabrehaven and Mark Samman <mark.samman@gmail.com>
+ * Copyright (C) 2017  Alejandro Mujica <alejandrodemujica@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,7 +20,6 @@
 #include "otpch.h"
 
 #include "items.h"
-#include "game.h"
 #include "spells.h"
 #include "movement.h"
 #include "script.h"
@@ -55,7 +54,7 @@ bool Items::reload()
 bool Items::loadItems()
 {
 	ScriptReader script;
-	if (!script.open("data/items" + std::to_string(g_game.getClientVersion()) + "/items.srv")) {
+	if (!script.open("data/items/items.srv")) {
 		return false;
 	}
 
@@ -403,8 +402,6 @@ bool Items::loadItems()
 						items[id].getAbilities().absorbPercent[combatTypeToIndex(COMBAT_FIREDAMAGE)] += script.readNumber();
 					} else if (identifier == "absorbpoison") {
 						items[id].getAbilities().absorbPercent[combatTypeToIndex(COMBAT_EARTHDAMAGE)] += script.readNumber();
-					} else if (identifier == "absorbdrown") {
-					items[id].getAbilities().absorbPercent[combatTypeToIndex(COMBAT_DROWNDAMAGE)] += script.readNumber();
 					} else if (identifier == "absorblifedrain") {
 						items[id].getAbilities().absorbPercent[combatTypeToIndex(COMBAT_LIFEDRAIN)] += script.readNumber();
 					} else if (identifier == "absorbmanadrain") {
@@ -518,6 +515,7 @@ bool Items::loadItems()
 							items[id].conditionDamage.reset(conditionDamage);
 						} else if (identifier == "poison") {
 							conditionDamage = new ConditionDamage(CONDITIONID_COMBAT, CONDITION_POISON);
+							conditionDamage->setParam(CONDITION_PARAM_DELAYED, true);
 							combatType = COMBAT_EARTHDAMAGE;
 							items[id].combatType = combatType;
 							items[id].conditionDamage.reset(conditionDamage);

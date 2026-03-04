@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF - 8"?>
-<monster name="Elf Arcanist" nameDescription="an elf arcanist" race="blood" experience="175" speed="70" manacost="0">
+<monster name="elf arcanist" nameDescription="an elf arcanist" race="blood" experience="175" speed="70" manacost="0">
 	<health now="220" max="220" />
-	<look type="63" head="0" body="0" legs="0" feet="0" corpse="6011" />
+	<look type="63" head="0" body="0" legs="0" feet="0" corpse="4160" />
 	<targetchange interval="1000" chance="50" />
 	<targetstrategy nearest="100" weakest="0" mostdamage="0" random="0" />
 	<flags>
@@ -65,9 +65,5 @@
 		<item id="3289" countmax="1" chance="110" /> <!-- a staff -->
 		<item id="3073" countmax="1" chance="10" /> <!-- a wand of cosmic energy -->
 		<item id="3037" countmax="1" chance="2" /> <!-- a yellow gem -->
-		<item id="5922" countmax="1" chance="25" /> <!-- a holy orchid -->
 	</loot>
-	<script>
-		<event name="KillingInTheNameOf" />
-	</script>
 </monster>

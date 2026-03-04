@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF - 8"?>
-<monster name="Crocodile" nameDescription="a crocodile" race="blood" experience="40" speed="38" manacost="350">
+<monster name="crocodile" nameDescription="a crocodile" race="blood" experience="40" speed="38" manacost="350">
 	<health now="105" max="105" />
-	<look type="119" head="0" body="0" legs="0" feet="0" corpse="6046" />
+	<look type="119" head="0" body="0" legs="0" feet="0" corpse="4342" />
 	<targetchange interval="1000" chance="5" />
 	<targetstrategy nearest="70" weakest="0" mostdamage="30" random="0" />
 	<flags>
@@ -28,7 +28,4 @@
 		<item id="3559" countmax="1" chance="80" /> <!-- leather legs -->
 		<item id="3577" countmax="4" chance="700" /> <!-- meat -->
 	</loot>
-	<script>
-		<event name="KillingInTheNameOf" />
-	</script>
 </monster>

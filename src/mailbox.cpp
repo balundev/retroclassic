@@ -1,6 +1,6 @@
 /**
  * Tibia GIMUD Server - a free and open-source MMORPG server emulator
- * Copyright (C) 2019 Sabrehaven and Mark Samman <mark.samman@gmail.com>
+ * Copyright (C) 2017  Alejandro Mujica <alejandrodemujica@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -114,7 +114,7 @@ bool Mailbox::sendItem(Item* item) const
 			if (g_game.internalMoveItem(item->getParent(), depotLocker, INDEX_WHEREEVER,
 				item, item->getItemCount(), nullptr, FLAG_NOLIMIT) == RETURNVALUE_NOERROR) {
 				g_game.transformItem(item, item->getID() + 1);
-				player->onReceiveMail(town->getID());
+				player->onReceiveMail();
 				return true;
 			}
 		}

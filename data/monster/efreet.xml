@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF - 8"?>
-<monster name="Efreet" nameDescription="an efreet" race="blood" experience="300" speed="77" manacost="0">
+<monster name="efreet" nameDescription="an efreet" race="blood" experience="300" speed="77" manacost="0">
 	<health now="550" max="550" />
-	<look type="103" head="0" body="0" legs="0" feet="0" corpse="6032" />
+	<look type="103" head="0" body="0" legs="0" feet="0" corpse="4218" />
 	<targetchange interval="1000" chance="0" />
 	<targetstrategy nearest="100" weakest="0" mostdamage="0" random="0" />
 	<flags>
@@ -75,9 +75,5 @@
 		<item id="3032" countmax="2" chance="70" /> <!-- a small emerald -->
 		<item id="2933" countmax="1" chance="200" /> <!-- a small oil lamp -->
 		<item id="3071" countmax="1" chance="5" /> <!-- a wand of inferno -->
-		<item id="5910" countmax="1" chance="25" /> <!-- green piece of cloth -->
 	</loot>
-	<script>
-		<event name="KillingInTheNameOf" />
-	</script>
 </monster>

@@ -1,6 +1,6 @@
 /**
  * Tibia GIMUD Server - a free and open-source MMORPG server emulator
- * Copyright (C) 2019 Sabrehaven and Mark Samman <mark.samman@gmail.com>
+ * Copyright (C) 2017  Alejandro Mujica <alejandrodemujica@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -162,13 +162,6 @@ class Creature : virtual public Thing
 			direction = dir;
 		}
 
-		bool isHealthHidden() const {
-			return hiddenHealth;
-		}
-		void setHiddenHealth(bool b) {
-			hiddenHealth = b;
-		}
-
 		int32_t getThrowRange() const final {
 			return 1;
 		}
@@ -226,6 +219,12 @@ class Creature : virtual public Thing
 		}
 		virtual int32_t getMaxHealth() const {
 			return healthMax;
+		}
+		uint32_t getMana() const {
+			return mana;
+		}
+		virtual uint32_t getMaxMana() const {
+			return 0;
 		}
 
 		const Outfit_t getCurrentOutfit() const {
@@ -321,9 +320,11 @@ class Creature : virtual public Thing
 		}
 
 		virtual void changeHealth(int32_t healthChange, bool sendHealthChange = true);
+		virtual void changeMana(int32_t manaChange);
 
 		void gainHealth(Creature* attacker, int32_t healthGain);
 		virtual void drainHealth(Creature* attacker, int32_t damage);
+		virtual void drainMana(Creature* attacker, int32_t manaLoss);
 
 		virtual bool challengeCreature(Creature*) {
 			return false;
@@ -355,7 +356,7 @@ class Creature : virtual public Thing
 		virtual void onAttackedCreatureChangeZone(ZoneType_t zone);
 		virtual void onIdleStatus();
 
-		virtual LightInfo getCreatureLight() const;
+		virtual void getCreatureLight(LightInfo& light) const;
 		virtual void setNormalCreatureLight();
 		void setCreatureLight(LightInfo light) {
 			internalLight = light;
@@ -395,7 +396,7 @@ class Creature : virtual public Thing
 		void setDropLoot(bool lootDrop) {
 			this->lootDrop = lootDrop;
 		}
-		void setSkillLoss(bool skillLoss) {
+		void setLossSkill(bool skillLoss) {
 			this->skillLoss = skillLoss;
 		}
 
@@ -493,6 +494,7 @@ class Creature : virtual public Thing
 		uint32_t blockTicks = 0;
 		uint32_t lastStepCost = 1;
 		uint32_t baseSpeed = 70;
+		uint32_t mana = 0;
 		uint32_t latestKillEvent = 0;
 		int32_t varSpeed = 0;
 		int32_t health = 1000;
@@ -518,7 +520,6 @@ class Creature : virtual public Thing
 		bool cancelNextWalk = false;
 		bool hasFollowPath = false;
 		bool forceUpdateFollowPath = false;
-		bool hiddenHealth = false;
 
 		//creature script events
 		bool hasEventRegistered(CreatureEventType_t event) const {

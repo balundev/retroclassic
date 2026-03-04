@@ -2,7 +2,7 @@
 # willard.npc: Datenbank für den Schmied Willard
 
 Name = "Willard"
-Outfit = (131,58-104-19-116-0)
+Outfit = (131,58-104-19-116)
 Home = [33214,31793,6]
 Radius = 3
 

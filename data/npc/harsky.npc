@@ -2,15 +2,14 @@
 # harsky.npc: Datenbank für den Wachmann Harsky
 
 Name = "Harsky"
-Outfit = (131,79-79-79-79-0)
+Outfit = (131,79-79-79-79)
 Home = [32312,32170,6]
 Radius = 0
 
 Behaviour = {
 ADDRESS,"hello$","king",!       -> "HAIL TO THE KING!"       
 ADDRESS,"hail$","king",!        -> "HAIL TO THE KING!"       
-ADDRESS,"salutations$","king",! -> "HAIL TO THE KING!"    
-ADDRESS,"hail$","tibianus",! -> "HAIL TO THE TIBIANUS!"   
+ADDRESS,"salutations$","king",! -> "HAIL TO THE KING!"       
 ADDRESS,"hi$",!                 -> "MIND YOUR MANNERS COMMONER! To address the king greet with his title!", Idle
 ADDRESS,"hello$",!              -> *
 ADDRESS,!                       -> Idle

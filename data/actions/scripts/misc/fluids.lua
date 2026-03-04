@@ -16,10 +16,7 @@ local messages = {
 	[FLUID_MILK] = "Mmmh.",
 	[FLUID_MANAFLUID] = "Aaaah...",
 	[FLUID_LIFEFLUID] = "Aaaah...",
-	[FLUID_LEMONADE] = "Mmmh.",
-	[FLUID_RUM] = "Aah...",
-	[FLUID_COCONUTMILK] = "Mmmh.",
-	[FLUID_FRUITJUICE] = "Mmmh."
+	[FLUID_LEMONADE] = "Mmmh."
 }
 
 function onUse(player, item, fromPosition, target, toPosition)
@@ -30,21 +27,10 @@ function onUse(player, item, fromPosition, target, toPosition)
 			item:transform(item:getId(), 0)
 			return true
 		elseif target:getFluidType() ~= 0 and item:getFluidType() == 0 then
-			player:sendCancelMessage("You cannot use this object.")
+			target:transform(target:getId(), 0)
+			item:transform(item:getId(), target:getFluidType())
 			return true
 		end
-	end
-	
-	if (configManager.getBoolean(configKeys.UH_TRAP)) then
-		local tile = Tile(toPosition)
-		local creature = tile:getBottomCreature()
-		if creature and creature:isPlayer() then
-			target = creature
-		end
-	else
-		-- monsters do not use mana also I do not know if you can use life fluid on monsters
-		-- if you can just want to use life fluids on monster then change isPlayer to isCreature
-		target = target:isPlayer() and target
 	end
 	
 	if target:isCreature() and target:getPlayer() ~= nil then
@@ -52,10 +38,10 @@ function onUse(player, item, fromPosition, target, toPosition)
 			player:sendCancelMessage("It is empty.")
 		else
 			local self = target == player
-			if self and item:getFluidType() == FLUID_BEER or item:getFluidType() == FLUID_WINE or item:getFluidType() == FLUID_RUM then
+			if self and item:getFluidType() == FLUID_BEER or item:getFluidType() == FLUID_WINE then
 				player:addCondition(drunk)
 			elseif self and item:getFluidType() == FLUID_SLIME then
-				player:addCondition(poison)
+				player:addCondition(slime)
 			elseif item:getFluidType() == FLUID_MANAFLUID then
 				target:addMana(math.random(50, 100))
 				target:getPosition():sendMagicEffect(CONST_ME_MAGIC_BLUE)
@@ -80,12 +66,7 @@ function onUse(player, item, fromPosition, target, toPosition)
 			else
 				target:say("Gulp.", TALKTYPE_MONSTER_SAY)
 			end
-			
-			if player:getStorageValue(17742) ~= 1 then
-				item:transform(item:getId(), FLUID_NONE)
-			else
-				item:remove()
-			end
+			item:transform(item:getId(), FLUID_NONE)
 		end
 	else
 		if toPosition.x == CONTAINER_POSITION then
@@ -107,11 +88,7 @@ function onUse(player, item, fromPosition, target, toPosition)
 		elseif item:getFluidType() == FLUID_NONE then
 			player:sendTextMessage(MESSAGE_STATUS_SMALL, "It is empty.")
 		else
-			if item:getFluidType() == FLUID_BLOOD and target:getActionId() == 17639 then
-				doRelocate({x = 32791, y = 32334, z = 09}, {x = 32791, y = 32332, z = 10})
-				Position({x = 32791, y = 32332, z = 10}):sendMonsterSay("Muahahahaha...")
-			end
-			
+
 			Game.createItem(2886, item.type, toPosition):decay()
 			item:transform(item:getId(), 0)
 		end

@@ -1,6 +1,6 @@
 /**
  * Tibia GIMUD Server - a free and open-source MMORPG server emulator
- * Copyright (C) 2019 Sabrehaven and Mark Samman <mark.samman@gmail.com>
+ * Copyright (C) 2017  Alejandro Mujica <alejandrodemujica@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,7 +30,6 @@
 void printXMLError(const std::string& where, const std::string& fileName, const pugi::xml_parse_result& result);
 
 std::string transformToSHA1(const std::string& input);
-std::string generateToken(const std::string& key, uint32_t ticks);
 uint8_t getLiquidColor(uint8_t type);
 
 void extractArticleAndName(std::string& data, std::string& article, std::string& name);
@@ -41,7 +40,6 @@ void trim_left(std::string& source, char t);
 void toLowerCaseString(std::string& source);
 std::string asLowerCaseString(std::string source);
 std::string asUpperCaseString(std::string source);
-std::string asCamelCaseString(std::string source);
 
 typedef std::vector<std::string> StringVec;
 typedef std::vector<int32_t> IntegerVec;
@@ -100,17 +98,9 @@ const char* getReturnMessage(ReturnValue value);
 
 void getFilesInDirectory(const boost::filesystem::path& root, const std::string& ext, std::vector<boost::filesystem::path>& ret);
 
-std::string getClientVersionString(uint32_t version);
-std::string getClientVersionString(ClientVersion_t version);
-
 inline int64_t OTSYS_TIME()
 {
 	return std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
-}
-
-inline int32_t OTSYS_TIME_MINUTES()
-{
-	return std::chrono::duration_cast<std::chrono::minutes>(std::chrono::system_clock::now().time_since_epoch()).count();
 }
 
 #endif

@@ -1,6 +1,6 @@
 /**
  * Tibia GIMUD Server - a free and open-source MMORPG server emulator
- * Copyright (C) 2019 Sabrehaven and Mark Samman <mark.samman@gmail.com>
+ * Copyright (C) 2017  Alejandro Mujica <alejandrodemujica@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -163,37 +163,9 @@ void mainLoader(int, char*[], ServiceManager* services)
 #endif
 
 	//set RSA key
-	try {
-		g_RSA.loadPEM("key.pem");
-	}
-	catch (const std::exception& e) {
-		startupErrorMessage(e.what());
-		return;
-	}
-
-	std::cout << ">> Checking client version... " << std::flush;
-	int32_t clientVersion = g_config.getNumber(ConfigManager::CLIENT_VERSION);
-	if (clientVersion == 780) {
-		g_game.setClientVersion(CLIENT_VERSION_780);
-	}
-	else if (clientVersion == 781) {
-		g_game.setClientVersion(CLIENT_VERSION_781);
-	}
-	else if (clientVersion == 790) {
-		g_game.setClientVersion(CLIENT_VERSION_790);
-	}
-	else if (clientVersion == 792) {
-		g_game.setClientVersion(CLIENT_VERSION_792);
-	}
-	else {
-		std::cout << std::endl;
-
-		std::ostringstream ss;
-		ss << "> ERROR: Unknown client version: " << g_config.getNumber(ConfigManager::CLIENT_VERSION) << ", valid client versions are: 780, 781, 790, 792.";
-		startupErrorMessage(ss.str());
-		return;
-	}
-	std::cout << clientVersion << std::endl;
+	const char* p("14299623962416399520070177382898895550795403345466153217470516082934737582776038882967213386204600674145392845853859217990626450972452084065728686565928113");
+	const char* q("7630979195970404721891201847792002125535401292779123937207447574596692788513647179235335529307251350570728407373705564708871762033017096809910315212884101");
+	g_RSA.setKey(p, q);
 
 	std::cout << ">> Establishing database connection..." << std::flush;
 
@@ -241,13 +213,6 @@ void mainLoader(int, char*[], ServiceManager* services)
 	std::cout << ">> Loading monsters" << std::endl;
 	if (!g_monsters.loadFromXml()) {
 		startupErrorMessage("Unable to load monsters!");
-		return;
-	}
-
-	std::cout << ">> Loading outfits" << std::endl;
-	auto& outfits = Outfits::getInstance();
-	if (!outfits.loadFromXml()) {
-		startupErrorMessage("Unable to load outfits!");
 		return;
 	}
 

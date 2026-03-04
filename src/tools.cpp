@@ -1,6 +1,6 @@
 /**
  * Tibia GIMUD Server - a free and open-source MMORPG server emulator
- * Copyright (C) 2019 Sabrehaven and Mark Samman <mark.samman@gmail.com>
+ * Copyright (C) 2017  Alejandro Mujica <alejandrodemujica@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -188,43 +188,40 @@ std::string transformToSHA1(const std::string& input)
 
 uint8_t getLiquidColor(uint8_t type)
 {
-	uint8_t result = FLUID_COLOR_NONE;
+	uint8_t result = 0;
 	switch (type)
 	{
-	case FLUID_WATER:
-		result = FLUID_COLOR_BLUE;
+	case 1:
+		result = 1;
 		break;
-	case FLUID_NONE:
-		result = FLUID_COLOR_NONE;
+	case 0:
+		result = 0;
 		break;
-	case FLUID_SLIME:
-		result = FLUID_COLOR_GREEN;
+	case 6:
+		result = 4;
 		break;
-	case FLUID_BEER:
-	case FLUID_MUD:
-	case FLUID_OIL:
-	case FLUID_RUM:
-		result = FLUID_COLOR_BROWN;
+	case 3:
+	case 4:
+	case 7:
+		result = 3;
 		break;
-	case FLUID_MILK:
-	case FLUID_COCONUTMILK:
-		result = FLUID_COLOR_WHITE;
+	case 9:
+		result = 6;
 		break;
-	case FLUID_WINE:
-	case FLUID_MANAFLUID:
-		result = FLUID_COLOR_PURPLE;
+	case 2:
+	case 10:
+		result = 7;
 		break;
-	case FLUID_BLOOD:
-	case FLUID_LIFEFLUID:
-		result = FLUID_COLOR_RED;
+	case 5:
+	case 11:
+		result = 2;
 		break;
-	case FLUID_URINE:
-	case FLUID_LEMONADE:
-	case FLUID_FRUITJUICE:
-		result = FLUID_COLOR_YELLOW;
+	case 8:
+	case 12:
+		result = 5;
 		break;
 	default:
-		result = FLUID_COLOR_NONE;
+		result = 0;
 		break;
 	}
 	return result;
@@ -275,51 +272,6 @@ std::string pluralizeString(std::string str)
 	return str2;
 }
 
-std::string generateToken(const std::string& key, uint32_t ticks)
-{
-	// generate message from ticks
-	std::string message(8, 0);
-	for (uint8_t i = 8; --i; ticks >>= 8) {
-		message[i] = static_cast<char>(ticks & 0xFF);
-	}
-
-	// hmac key pad generation
-	std::string iKeyPad(64, 0x36), oKeyPad(64, 0x5C);
-	for (uint8_t i = 0; i < key.length(); ++i) {
-		iKeyPad[i] ^= key[i];
-		oKeyPad[i] ^= key[i];
-	}
-
-	oKeyPad.reserve(84);
-
-	// hmac concat inner pad with message
-	iKeyPad.append(message);
-
-	// hmac first pass
-	message.assign(transformToSHA1(iKeyPad));
-
-	// hmac concat outer pad with message, conversion from hex to int needed
-	for (uint8_t i = 0; i < message.length(); i += 2) {
-		oKeyPad.push_back(static_cast<char>(std::strtoul(message.substr(i, 2).c_str(), nullptr, 16)));
-	}
-
-	// hmac second pass
-	message.assign(transformToSHA1(oKeyPad));
-
-	// calculate hmac offset
-	uint32_t offset = static_cast<uint32_t>(std::strtoul(message.substr(39, 1).c_str(), nullptr, 16) & 0xF);
-
-	// get truncated hash
-	uint32_t truncHash = static_cast<uint32_t>(std::strtoul(message.substr(2 * offset, 8).c_str(), nullptr, 16)) & 0x7FFFFFFF;
-	message.assign(std::to_string(truncHash));
-
-	// return only last AUTHENTICATOR_DIGITS (default 6) digits, also asserts exactly 6 digits
-	uint32_t hashLen = message.length();
-	message.assign(message.substr(hashLen - std::min(hashLen, AUTHENTICATOR_DIGITS)));
-	message.insert(0, AUTHENTICATOR_DIGITS - std::min(hashLen, AUTHENTICATOR_DIGITS), '0');
-	return message;
-}
-
 void replaceString(std::string& str, const std::string& sought, const std::string& replacement)
 {
 	size_t pos = 0;
@@ -357,27 +309,6 @@ std::string asLowerCaseString(std::string source)
 std::string asUpperCaseString(std::string source)
 {
 	std::transform(source.begin(), source.end(), source.begin(), toupper);
-	return source;
-}
-
-std::string asCamelCaseString(std::string source) {
-	bool active = true;
-
-	for (int i = 0; source[i] != '\0'; i++) {
-		if (std::isalpha(source[i])) {
-			if (active) {
-				source[i] = std::toupper(source[i]);
-				active = false;
-			}
-			else {
-				source[i] = std::tolower(source[i]);
-			}
-		}
-		else if (source[i] == ' ') {
-			active = true;
-		}
-	}
-
 	return source;
 }
 
@@ -668,12 +599,6 @@ MagicEffectNames magicEffectNames[] = {
 	{"purplenote",		CONST_ME_SOUND_PURPLE},
 	{"bluenote",		CONST_ME_SOUND_BLUE},
 	{"whitenote",		CONST_ME_SOUND_WHITE},
-	{"bubbles",		CONST_ME_BUBBLES},
-	{"dice",		CONST_ME_CRAPS},
-	{"giftwraps",		CONST_ME_GIFT_WRAPS},
-	{"yellowfirework",	CONST_ME_FIREWORK_YELLOW},
-	{"redfirework",		CONST_ME_FIREWORK_RED},
-	{"bluefirework",	CONST_ME_FIREWORK_BLUE},
 };
 
 ShootTypeNames shootTypeNames[] = {
@@ -692,13 +617,11 @@ ShootTypeNames shootTypeNames[] = {
 	{"snowball",		CONST_ANI_SNOWBALL},
 	{"powerbolt",		CONST_ANI_POWERBOLT},
 	{"poison",		CONST_ANI_POISON},
-	{"infernalbolt",	CONST_ANI_INFERNALBOLT},
 };
 
 CombatTypeNames combatTypeNames[] = {
 	{"physical",		COMBAT_PHYSICALDAMAGE},
 	{"energy",		COMBAT_ENERGYDAMAGE},
-	{"drown",		COMBAT_DROWNDAMAGE},
 	{"earth",		COMBAT_EARTHDAMAGE},
 	{"poison",			COMBAT_EARTHDAMAGE},
 	{"fire",		COMBAT_FIREDAMAGE},
@@ -749,10 +672,7 @@ FluidNames fluidNames[] = {
 	{"milk",			FLUID_MILK},
 	{"manafluid",		FLUID_MANAFLUID},
 	{"lifefluid",		FLUID_LIFEFLUID},
-	{"lemonade",		FLUID_LEMONADE},
-	{"rum",				FLUID_RUM},
-	{"coconutmilk",		FLUID_COCONUTMILK},
-	{"fruitjuice",		FLUID_FRUITJUICE}
+	{"lemonade",		FLUID_LEMONADE}
 };
 
 MagicEffectClasses getMagicEffect(const std::string& strValue)
@@ -870,7 +790,6 @@ std::string getSkillName(uint8_t skillid)
 	}
 }
 
-
 std::string ucfirst(std::string str)
 {
 	for (char& i : str) {
@@ -941,8 +860,6 @@ size_t combatTypeToIndex(CombatType_t combatType)
 			return 6;
 		case COMBAT_HEALING:
 			return 7;
-		case COMBAT_DROWNDAMAGE:
-			return 8;
 		default:
 			return 0;
 	}
@@ -1195,21 +1112,6 @@ const char* getReturnMessage(ReturnValue value)
 		case RETURNVALUE_YOUARENOTTHEOWNER:
 			return "You are not the owner.";
 
-		case RETURNVALUE_TRADEPLAYERFARAWAY:
-			return "Trade player is too far away.";
-
-		case RETURNVALUE_YOUDONTOWNTHISHOUSE:
-			return "You don't own this house.";
-
-		case RETURNVALUE_TRADEPLAYERALREADYOWNSAHOUSE:
-			return "Trade player already owns a house.";
-
-		case RETURNVALUE_TRADEPLAYERHIGHESTBIDDER:
-			return "Trade player is currently the highest bidder of an auctioned house.";
-
-		case RETURNVALUE_YOUCANNOTTRADETHISHOUSE:
-			return "You can not trade this house.";
-
 		default: // RETURNVALUE_NOTPOSSIBLE, etc
 			return "Sorry, not possible.";
 	}
@@ -1234,34 +1136,4 @@ void getFilesInDirectory(const boost::filesystem::path& root, const std::string&
 			++it;
 		}
 	}
-}
-
-std::string getClientVersionString(uint32_t version)
-{
-	return getClientVersionString(static_cast<ClientVersion_t>(version));
-}
-
-std::string getClientVersionString(ClientVersion_t version)
-{
-	std::string result;
-	switch (version)
-	{
-	case CLIENT_VERSION_780:
-		result = "7.80";
-		break;
-	case CLIENT_VERSION_781:
-		result = "7.81";
-		break;
-	case CLIENT_VERSION_790:
-		result = "7.90";
-		break;
-	case CLIENT_VERSION_792:
-		result = "7.92";
-		break;
-	default:
-		result = "Unknown";
-		break;
-	}
-
-	return result;
 }

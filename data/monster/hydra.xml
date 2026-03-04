@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF - 8"?>
-<monster name="Hydra" nameDescription="a hydra" race="blood" experience="2100" speed="60" manacost="0">
+<monster name="hydra" nameDescription="a hydra" race="blood" experience="2100" speed="60" manacost="0">
 	<health now="2250" max="2250" />
-	<look type="121" head="0" body="0" legs="0" feet="0" corpse="6048" />
+	<look type="121" head="0" body="0" legs="0" feet="0" corpse="4348" />
 	<targetchange interval="1000" chance="5" />
 	<targetstrategy nearest="70" weakest="10" mostdamage="10" random="10" />
 	<flags>
@@ -60,7 +60,4 @@
 		<item id="3081" countmax="1" chance="8" /> <!-- a stone skin amulet -->
 		<item id="3369" countmax="1" chance="10" /> <!-- a warrior helmet -->
 	</loot>
-	<script>
-		<event name="KillingInTheNameOf" />
-	</script>
 </monster>

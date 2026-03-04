@@ -2,7 +2,7 @@
 # nahbob.npc: Datenbank für den Maridhändler Nah'bob (Waffen und Rüstungen, Marid)
 
 Name = "Nah'bob"
-Outfit = (80,0-0-0-0-0)
+Outfit = (80,0-0-0-0)
 Home = [33104,32520,2]
 Radius = 1 
 

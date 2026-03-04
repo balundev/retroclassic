@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF - 8"?>
 <monster name="Orshabaal" nameDescription="Orshabaal" race="fire" experience="9999" speed="150" manacost="0">
 	<health now="22500" max="22500" />
-	<look type="201" head="0" body="0" legs="0" feet="0" corpse="5995" />
+	<look type="201" head="0" body="0" legs="0" feet="0" corpse="4097" />
 	<targetchange interval="1000" chance="10" />
 	<targetstrategy nearest="70" weakest="10" mostdamage="10" random="10" />
 	<flags>
@@ -119,7 +119,5 @@
 		<item id="3002" countmax="1" chance="1" /> <!-- a voodoo doll -->
 		<item id="3069" countmax="1" chance="35" /> <!-- a volcanic rod -->
 		<item id="3026" countmax="15" chance="125" /> <!-- a white pearl -->
-		<item id="5808" countmax="1" chance="100" /> <!-- orshabaal's brain -->
-		<item id="5954" countmax="2" chance="200" /> <!-- a demon horn -->
 	</loot>
 </monster>

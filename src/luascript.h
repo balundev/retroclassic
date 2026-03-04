@@ -1,6 +1,6 @@
 /**
  * Tibia GIMUD Server - a free and open-source MMORPG server emulator
- * Copyright (C) 2019 Sabrehaven and Mark Samman <mark.samman@gmail.com>
+ * Copyright (C) 2017  Alejandro Mujica <alejandrodemujica@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,11 +20,7 @@
 #ifndef FS_LUASCRIPT_H_5344B2BC907E46E3943EA78574A212D8
 #define FS_LUASCRIPT_H_5344B2BC907E46E3943EA78574A212D8
 
-#if __has_include("luajit/lua.hpp")
-#include <luajit/lua.hpp>
-#else
 #include <lua.hpp>
-#endif
 
 #if LUA_VERSION_NUM >= 502
 #ifndef LUA_COMPAT_ALL
@@ -324,7 +320,6 @@ class LuaScriptInterface
 		}
 
 		static std::string getString(lua_State* L, int32_t arg);
-		static CombatDamage getCombatDamage(lua_State* L);
 		static Position getPosition(lua_State* L, int32_t arg, int32_t& stackpos);
 		static Position getPosition(lua_State* L, int32_t arg);
 		static Outfit_t getOutfit(lua_State* L, int32_t arg);
@@ -373,7 +368,6 @@ class LuaScriptInterface
 
 		// Push
 		static void pushBoolean(lua_State* L, bool value);
-		static void pushCombatDamage(lua_State* L, const CombatDamage& damage);
 		static void pushPosition(lua_State* L, const Position& position, int32_t stackpos = 0);
 		static void pushOutfit(lua_State* L, const Outfit_t& outfit);
 
@@ -485,9 +479,6 @@ class LuaScriptInterface
 
 		static int luaGetWaypointPositionByName(lua_State* L);
 
-		static int luaSendChannelMessage(lua_State* L);
-		static int luaSendGuildChannelMessage(lua_State* L);
-
 #ifndef LUAJIT_VERSION
 		static int luaBitNot(lua_State* L);
 		static int luaBitAnd(lua_State* L);
@@ -523,9 +514,6 @@ class LuaScriptInterface
 		static int luaIsType(lua_State* L);
 		static int luaRawGetMetatable(lua_State* L);
 
-		// random
-		static int luaRandomRand(lua_State* L);
-
 		// os
 		static int luaSystemTime(lua_State* L);
 
@@ -560,8 +548,6 @@ class LuaScriptInterface
 		static int luaGameCreateTile(lua_State* L);
 
 		static int luaGameStartRaid(lua_State* L);
-
-		static int luaGameReload(lua_State* L);
 
 		// Variant
 		static int luaVariantCreate(lua_State* L);
@@ -762,7 +748,10 @@ class LuaScriptInterface
 		static int luaCreatureAddHealth(lua_State* L);
 		static int luaCreatureGetMaxHealth(lua_State* L);
 		static int luaCreatureSetMaxHealth(lua_State* L);
-		static int luaCreatureSetHiddenHealth(lua_State* L);
+
+		static int luaCreatureGetMana(lua_State* L);
+		static int luaCreatureAddMana(lua_State* L);
+		static int luaCreatureGetMaxMana(lua_State* L);
 
 		static int luaCreatureGetSkull(lua_State* L);
 		static int luaCreatureSetSkull(lua_State* L);
@@ -820,9 +809,6 @@ class LuaScriptInterface
 
 		static int luaPlayerGetMagicLevel(lua_State* L);
 		static int luaPlayerGetBaseMagicLevel(lua_State* L);
-		static int luaPlayerGetMana(lua_State* L);
-		static int luaPlayerAddMana(lua_State* L);
-		static int luaPlayerGetMaxMana(lua_State* L);
 		static int luaPlayerSetMaxMana(lua_State* L);
 		static int luaPlayerGetManaSpent(lua_State* L);
 		static int luaPlayerAddManaSpent(lua_State* L);
@@ -835,15 +821,6 @@ class LuaScriptInterface
 		static int luaPlayerGetSkillPercent(lua_State* L);
 		static int luaPlayerGetSkillTries(lua_State* L);
 		static int luaPlayerAddSkillTries(lua_State* L);
-
-		static int luaPlayerAddOfflineTrainingTime(lua_State* L);
-		static int luaPlayerGetOfflineTrainingTime(lua_State* L);
-		static int luaPlayerRemoveOfflineTrainingTime(lua_State* L);
-
-		static int luaPlayerAddOfflineTrainingTries(lua_State* L);
-
-		static int luaPlayerGetOfflineTrainingSkill(lua_State* L);
-		static int luaPlayerSetOfflineTrainingSkill(lua_State* L);
 
 		static int luaPlayerGetItemCount(lua_State* L);
 		static int luaPlayerGetItemById(lua_State* L);
@@ -868,9 +845,6 @@ class LuaScriptInterface
 
 		static int luaPlayerGetGroup(lua_State* L);
 		static int luaPlayerSetGroup(lua_State* L);
-
-		static int luaPlayerGetStamina(lua_State* L);
-		static int luaPlayerSetStamina(lua_State* L);
 
 		static int luaPlayerGetSoul(lua_State* L);
 		static int luaPlayerAddSoul(lua_State* L);
@@ -902,11 +876,6 @@ class LuaScriptInterface
 
 		static int luaPlayerGetParty(lua_State* L);
 
-		static int luaPlayerAddOutfit(lua_State* L);
-		static int luaPlayerAddOutfitAddon(lua_State* L);
-		static int luaPlayerRemoveOutfit(lua_State* L);
-		static int luaPlayerRemoveOutfitAddon(lua_State* L);
-		static int luaPlayerHasOutfit(lua_State* L);
 		static int luaPlayerSendOutfitWindow(lua_State* L);
 
 		static int luaPlayerGetPremiumDays(lua_State* L);
@@ -925,7 +894,6 @@ class LuaScriptInterface
 		static int luaPlayerSave(lua_State* L);
 
 		static int luaPlayerIsPzLocked(lua_State* L);
-		static int luaPlayerIsFakePlayer(lua_State* L);
 
 		static int luaPlayerGetClient(lua_State* L);
 		static int luaPlayerGetHouse(lua_State* L);
@@ -981,15 +949,10 @@ class LuaScriptInterface
 		static int luaGuildGetId(lua_State* L);
 		static int luaGuildGetName(lua_State* L);
 		static int luaGuildGetMembersOnline(lua_State* L);
-		static int luaGuildSetGuildWarEmblem(lua_State* L);
 
 		static int luaGuildAddRank(lua_State* L);
 		static int luaGuildGetRankById(lua_State* L);
 		static int luaGuildGetRankByLevel(lua_State* L);
-
-		static int luaGuildGetBankBalance(lua_State* L);
-		static int luaGuildIncreaseBankBalance(lua_State* L);
-		static int luaGuildDecreaseBankBalance(lua_State* L);
 
 		// Group
 		static int luaGroupCreate(lua_State* L);
@@ -1048,7 +1011,6 @@ class LuaScriptInterface
 
 		static int luaHouseGetOwnerGuid(lua_State* L);
 		static int luaHouseSetOwnerGuid(lua_State* L);
-		static int luaHouseStartTrade(lua_State* L);
 
 		static int luaHouseGetBeds(lua_State* L);
 		static int luaHouseGetBedCount(lua_State* L);
@@ -1102,7 +1064,6 @@ class LuaScriptInterface
 		static int luaItemTypeGetDefense(lua_State* L);
 		static int luaItemTypeGetArmor(lua_State* L);
 		static int luaItemTypeGetWeaponType(lua_State* L);
-		static int luaItemTypeGetAmmoType(lua_State* L);
 
 		static int luaItemTypeGetTransformEquipId(lua_State* L);
 		static int luaItemTypeGetTransformDeEquipId(lua_State* L);
@@ -1121,7 +1082,6 @@ class LuaScriptInterface
 		static int luaCombatSetArea(lua_State* L);
 		static int luaCombatSetCondition(lua_State* L);
 		static int luaCombatSetCallback(lua_State* L);
-		static int luaCombatSetOrigin(lua_State* L);
 
 		static int luaCombatExecute(lua_State* L);
 
@@ -1155,7 +1115,6 @@ class LuaScriptInterface
 		static int luaMonsterTypeIsIllusionable(lua_State* L);
 		static int luaMonsterTypeIsHostile(lua_State* L);
 		static int luaMonsterTypeIsPushable(lua_State* L);
-		static int luaMonsterTypeIsHealthShown(lua_State* L);
 
 		static int luaMonsterTypeCanPushItems(lua_State* L);
 		static int luaMonsterTypeCanPushCreatures(lua_State* L);
@@ -1183,7 +1142,6 @@ class LuaScriptInterface
 		static int luaMonsterTypeGetMaxSummons(lua_State* L);
 
 		static int luaMonsterTypeGetArmor(lua_State* L);
-		static int luaMonsterTypeGetSkill(lua_State* L);
 		static int luaMonsterTypeGetDefense(lua_State* L);
 		static int luaMonsterTypeGetOutfit(lua_State* L);
 		static int luaMonsterTypeGetRace(lua_State* L);

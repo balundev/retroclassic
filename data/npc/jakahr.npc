@@ -2,7 +2,7 @@
 # jakahr.npc: Datenbank für den Postmann Jakahr
 
 Name = "Jakahr"
-Outfit = (133,95-37-32-40-0)
+Outfit = (133,95-37-32-40)
 Home = [33066,32876,7]
 Radius = 1
 

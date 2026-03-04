@@ -1,6 +1,6 @@
 /**
  * Tibia GIMUD Server - a free and open-source MMORPG server emulator
- * Copyright (C) 2019 Sabrehaven and Mark Samman <mark.samman@gmail.com>
+ * Copyright (C) 2017  Alejandro Mujica <alejandrodemujica@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,7 +20,7 @@
 #ifndef FS_HOUSE_H_EB9732E7771A438F9CD0EFA8CB4C58C4
 #define FS_HOUSE_H_EB9732E7771A438F9CD0EFA8CB4C58C4
 
-#include <set>
+#include <regex>
 
 #include "container.h"
 #include "housetile.h"
@@ -36,6 +36,7 @@ class AccessList
 		void parseList(const std::string& list);
 		void addPlayer(const std::string& name);
 		void addGuild(const std::string& name);
+		void addExpression(const std::string& expression);
 
 		bool isInList(const Player* player);
 
@@ -45,7 +46,8 @@ class AccessList
 		std::string list;
 		std::unordered_set<uint32_t> playerList;
 		std::unordered_set<uint32_t> guildList; // TODO: include ranks
-		bool allowEveryone = false;
+		std::list<std::string> expressionList;
+		std::list<std::pair<std::regex, bool>> regExList;
 };
 
 class Door final : public Item
@@ -210,10 +212,9 @@ class House
 			return houseTiles;
 		}
 
-		const std::set<Door*>& getDoors() const {
-			return doorSet;
+		const std::list<Door*>& getDoors() const {
+			return doorList;
 		}
-
 
 		void addBed(BedItem* bed);
 		const HouseBedItemList& getBeds() const {
@@ -233,7 +234,7 @@ class House
 		Container transfer_container{ITEM_LOCKER1};
 
 		HouseTileList houseTiles;
-		std::set<Door*> doorSet;
+		std::list<Door*> doorList;
 		HouseBedItemList bedsList;
 
 		std::string houseName;

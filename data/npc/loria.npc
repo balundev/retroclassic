@@ -2,7 +2,7 @@
 # loria.npc: Datenbank für die Zauberkundige Loria
 
 Name = "Loria"
-Outfit = (138,96-118-82-95-0)
+Outfit = (138,96-118-82-95)
 Home = [32385,32131,7]
 Radius = 10
 

@@ -1,6 +1,6 @@
 /**
  * Tibia GIMUD Server - a free and open-source MMORPG server emulator
- * Copyright (C) 2019 Sabrehaven and Mark Samman <mark.samman@gmail.com>
+ * Copyright (C) 2017  Alejandro Mujica <alejandrodemujica@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -644,10 +644,6 @@ uint32_t MoveEvent::EquipItem(MoveEvent* moveEvent, Player* player, Item* item, 
 	if (it.abilities->conditionSuppressions != 0) {
 		player->addConditionSuppressions(it.abilities->conditionSuppressions);
 		player->sendIcons();
-	}
-
-	if (it.abilities->absorbPercent[combatTypeToIndex(COMBAT_DROWNDAMAGE)] == 100) {
-		player->removeCondition(CONDITION_DROWN);
 	}
 
 	if (it.abilities->regeneration) {

@@ -2,7 +2,7 @@
 # penny.npc: Datenbank für die GM-Gehilfin Penny
 
 Name = "Penny"
-Outfit = (137,96-79-95-96-0)
+Outfit = (137,96-79-95-96)
 Home = [32315,31936,7]
 Radius = 2
 

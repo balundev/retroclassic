@@ -1,6 +1,6 @@
 /**
  * Tibia GIMUD Server - a free and open-source MMORPG server emulator
- * Copyright (C) 2019 Sabrehaven and Mark Samman <mark.samman@gmail.com>
+ * Copyright (C) 2017  Alejandro Mujica <alejandrodemujica@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,6 +29,7 @@ class ProtocolStatus final : public Protocol
 		// static protocol information
 		enum {server_sends_first = false};
 		enum {protocol_identifier = 0xFF};
+		enum {use_checksum = false};
 		static const char* protocol_name() {
 			return "status protocol";
 		}

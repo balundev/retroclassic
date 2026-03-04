@@ -2,7 +2,7 @@
 # ferryman1.npc: Fährmann Nielson am Festland (Ice)
 
 Name = "Nielson"
-Outfit = (129,114-113-68-67-0)
+Outfit = (129,114-113-68-67)
 Home = [32232,31677,7]
 Radius = 2
 
@@ -42,6 +42,10 @@ VANISH,!                  -> "Good bye. You are welcome."
 "folda" -> Price=20, "Do you want a round-trip passage to Folda for %P gold?", Topic=2
 "vega"  -> Price=20, "Do you want a round-trip passage to Vega for %P gold?", Topic=3
 "tibia" -> "This is Tibia, the continent."
+
+Topic=1,"yes",PZBlock,! -> "First get rid of those blood stains! You are not going to ruin my vehicle!"
+Topic=2,"yes",PZBlock,! -> *
+Topic=3,"yes",PZBlock,! -> *
 
 
 Topic=1,"yes",CountMoney>=Price -> "Have a nice trip!", DeleteMoney, Idle, EffectOpp(11), Teleport(32126,31667,7), EffectOpp(11)

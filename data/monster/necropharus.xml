@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF - 8"?>
 <monster name="Necropharus" nameDescription="Necropharus" race="blood" experience="700" speed="60" manacost="0">
 	<health now="750" max="750" />
-	<look type="209" head="0" body="0" legs="0" feet="0" corpse="6080" />
+	<look type="209" head="0" body="0" legs="0" feet="0" corpse="4240" />
 	<targetchange interval="1000" chance="50" />
 	<targetstrategy nearest="100" weakest="0" mostdamage="0" random="0" />
 	<flags>
@@ -60,6 +60,5 @@
 		<item id="3294" countmax="1" chance="86" /> <!-- a short sword -->
 		<item id="3114" countmax="1" chance="160" /> <!-- a skull -->
 		<item id="3324" countmax="1" chance="4" /> <!-- a skull staff -->
-		<item id="5809" countmax="1" chance="1000" /> <!-- soul stone -->
 	</loot>
 </monster>

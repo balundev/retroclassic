@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF - 8"?>
-<monster name="Kongra" nameDescription="a kongra" race="blood" experience="110" speed="52" manacost="0">
+<monster name="kongra" nameDescription="a kongra" race="blood" experience="110" speed="52" manacost="0">
 	<health now="340" max="340" />
-	<look type="116" head="0" body="0" legs="0" feet="0" corpse="6043" />
+	<look type="116" head="0" body="0" legs="0" feet="0" corpse="4333" />
 	<targetchange interval="1000" chance="0" />
 	<targetstrategy nearest="100" weakest="0" mostdamage="0" random="0" />
 	<flags>
@@ -37,9 +37,5 @@
 		<item id="3357" countmax="1" chance="10" /> <!-- a plate armor -->
 		<item id="3050" countmax="1" chance="5" /> <!-- a power ring -->
 		<item id="3084" countmax="1" chance="10" /> <!-- a protection amulet -->
-		<item id="5883" countmax="1" chance="8" /> <!-- ape fur -->
 	</loot>
-	<script>
-		<event name="KillingInTheNameOf" />
-	</script>
 </monster>

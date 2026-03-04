@@ -1,6 +1,6 @@
 /**
  * Tibia GIMUD Server - a free and open-source MMORPG server emulator
- * Copyright (C) 2019 Sabrehaven and Mark Samman <mark.samman@gmail.com>
+ * Copyright (C) 2017  Alejandro Mujica <alejandrodemujica@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,10 +27,6 @@ class IOGuild
 	public:
 		static uint32_t getGuildIdByName(const std::string& name);
 		static void getWarList(uint32_t guildId, GuildWarList& guildWarList);
-
-		static uint64_t getGuildBalance(uint32_t id);
-		static bool increaseGuildBankBalance(uint32_t guid, uint64_t bankBalance);
-		static bool decreaseGuildBankBalance(uint32_t guid, uint64_t bankBalance);
 };
 
 #endif

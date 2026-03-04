@@ -388,98 +388,7 @@
 	<movevent event="StepIn" movementid="237" script="nostalrius/237.lua" />
 	
 	<!-- Nostalrius Default Movements -->
-	<movevent event="StepIn" fromid="5404" toid="5409" script="misc/drowning.lua" />
-	<movevent event="StepOut" fromid="5404" toid="5409" script="misc/drowning.lua"/>
-	<movevent event="StepIn" fromid="5743" toid="5744" script="misc/drowning.lua" />
-	<movevent event="StepOut" fromid="5743" toid="5744" script="misc/drowning.lua"/>
-	<movevent event="StepIn" itemid="5764" script="misc/drowning.lua" />
-	<movevent event="StepOut" itemid="5764" script="misc/drowning.lua"/>
-	
-	<!-- Pits of Inferno -->
-	<movevent event="StepIn" frommovementid="17640" tomovementid="17641" script="pits_of_inferno/holy_tible_tile.lua" />
-	<movevent event="StepIn" movementid="4002" script="pits_of_inferno/drawbridge.lua" />
-	<movevent event="StepOut" movementid="4002" script="pits_of_inferno/drawbridge.lua" />
-	<movevent event="StepIn" movementid="2002" script="pits_of_inferno/ladder.lua" />
-	<movevent event="StepOut" movementid="2002" script="pits_of_inferno/ladder.lua" />
-	<movevent event="StepIn" frommovementid="28810" tomovementid="28834" script="pits_of_inferno/tileTeleports.lua" />
-	<movevent event="StepIn" frommovementid="7799" tomovementid="7801" script="pits_of_inferno/trap.lua" />
-	<movevent event="StepIn" movementid="3303" script="pits_of_inferno/secondTrap.lua" />
-	<movevent event="StepIn" frommovementid="17660" tomovementid="17678" script="pits_of_inferno/final_room_teleports.lua" />
-	<movevent event="AddItem" frommovementid="17660" tomovementid="17678" tileitem="1" script="pits_of_inferno/final_room_teleports.lua" />
-	<movevent event="StepIn" frommovementid="2090" tomovementid="2096" script="pits_of_inferno/checkThrones.lua" />
-	<movevent event="StepIn" frommovementid="2080" tomovementid="2086" script="pits_of_inferno/thrones.lua" />
-	<movevent event="StepIn" movementid="17686" script="pits_of_inferno/bazir_maze_lever_teleport.lua" />
-	<movevent event="AddItem" movementid="17686" tileitem="1" script="pits_of_inferno/bazir_maze_lever_teleport.lua" />
-	<movevent event="StepIn" movementid="17687" script="pits_of_inferno/bazir_maze_lever_teleport_back.lua" />
-	<movevent event="AddItem" movementid="17687" tileitem="1" script="pits_of_inferno/bazir_maze_lever_teleport_back.lua" />
-	<movevent event="StepIn" frommovementid="16772" tomovementid="16774" script="pits_of_inferno/bazirTiles.lua" />
-	<movevent event="StepIn" frommovementid="50082" tomovementid="50083" script="pits_of_inferno/bazirTiles.lua" />
-	<movevent event="AddItem" movementid="17688" tileitem="1" script="pits_of_inferno/bazir_final_room_teleport.lua" />
-	<movevent event="StepIn" movementid="17688" script="pits_of_inferno/bazir_final_room_teleport.lua" />
-	<movevent event="StepIn" movementid="50087" script="pits_of_inferno/puminTeleport.lua" />
-	<movevent event="StepIn" movementid="17689" script="pits_of_inferno/pumin_throne_room_teleport_back.lua" />
-	<movevent event="AddItem" movementid="17689" tileitem="1" script="pits_of_inferno/pumin_throne_room_teleport_back.lua" />
-	
-	<!-- Serpentine Tower -->
-	<movevent event="StepIn" frommovementid="17602" tomovementid="17603" script="serpentine_tower/final_tile.lua" />
-	<movevent event="RemoveItem" movementid="17605" tileitem="1" script="serpentine_tower/take_waterwalking_boots.lua" />
-	<movevent event="StepIn" movementid="17606" script="serpentine_tower/humble_one_first.lua" />
-	
-	<!-- Laguna Islands -->
-	<movevent event="StepIn" frommovementid="17563" tomovementid="17564" script="laguna_islands/erayo_hut_stairs.lua" />
-	
-	<!-- Raid Sacrifices -->
-	<movevent event="StepIn" movementid="17578" script="misc/raid_sacrifice.lua" />
-	<movevent event="AddItem" movementid="17578" tileitem="1" script="misc/raid_sacrifice.lua" />
-	<movevent event="StepIn" movementid="17579" script="misc/raid_sacrifice.lua" />
-	<movevent event="AddItem" movementid="17579" tileitem="1" script="misc/raid_sacrifice.lua" />
-	<movevent event="StepIn" movementid="17580" script="misc/raid_sacrifice.lua" />
-	<movevent event="AddItem" movementid="17580" tileitem="1" script="misc/raid_sacrifice.lua" />
-	<movevent event="StepIn" movementid="17581" script="misc/raid_sacrifice.lua" />
-	<movevent event="AddItem" movementid="17581" tileitem="1" script="misc/raid_sacrifice.lua" />
-	<movevent event="AddItem" movementid="17596" tileitem="1" script="misc/serpentine_tower_hole.lua" />
-	
-	<!-- Goroma -->
-	<movevent event="StepIn" frommovementid="17506" tomovementid="17508" script="goroma/energy_barrier.lua" />
-	<movevent event="StepIn" movementid="17510" script="goroma/to_ramoa.lua" />
-	<movevent event="AddItem" movementid="17510" tileitem="1" script="goroma/to_ramoa.lua" />
-	<movevent event="StepIn" movementid="17511" script="goroma/back_ramoa.lua" />
-	<movevent event="AddItem" movementid="17511" tileitem="1" script="goroma/back_ramoa.lua" />
-	<movevent event="StepIn" movementid="17512" script="goroma/to_talahu.lua" />
-	<movevent event="AddItem" movementid="17512" tileitem="1" script="goroma/to_talahu.lua" />
-	<movevent event="StepIn" movementid="17513" script="goroma/sacrifice_mushroom_talahu.lua" />
-	<movevent event="AddItem" movementid="17513" tileitem="1" script="goroma/sacrifice_mushroom_talahu.lua" />
-	<movevent event="StepIn" movementid="17514" script="goroma/back_sacrifice_mushroom_talahu.lua" />
-	<movevent event="AddItem" movementid="17514" tileitem="1" script="goroma/back_sacrifice_mushroom_talahu.lua" />
-	<movevent event="StepIn" movementid="17515" script="goroma/back_talahu.lua" />
-	<movevent event="AddItem" movementid="17515" tileitem="1" script="goroma/back_talahu.lua" />
-	<movevent event="StepIn" movementid="17516" script="goroma/to_malada.lua" />
-	<movevent event="AddItem" movementid="17516" tileitem="1" script="goroma/to_malada.lua" />
-	<movevent event="StepIn" movementid="17517" script="goroma/back_malada.lua" />
-	<movevent event="AddItem" movementid="17517" tileitem="1" script="goroma/back_malada.lua" />
-	<movevent event="StepIn" movementid="17518" script="goroma/back_kharos.lua" />
-	<movevent event="AddItem" movementid="17518" tileitem="1" script="goroma/back_kharos.lua" />
-	<movevent event="StepIn" frommovementid="17519" tomovementid="17522" script="goroma/energy_barrier_kharos.lua" />
-	<movevent event="StepIn" frommovementid="17523" tomovementid="17524" script="goroma/entrance_kharos.lua" />
-	<movevent event="StepIn" movementid="17525" script="goroma/second_ferumbras_floor.lua" />
-	<movevent event="AddItem" movementid="17525" tileitem="1" script="goroma/second_ferumbras_floor.lua" />
-	<movevent event="StepIn" movementid="17526" script="goroma/final_ferumbras_floor.lua" />
-	<movevent event="AddItem" movementid="17526" tileitem="1" script="goroma/final_ferumbras_floor.lua" />
-	<movevent event="StepIn" movementid="17527" script="goroma/back_ferumbras_floor.lua" />
-	<movevent event="AddItem" movementid="17527" tileitem="1" script="goroma/back_ferumbras_floor.lua" />
-	
-	<!-- Calassa -->
-	<movevent event="StepIn" frommovementid="14429" tomovementid="14430" script="calassa/calassa_enter.lua" />
-	<movevent event="AddItem" frommovementid="14429" tomovementid="14430" tileitem="1" script="calassa/calassa_enter.lua" />
-	<movevent event="StepIn" movementid="14431" script="calassa/calassa_back.lua" />
-	<movevent event="AddItem" movementid="14431" tileitem="1" script="calassa/calassa_back.lua" />
-	
-	<!-- Liberty Bay -->
-	<movevent event="StepIn" movementid="33217" script="liberty_bay/back_cult_piano.lua" />
-	<movevent event="AddItem" movementid="33217" tileitem="1" script="liberty_bay/back_cult_piano.lua" />
-	<movevent event="StepIn" movementid="17583" script="liberty_bay/citizenship.lua" />
-	<movevent event="AddItem" movementid="17583" tileitem="1" script="liberty_bay/citizenship.lua" />
-	
+
 	<!-- Floorchange -->
 	<movevent event="StepIn" itemid="293" script="misc/floorchange.lua" />
 	<movevent event="AddItem" itemid="293" tileitem="1" script="misc/floorchange.lua" />
@@ -623,24 +532,6 @@
 	<movevent event="AddItem" itemid="2196" tileitem="1" script="misc/floorchange.lua" />
 	<movevent event="StepIn" itemid="2198" script="misc/floorchange.lua" />
 	<movevent event="AddItem" itemid="2198" tileitem="1" script="misc/floorchange.lua" />
-	<movevent event="StepIn" itemid="5257" script="misc/floorchange.lua" />
-	<movevent event="AddItem" itemid="5257" tileitem="1" script="misc/floorchange.lua" />
-	<movevent event="StepIn" itemid="5258" script="misc/floorchange.lua" />
-	<movevent event="AddItem" itemid="5258" tileitem="1" script="misc/floorchange.lua" />
-	<movevent event="StepIn" itemid="5259" script="misc/floorchange.lua" />
-	<movevent event="AddItem" itemid="5259" tileitem="1" script="misc/floorchange.lua" />
-	<movevent event="StepIn" itemid="5544" script="misc/floorchange.lua" />
-	<movevent event="AddItem" itemid="5544" tileitem="1" script="misc/floorchange.lua" />
-	<movevent event="StepIn" itemid="5691" script="misc/floorchange.lua" />
-	<movevent event="AddItem" itemid="5691" tileitem="1" script="misc/floorchange.lua" />
-	<movevent event="StepIn" itemid="5731" script="misc/floorchange.lua" />
-	<movevent event="AddItem" itemid="5731" tileitem="1" script="misc/floorchange.lua" />
-	<movevent event="StepIn" itemid="5763" script="misc/floorchange.lua" />
-	<movevent event="AddItem" itemid="5763" tileitem="1" script="misc/floorchange.lua" />
-	<movevent event="StepIn" itemid="6172" script="misc/floorchange.lua" />
-	<movevent event="AddItem" itemid="6172" tileitem="1" script="misc/floorchange.lua" />
-	<movevent event="StepIn" itemid="6173" script="misc/floorchange.lua" />
-	<movevent event="AddItem" itemid="6173" tileitem="1" script="misc/floorchange.lua" />
 	
 	<!-- Damage -->
 	<movevent event="StepIn" itemid="2145" script="misc/damage.lua" />
@@ -674,8 +565,6 @@
 	<movevent event="AddItem" itemid="2526" tileitem="1" script="misc/dustbin.lua" />
 	<movevent event="RemoveItem" itemid="2927" script="misc/candelabrum.lua" />
 	<movevent event="RemoveItem" itemid="3482" script="misc/open_trap.lua" />
-	<movevent event="StepIn" frommovementid="51191" tomovementid="51198" script="misc/turtles.lua" />
-	<movevent event="AddItem" itemid="6278" tileitem="1" script="misc/lit_candlestick.lua" />
 	
 	<!--Doors -->
 	<movevent event="StepOut" itemid="1643" script="misc/doors.lua" />
@@ -694,28 +583,6 @@
 	<movevent event="StepOut" itemid="1681" script="misc/doors.lua" />
 	<movevent event="StepOut" itemid="1688" script="misc/doors.lua" />
 	<movevent event="StepOut" itemid="1690" script="misc/doors.lua" />
-	<movevent event="StepOut" itemid="5103" script="misc/doors.lua" />
-	<movevent event="StepOut" itemid="5105" script="misc/doors.lua" />
-	<movevent event="StepOut" itemid="5112" script="misc/doors.lua" />
-	<movevent event="StepOut" itemid="5114" script="misc/doors.lua" />
-	<movevent event="StepOut" itemid="5121" script="misc/doors.lua" />
-	<movevent event="StepOut" itemid="5123" script="misc/doors.lua" />
-	<movevent event="StepOut" itemid="5130" script="misc/doors.lua" />
-	<movevent event="StepOut" itemid="5132" script="misc/doors.lua" />
-	<movevent event="StepOut" itemid="5288" script="misc/doors.lua" />
-	<movevent event="StepOut" itemid="5290" script="misc/doors.lua" />
-	<movevent event="StepOut" itemid="5292" script="misc/doors.lua" />
-	<movevent event="StepOut" itemid="5294" script="misc/doors.lua" />
-	<movevent event="StepOut" itemid="5746" script="misc/doors.lua" />
-	<movevent event="StepOut" itemid="5748" script="misc/doors.lua" />
-	<movevent event="StepOut" itemid="6202" script="misc/doors.lua" />
-	<movevent event="StepOut" itemid="6204" script="misc/doors.lua" />
-	<movevent event="StepOut" itemid="6206" script="misc/doors.lua" />
-	<movevent event="StepOut" itemid="6208" script="misc/doors.lua" />
-	<movevent event="StepOut" itemid="6259" script="misc/doors.lua" />
-	<movevent event="StepOut" itemid="6261" script="misc/doors.lua" />
-	<movevent event="StepOut" itemid="6263" script="misc/doors.lua" />
-	<movevent event="StepOut" itemid="6265" script="misc/doors.lua" />
 	
 	<!-- Magic Fields -->
 	<movevent event="StepIn" itemid="1998"  function="onStepInField" />
@@ -769,15 +636,10 @@
 	<movevent event="StepIn" itemid="2151"  function="onStepInField" />
 	<movevent event="AddItem" itemid="2151" function="onAddField" />
 
-	<!-- Helmets -->
-	<movevent event="Equip" itemid="5460" slot="head" function="onEquipItem" /> 
-	<movevent event="DeEquip" itemid="5460" slot="head" function="onDeEquipItem" />
-	
 	<!-- Boots -->
 	<movevent event="Equip" itemid="3079" slot="feet" function="onEquipItem" />
 	<movevent event="DeEquip" itemid="3079" slot="feet" function="onDeEquipItem" />
 	<movevent event="Equip" itemid="6529" slot="feet" function="onEquipItem" />
-	<movevent event="DeEquip" itemid="6529" slot="feet" function="onDeEquipItem" />
 	<movevent event="Equip" itemid="3549" slot="feet" function="onEquipItem" />
 	<movevent event="DeEquip" itemid="3549" slot="feet" function="onDeEquipItem" />
 	
@@ -832,8 +694,4 @@
 	<movevent event="Equip" itemid="3098" slot="ring" function="onEquipItem" />
 	<movevent event="Equip" itemid="3100" slot="ring" function="onEquipItem" />
 	<movevent event="DeEquip" itemid="3100" slot="ring" function="onDeEquipItem" />
-	<movevent event="Equip" itemid="6299" slot="ring" function="onEquipItem" />
-	<movevent event="DeEquip" itemid="6299" slot="ring" function="onDeEquipItem" />
-	<movevent event="Equip" itemid="6300" slot="ring" function="onEquipItem" />
-	<movevent event="DeEquip" itemid="6300" slot="ring" function="onDeEquipItem" />
 </movements>

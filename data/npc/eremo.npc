@@ -2,7 +2,7 @@
 # eremo.npc: Datenbank für den Weisen Eremo
 
 Name = "Eremo"
-Outfit = (130,0-109-128-95-0)
+Outfit = (130,0-109-128-95)
 Home = [33322,31883,7]
 Radius = 3
 
@@ -72,6 +72,8 @@ Topic=1,"yes"                             -> "Here you are. Look in your spellbo
 Topic=1                                   -> "Fine. Do as you please."
 
 
+Topic=2,"yes",PZBlock,! -> "Your soul is imbalanced by death and murder. Try again after you regained your balance!"
+
 Topic=2,"yes" -> "Here you go!", Idle, EffectOpp(11), Teleport(33288,31956,6), EffectOpp(11)
 Topic=2       -> "Maybe later."
 
@@ -120,7 +122,6 @@ Topic=5,"yes",CountMoney<Price,!            -> "Oh. You do not have enough money
 Topic=5,"yes",!                             -> "So receive the wisdom of solitude, pilgrim", DeleteMoney, EffectOpp(13), SetQuestValue(101,1), Bless(4)
 Topic=5,!                             -> "Ok. As you wish."
 
-"letter",QuestValue(17522)=1,Count(6113)>=1 -> "A letter from that youngster Morgan? I believed him dead since years. These news are good news indeed. Thank you very much, my friend.", DeleteAmount(6113, 1), SetQuestValue(17522,2)
-"letter" -> "I am not waiting for any letters from strangers."
+
 }
 

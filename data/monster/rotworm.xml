@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF - 8"?>
-<monster name="Rotworm" nameDescription="a rotworm" race="blood" experience="40" speed="18" manacost="305">
+<monster name="rotworm" nameDescription="a rotworm" race="blood" experience="40" speed="18" manacost="305">
 	<health now="65" max="65" />
-	<look type="26" head="0" body="0" legs="0" feet="0" corpse="5967" />
+	<look type="26" head="0" body="0" legs="0" feet="0" corpse="4005" />
 	<targetchange interval="1000" chance="0" />
 	<targetstrategy nearest="100" weakest="0" mostdamage="0" random="0" />
 	<flags>
@@ -35,7 +35,4 @@
 		<item id="3264" countmax="1" chance="30" /> <!-- a sword -->
 		<item id="3492" countmax="5" chance="500" /> <!-- a worm -->
 	</loot>
-	<script>
-		<event name="KillingInTheNameOf" />
-	</script>
 </monster>

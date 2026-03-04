@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF - 8"?>
-<monster name="Dworc Venomsniper" nameDescription="a dworc venomsniper" race="blood" experience="30" speed="36" manacost="300">
+<monster name="dworc venomsniper" nameDescription="a dworc venomsniper" race="blood" experience="30" speed="36" manacost="300">
 	<health now="80" max="80" />
-	<look type="216" head="0" body="0" legs="0" feet="0" corpse="6059" />
+	<look type="216" head="0" body="0" legs="0" feet="0" corpse="4375" />
 	<targetchange interval="1000" chance="0" />
 	<targetstrategy nearest="100" weakest="0" mostdamage="0" random="0" />
 	<flags>
@@ -32,7 +32,7 @@
 		<voice sentence="Prek tars, dekklep zurk." />
 	</voices>
 	<loot>
-		<item id="3560" countmax="1" chance="2" /> <!-- a bast skirt -->
+		<item id="3560" countmax="1" chance="1" /> <!-- a bast skirt -->
 		<item id="3056" countmax="1" chance="1" /> <!-- a bronze amulet -->
 		<item id="3031" countmax="10" chance="800" /> <!-- a gold coin -->
 		<item id="3361" countmax="1" chance="100" /> <!-- a leather armor -->

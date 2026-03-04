@@ -1,6 +1,6 @@
 /**
  * Tibia GIMUD Server - a free and open-source MMORPG server emulator
- * Copyright (C) 2019 Sabrehaven and Mark Samman <mark.samman@gmail.com>
+ * Copyright (C) 2017  Alejandro Mujica <alejandrodemujica@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -73,7 +73,6 @@ struct CombatParams {
 
 	ConditionType_t dispelType = CONDITION_NONE;
 	CombatType_t combatType = COMBAT_NONE;
-	CombatOrigin origin = ORIGIN_SPELL;
 
 	uint8_t impactEffect = CONST_ME_NONE;
 	uint8_t distanceEffect = CONST_ANI_NONE;
@@ -117,7 +116,7 @@ struct DunkenImpact : Impact
 	void handleCreature(Creature* target) final;
 };
 
-typedef bool(*COMBATFUNC)(Creature*, Creature*, const CombatParams&, CombatDamage*);
+typedef bool (*COMBATFUNC)(Creature*, Creature*, const CombatParams&, CombatDamage*);
 
 class MatrixArea
 {
@@ -286,12 +285,12 @@ class Combat
 		static int32_t getTotalDamage(int32_t attackSkill, int32_t attackValue, fightMode_t fightMode);
 
 		static bool attack(Creature* attacker, Creature* target);
-		static bool closeAttack(Creature* attacker, Creature* target, fightMode_t fightMode);
+		static bool closeAttack(Creature* attacker, Creature* target, fightMode_t fightMode, bool fist = false);
 		static bool rangeAttack(Creature* attacker, Creature* target, fightMode_t fightMode);
 
 		static void circleShapeSpell(Creature* attacker, const Position& toPos, int32_t range, int32_t animation, int32_t radius, DamageImpact* impact, int32_t effect);
 
-		static void getAttackValue(Creature* creature, uint32_t& attackValue, uint32_t& skillValue, uint8_t& skill);
+		static void getAttackValue(Creature* creature, uint32_t& attackValue, uint32_t& skillValue, uint8_t& skill, bool fist = false);
 
 		static bool doCombatHealth(Creature* caster, Creature* target, CombatDamage& damage, const CombatParams& params);
 		static void doCombatHealth(Creature* caster, const Position& position, const AreaCombat* area, CombatDamage& damage, const CombatParams& params);
@@ -338,10 +337,6 @@ class Combat
 		void setPlayerCombatValues(formulaType_t formulaType, double mina, double minb, double maxa, double maxb);
 		void postCombatEffects(Creature* caster, const Position& pos) const {
 			postCombatEffects(caster, pos, params);
-		}
-
-		void setOrigin(CombatOrigin origin) {
-			params.origin = origin;
 		}
 
 	protected:

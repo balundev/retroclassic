@@ -2,7 +2,7 @@
 # dixi.npc: Datenbank für Obi's Angestellte Dixi
 
 Name = "Dixi"
-Outfit = (136,96-99-76-115-0)
+Outfit = (136,96-99-76-115)
 Home = [32105,32207,6]
 Radius = 1
 

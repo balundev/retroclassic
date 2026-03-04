@@ -9,7 +9,7 @@ function Game.removeItemsOnMap(position)
 	local i = 0
 	while i < tileCount do
 		local tileItem = tile:getThing(i)
-		if tileItem and tileItem:getType():isMovable() then
+		if tileItem and not tileItem:isCreature() and ItemType(tileItem:getId()):isMovable() then
 			tileItem:remove()
 		else
 			i = i + 1
@@ -24,8 +24,10 @@ function Game.transformItemOnMap(position, itemId, toItemId, subtype)
 
 	local tile = Tile(position)
 	local item = tile:getItemById(itemId)
-	item:transform(toItemId, subtype)
-	item:decay()
+	if item ~= nil then
+		item:transform(toItemId, subtype)
+		item:decay()
+	end
 	return item
 end
 
@@ -53,17 +55,6 @@ function Game.isPlayerThere(position)
 		end
 	end
 	return false
-end
-
-function Game.isMonsterThere(position, monsterName)
-	local tile = Tile(position)
-	local creatures = tile:getCreatures()
-	for _, creature in ipairs(creatures) do
-		if creature:isMonster() and creature:getName():lower() == monsterName:lower() then
-			return creature
-		end
-	end
-	return nil
 end
 
 function Game.broadcastMessage(message, messageType)
@@ -128,32 +119,9 @@ if not globalStorageTable then
 end
 
 function Game.getStorageValue(key)
-	-- Return from local table if possible
-    if globalStorageTable[key] ~= nil then
-        return globalStorageTable[key]
-    end
-
-    -- Else look for it on the DB
-    local dbData = db.storeQuery("SELECT `value` FROM `global_storage` WHERE `key` = " .. key .. " LIMIT 1;")
-    if dbData ~= false then
-        local value = result.getNumber(dbData, "value")
-        if value ~= nil then
-            -- Save it to globalStorageTable
-            globalStorageTable[key] = value
-            return value
-        end
-    end
-
-    return nil
+	return globalStorageTable[key]
 end
 
 function Game.setStorageValue(key, value)
 	globalStorageTable[key] = value
-
-    local dbData = db.storeQuery("SELECT `value` FROM `global_storage` WHERE `key` = " .. key .. " LIMIT 1;")
-    if dbData ~= false then
-        db.query("UPDATE `global_storage` SET `value`='".. value .."' WHERE `key` = " .. key .. " LIMIT 1;")
-    else
-        db.query("INSERT INTO `global_storage` (`key`, `value`) VALUES (" .. key .. ", " .. value .. ");")
-    end
 end

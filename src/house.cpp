@@ -1,6 +1,6 @@
 /**
  * Tibia GIMUD Server - a free and open-source MMORPG server emulator
- * Copyright (C) 2019 Sabrehaven and Mark Samman <mark.samman@gmail.com>
+ * Copyright (C) 2017  Alejandro Mujica <alejandrodemujica@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -82,7 +82,7 @@ void House::setOwner(uint32_t guid, bool updateDatabase/* = true*/, Player* play
 		setAccessList(SUBOWNER_LIST, "");
 		setAccessList(GUEST_LIST, "");
 
-		for (Door* door : doorSet) {
+		for (Door* door : doorList) {
 			door->setAccessList("");
 		}
 
@@ -109,9 +109,14 @@ void House::updateDoorDescription() const
 		ss << "It belongs to house '" << houseName << "'. " << ownerName << " owns this house.";
 	} else {
 		ss << "It belongs to house '" << houseName << "'. Nobody owns this house.";
+
+		const int32_t housePrice = getRent();
+		if (housePrice != -1) {
+			ss << " It costs " << housePrice * 5 << " gold coins.";
+		}
 	}
 
-	for (const auto& it : doorSet) {
+	for (const auto& it : doorList) {
 		it->setSpecialDescription(ss.str());
 	}
 }
@@ -272,17 +277,17 @@ bool House::isInvited(const Player* player)
 void House::addDoor(Door* door)
 {
 	door->incrementReferenceCounter();
-	doorSet.insert(door);
+	doorList.push_back(door);
 	door->setHouse(this);
 	updateDoorDescription();
 }
 
 void House::removeDoor(Door* door)
 {
-	auto it = doorSet.find(door);
-	if (it != doorSet.end()) {
+	auto it = std::find(doorList.begin(), doorList.end(), door);
+	if (it != doorList.end()) {
 		door->decrementReferenceCounter();
-		doorSet.erase(it);
+		doorList.erase(it);
 	}
 }
 
@@ -294,7 +299,7 @@ void House::addBed(BedItem* bed)
 
 Door* House::getDoorByNumber(uint32_t doorId) const
 {
-	for (Door* door : doorSet) {
+	for (Door* door : doorList) {
 		if (door->getDoorId() == doorId) {
 			return door;
 		}
@@ -304,7 +309,7 @@ Door* House::getDoorByNumber(uint32_t doorId) const
 
 Door* House::getDoorByPosition(const Position& pos)
 {
-	for (Door* door : doorSet) {
+	for (Door* door : doorList) {
 		if (door->getPosition() == pos) {
 			return door;
 		}
@@ -392,7 +397,8 @@ void AccessList::parseList(const std::string& list)
 {
 	playerList.clear();
 	guildList.clear();
-	allowEveryone = false;
+	expressionList.clear();
+	regExList.clear();
 	this->list = list;
 	if (list.empty()) {
 		return;
@@ -401,12 +407,7 @@ void AccessList::parseList(const std::string& list)
 	std::istringstream listStream(list);
 	std::string line;
 
-	int lineNo = 1;
 	while (getline(listStream, line)) {
-		if (++lineNo > 100) {
-			break;
-		}
-
 		trimString(line);
 		trim_left(line, '\t');
 		trim_right(line, '\t');
@@ -422,7 +423,7 @@ void AccessList::parseList(const std::string& list)
 		if (at_pos != std::string::npos) {
 			addGuild(line.substr(at_pos + 1));
 		} else if (line.find("!") != std::string::npos || line.find("*") != std::string::npos || line.find("?") != std::string::npos) {
-			continue; // regexp no longer supported
+			addExpression(line);
 		} else {
 			addPlayer(line);
 		}
@@ -450,10 +451,50 @@ void AccessList::addGuild(const std::string& name)
 	}
 }
 
+void AccessList::addExpression(const std::string& expression)
+{
+	if (std::find(expressionList.begin(), expressionList.end(), expression) != expressionList.end()) {
+		return;
+	}
+
+	std::string outExp;
+	outExp.reserve(expression.length());
+
+	std::string metachars = ".[{}()\\+|^$";
+	for (const char c : expression) {
+		if (metachars.find(c) != std::string::npos) {
+			outExp.push_back('\\');
+		}
+		outExp.push_back(c);
+	}
+
+	replaceString(outExp, "*", ".*");
+	replaceString(outExp, "?", ".?");
+
+	try {
+		if (!outExp.empty()) {
+			expressionList.push_back(outExp);
+
+			if (outExp.front() == '!') {
+				if (outExp.length() > 1) {
+					regExList.emplace_front(std::regex(outExp.substr(1)), false);
+				}
+			} else {
+				regExList.emplace_back(std::regex(outExp), true);
+			}
+		}
+	} catch (...) {}
+}
+
 bool AccessList::isInList(const Player* player)
 {
-	if (allowEveryone) {
-		return true;
+	std::string name = asLowerCaseString(player->getName());
+	std::cmatch what;
+
+	for (const auto& it : regExList) {
+		if (std::regex_match(name.c_str(), what, it.first)) {
+			return it.second;
+		}
 	}
 
 	auto playerIt = playerList.find(player->getGUID());
@@ -626,9 +667,7 @@ void Houses::payHouses(RentPeriod_t rentPeriod) const
 			continue;
 		}
 
-		if (player.getBankBalance() >= rent) {
-			player.setBankBalance(player.getBankBalance() - rent);
-
+		if (g_game.removeMoney(player.getDepotLocker(house->getTownId(), true), house->getRent(), FLAG_NOLIMIT)) {
 			time_t paidUntil = currentTime;
 			switch (rentPeriod) {
 				case RENTPERIOD_DAILY:

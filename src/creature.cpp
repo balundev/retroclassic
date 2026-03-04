@@ -1,6 +1,6 @@
 /**
  * Tibia GIMUD Server - a free and open-source MMORPG server emulator
- * Copyright (C) 2019 Sabrehaven and Mark Samman <mark.samman@gmail.com>
+ * Copyright (C) 2017  Alejandro Mujica <alejandrodemujica@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -275,13 +275,6 @@ void Creature::addEventWalk(bool firstStep)
 	// Take first step right away, but still queue the next
 	if (ticks == 1) {
 		g_game.checkCreatureWalk(getID());
-	}
-
-	if (const Monster* monster = getMonster()) {
-		Creature* creature = monster->getFollowCreature();
-		if (!creature) {
-			ticks = ticks * 1.25;
-		}
 	}
 
 	eventWalk = g_scheduler.addEvent(createSchedulerTask(ticks, std::bind(&Game::checkCreatureWalk, &g_game, getID())));
@@ -607,12 +600,7 @@ void Creature::onCreatureMove(Creature* creature, const Tile* newTile, const Pos
 		} else {
 			if (hasExtraSwing()) {
 				//our target is moving lets see if we can get in hit
-				if (getMonster()) {
-					g_dispatcher.addTask(createTask(std::bind(&Game::checkMonsterExtraAttack, &g_game, getID())));
-				}
-				else {
-					g_dispatcher.addTask(createTask(std::bind(&Game::checkCreatureAttack, &g_game, getID())));
-				}
+				g_dispatcher.addTask(createTask(std::bind(&Game::checkCreatureAttack, &g_game, getID())));
 			}
 
 			if (newTile->getZone() != oldTile->getZone()) {
@@ -631,8 +619,7 @@ void Creature::onDeath()
 	if (lastHitCreature) {
 		lastHitUnjustified = lastHitCreature->onKilledCreature(this);
 		lastHitCreatureMaster = lastHitCreature->getMaster();
-	}
-	else {
+	} else {
 		lastHitCreatureMaster = nullptr;
 	}
 
@@ -652,9 +639,8 @@ void Creature::onDeath()
 
 			if (attacker != this) {
 				uint64_t gainExp = getGainedExperience(attacker);
-				if (Player* attackerPlayer = attacker->getPlayer()) {
-					attackerPlayer->removeAttacked(getPlayer());
-					Party* party = attackerPlayer->getParty();
+				if (Player* player = attacker->getPlayer()) {
+					Party* party = player->getParty();
 					if (party && party->getLeader() && party->isSharedExperienceActive() && party->isSharedExperienceEnabled()) {
 						attacker = party->getLeader();
 					}
@@ -663,8 +649,7 @@ void Creature::onDeath()
 				auto tmpIt = experienceMap.find(attacker);
 				if (tmpIt == experienceMap.end()) {
 					experienceMap[attacker] = gainExp;
-				}
-				else {
+				} else {
 					tmpIt->second += gainExp;
 				}
 			}
@@ -767,6 +752,15 @@ void Creature::changeHealth(int32_t healthChange, bool sendHealthChange/* = true
 	}
 }
 
+void Creature::changeMana(int32_t manaChange)
+{
+	if (manaChange > 0) {
+		mana += std::min<int32_t>(manaChange, getMaxMana() - mana);
+	} else {
+		mana = std::max<int32_t>(0, mana + manaChange);
+	}
+}
+
 void Creature::gainHealth(Creature* healer, int32_t healthGain)
 {
 	changeHealth(healthGain);
@@ -781,6 +775,16 @@ void Creature::drainHealth(Creature* attacker, int32_t damage)
 
 	if (attacker) {
 		attacker->onAttackedCreatureDrainHealth(this, damage);
+	}
+}
+
+void Creature::drainMana(Creature* attacker, int32_t manaLoss)
+{
+	onAttacked();
+	changeMana(-manaLoss);
+
+	if (attacker) {
+		addDamagePoints(attacker, manaLoss);
 	}
 }
 
@@ -1038,9 +1042,6 @@ void Creature::onTickCondition(ConditionType_t type, bool& bRemove)
 		case CONDITION_POISON:
 			bRemove = (field->getCombatType() != COMBAT_EARTHDAMAGE);
 			break;
-		case CONDITION_DROWN:
-			bRemove = (field->getCombatType() != COMBAT_DROWNDAMAGE);
-			break;
 		default:
 			break;
 	}
@@ -1097,7 +1098,7 @@ void Creature::onGainExperience(uint64_t gainExp, Creature* target)
 void Creature::addSummon(Creature* creature)
 {
 	creature->setDropLoot(false);
-	creature->setSkillLoss(false);
+	creature->setLossSkill(false);
 	creature->setMaster(this);
 	creature->incrementReferenceCounter();
 	summons.push_back(creature);
@@ -1108,7 +1109,7 @@ void Creature::removeSummon(Creature* creature)
 	auto cit = std::find(summons.begin(), summons.end(), creature);
 	if (cit != summons.end()) {
 		creature->setDropLoot(true);
-		creature->setSkillLoss(true);
+		creature->setLossSkill(true);
 		creature->setMaster(nullptr);
 		creature->decrementReferenceCounter();
 		summons.erase(cit);
@@ -1376,9 +1377,9 @@ int64_t Creature::getEventStepTicks(bool onlyDelay) const
 	return ret;
 }
 
-LightInfo Creature::getCreatureLight() const
+void Creature::getCreatureLight(LightInfo& light) const
 {
-	return internalLight;
+	light = internalLight;
 }
 
 void Creature::setNormalCreatureLight()

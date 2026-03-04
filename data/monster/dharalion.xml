@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF - 8"?>
 <monster name="Dharalion" nameDescription="Dharalion" race="blood" experience="380" speed="72" manacost="0">
 	<health now="390" max="390" />
-	<look type="203" head="0" body="0" legs="0" feet="0" corpse="6011" />
+	<look type="203" head="0" body="0" legs="0" feet="0" corpse="4160" />
 	<targetchange interval="1000" chance="7" />
 	<targetstrategy nearest="10" weakest="10" mostdamage="20" random="60" />
 	<flags>
@@ -65,7 +65,5 @@
 		<item id="3738" countmax="1" chance="70" /> <!-- a sling herb -->
 		<item id="3289" countmax="1" chance="110" /> <!-- a staff -->
 		<item id="3037" countmax="1" chance="4" /> <!-- a yellow gem -->
-		<item id="5805" countmax="1" chance="65" /> <!-- a golden goblet -->
-		<item id="5922" countmax="1" chance="1000" /> <!-- a holy orchid -->
 	</loot>
 </monster>

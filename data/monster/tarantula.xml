@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF - 8"?>
-<monster name="Tarantula" nameDescription="a tarantula" race="venom" experience="120" speed="67" manacost="485">
+<monster name="tarantula" nameDescription="a tarantula" race="venom" experience="120" speed="67" manacost="485">
 	<health now="225" max="225" />
-	<look type="219" head="0" body="0" legs="0" feet="0" corpse="6060" />
+	<look type="219" head="0" body="0" legs="0" feet="0" corpse="4385" />
 	<targetchange interval="1000" chance="5" />
 	<targetstrategy nearest="70" weakest="0" mostdamage="30" random="0" />
 	<flags>
@@ -38,7 +38,4 @@
 		<item id="3351" countmax="1" chance="10" /> <!-- a steel helmet -->
 		<item id="3053" countmax="1" chance="1" /> <!-- a time ring -->
 	</loot>
-	<script>
-		<event name="KillingInTheNameOf" />
-	</script>
 </monster>

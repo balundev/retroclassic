@@ -1,6 +1,6 @@
 /**
  * Tibia GIMUD Server - a free and open-source MMORPG server emulator
- * Copyright (C) 2019 Sabrehaven and Mark Samman <mark.samman@gmail.com>
+ * Copyright (C) 2017  Alejandro Mujica <alejandrodemujica@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -110,7 +110,7 @@ void ProtocolStatus::sendStatusString()
 	serverinfo.append_attribute("url") = g_config.getString(ConfigManager::URL).c_str();
 	serverinfo.append_attribute("server") = STATUS_SERVER_NAME;
 	serverinfo.append_attribute("version") = STATUS_SERVER_VERSION;
-	serverinfo.append_attribute("client") = getClientVersionString(g_game.getClientVersion()).c_str();
+	serverinfo.append_attribute("client") = CLIENT_VERSION_STR;
 
 	pugi::xml_node owner = tsqp.append_child("owner");
 	owner.append_attribute("name") = g_config.getString(ConfigManager::OWNER_NAME).c_str();
@@ -122,22 +122,16 @@ void ProtocolStatus::sendStatusString()
 	std::map<uint32_t, uint32_t> listIP;
 
 	for (const auto& it : g_game.getPlayers()) {
-		if (it.second->isFakePlayer) {
-			real++;
-		}
-		else {
-			if (it.second->getIP() != 0) {
-				auto ip = listIP.find(it.second->getIP());
-				if (ip != listIP.end()) {
-					listIP[it.second->getIP()]++;
-					if (listIP[it.second->getIP()] < 5) {
-						real++;
-					}
-				}
-				else {
-					listIP[it.second->getIP()] = 1;
+		if (it.second->getIP() != 0) {
+			auto ip = listIP.find(it.second->getIP());
+			if (ip != listIP.end()) {
+				listIP[it.second->getIP()]++;
+				if (listIP[it.second->getIP()] < 5) {
 					real++;
 				}
+			} else {
+				listIP[it.second->getIP()] = 1;
+				real++;
 			}
 		}
 	}
@@ -246,7 +240,7 @@ void ProtocolStatus::sendInfo(uint16_t requestedInfo, const std::string& charact
 		output->addByte(0x23); // server software info
 		output->addString(STATUS_SERVER_NAME);
 		output->addString(STATUS_SERVER_VERSION);
-		output->addString(getClientVersionString(g_game.getClientVersion()));
+		output->addString(CLIENT_VERSION_STR);
 	}
 	send(output);
 	disconnect();

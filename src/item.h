@@ -1,6 +1,6 @@
 /**
  * Tibia GIMUD Server - a free and open-source MMORPG server emulator
- * Copyright (C) 2019 Sabrehaven and Mark Samman <mark.samman@gmail.com>
+ * Copyright (C) 2017  Alejandro Mujica <alejandrodemujica@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -32,7 +32,6 @@ class Container;
 class Depot;
 class Teleport;
 class Mailbox;
-class DepotLocker;
 class Door;
 class MagicField;
 class BedItem;
@@ -377,12 +376,6 @@ class Item : virtual public Thing
 		virtual const Mailbox* getMailbox() const {
 			return nullptr;
 		}
-		virtual DepotLocker* getDepotLocker() {
-			return nullptr;
-		}
-		virtual const DepotLocker* getDepotLocker() const {
-			return nullptr;
-		}
 		virtual Door* getDoor() {
 			return nullptr;
 		}
@@ -718,9 +711,7 @@ class Item : virtual public Thing
 		bool canDistUse() const {
 			return items[id].distUse;
 		}
-		bool isRune() const {
-			return items[id].isRune();
-		}
+
 		const std::string& getName() const {
 			if (hasAttribute(ITEM_ATTRIBUTE_NAME)) {
 				return getStrAttr(ITEM_ATTRIBUTE_NAME);

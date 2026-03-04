@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF - 8"?>
 <monster name="The Evil Eye" nameDescription="The Evil Eye" race="blood" experience="500" speed="55" manacost="0">
 	<health now="1100" max="1100" />
-	<look type="210" head="0" body="0" legs="0" feet="0" corpse="6037" />
+	<look type="210" head="0" body="0" legs="0" feet="0" corpse="4233" />
 	<targetchange interval="1000" chance="30" />
 	<targetstrategy nearest="100" weakest="0" mostdamage="0" random="0" />
 	<flags>
@@ -79,6 +79,5 @@
 		<item id="3409" countmax="1" chance="40" /> <!-- a steel shield -->
 		<item id="3265" countmax="1" chance="40" /> <!-- a two handed sword -->
 		<item id="3412" countmax="1" chance="15" /> <!-- a wooden shield -->
-		<item id="5898" countmax="1" chance="1000" /> <!-- beholder eye -->
 	</loot>
 </monster>

@@ -1,6 +1,6 @@
 /**
  * Tibia GIMUD Server - a free and open-source MMORPG server emulator
- * Copyright (C) 2019 Sabrehaven and Mark Samman <mark.samman@gmail.com>
+ * Copyright (C) 2017  Alejandro Mujica <alejandrodemujica@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -95,7 +95,7 @@ void NetworkMessage::addPosition(const Position& pos)
 	addByte(pos.z);
 }
 
-void NetworkMessage::addItem(uint16_t id, uint8_t count, bool textWindow /* = false*/)
+void NetworkMessage::addItem(uint16_t id, uint8_t count)
 {
 	const ItemType& it = Item::items[id];
 
@@ -105,17 +105,14 @@ void NetworkMessage::addItem(uint16_t id, uint8_t count, bool textWindow /* = fa
 		add<uint16_t>(it.id);
 	}
 
-	if (!textWindow) {
-		if (it.stackable || it.isRune()) {
-			addByte(count);
-		}
-		else if (it.isSplash() || it.isFluidContainer()) {
-			addByte(getLiquidColor(count));
-		}
+	if (it.stackable) {
+		addByte(count);
+	} else if (it.isSplash() || it.isFluidContainer()) {
+		addByte(getLiquidColor(count));
 	}
 }
 
-void NetworkMessage::addItem(const Item* item, bool textWindow /* = false*/)
+void NetworkMessage::addItem(const Item* item)
 {
 	const ItemType& it = Item::items[item->getID()];
 
@@ -125,16 +122,10 @@ void NetworkMessage::addItem(const Item* item, bool textWindow /* = false*/)
 		add<uint16_t>(it.id);
 	}
 
-	if (!textWindow) {
-		if (it.stackable) {
-			addByte(std::min<uint16_t>(0xFF, item->getItemCount()));
-		}
-		else if (it.isRune()) {
-			addByte(std::min<uint16_t>(0xFF, item->getCharges()));
-		}
-		else if (it.isSplash() || it.isFluidContainer()) {
-			addByte(getLiquidColor(item->getFluidType()));
-		}
+	if (it.stackable) {
+		addByte(std::min<uint16_t>(0xFF, item->getItemCount()));
+	} else if (it.isSplash() || it.isFluidContainer()) {
+		addByte(getLiquidColor(item->getFluidType()));
 	}
 }
 

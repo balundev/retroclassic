@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF - 8"?>
 <monster name="orc" nameDescription="an orc" race="blood" experience="25" speed="35" manacost="300">
 	<health now="70" max="70" />
-	<look type="5" head="0" body="0" legs="0" feet="0" corpse="5966" />
+	<look type="5" head="0" body="0" legs="0" feet="0" corpse="4001" />
 	<targetchange interval="1000" chance="0" />
 	<targetstrategy nearest="100" weakest="0" mostdamage="0" random="0" />
 	<flags>
@@ -35,7 +35,4 @@
 		<item id="3426" countmax="1" chance="100" /> <!-- a studded shield -->
 		<item id="3244" countmax="1" chance="1000" /> <!-- an old backpack -->
 	</loot>
-	<script>
-		<event name="KillingInTheNameOf" />
-	</script>
 </monster>

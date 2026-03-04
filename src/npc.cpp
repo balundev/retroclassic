@@ -1,6 +1,6 @@
 /**
  * Tibia GIMUD Server - a free and open-source MMORPG server emulator
- * Copyright (C) 2019 Sabrehaven and Mark Samman <mark.samman@gmail.com>
+ * Copyright (C) 2017  Alejandro Mujica <alejandrodemujica@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -51,9 +51,7 @@ void Npcs::loadNpcs()
 			return;
 		}
 
-		if (npc->getClientVersion() <= g_game.getClientVersion()) {
-			g_game.placeCreature(npc, npc->getMasterPos(), false, true);
-		}
+		g_game.placeCreature(npc, npc->getMasterPos(), false, true);
 	}
 }
 
@@ -145,7 +143,6 @@ bool Npc::load()
 				currentOutfit.lookBody = c[1];
 				currentOutfit.lookLegs = c[2];
 				currentOutfit.lookFeet = c[3];
-				currentOutfit.lookAddons = c[4];
 			} else {
 				currentOutfit.lookTypeEx = script.readNumber();
 			}
@@ -154,8 +151,6 @@ bool Npc::load()
 			script.readCoordinate(masterPos.x, masterPos.y, masterPos.z);
 		} else if (ident == "radius") {
 			masterRadius = script.readNumber();
-		} else if (ident == "clientversion") {
-			clientVersion = script.readNumber();
 		} else if (ident == "behaviour") {
 			if (behaviourDatabase) {
 				script.error("behaviour database already defined");

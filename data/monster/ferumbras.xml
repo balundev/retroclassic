@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF - 8"?>
-<monster name="Ferumbras" nameDescription="Ferumbras" race="venom" experience="12000" speed="155" manacost="0">
+<monster name="Ferumbras" nameDescription="Ferumbras" race="venom" experience="9999" speed="155" manacost="0">
 	<health now="28000" max="28000" />
-	<look type="229" corpse="6080" />
+	<look type="130" head="57" body="113" legs="95" feet="113" corpse="4240" />
 	<targetchange interval="1000" chance="20" />
 	<targetstrategy nearest="60" weakest="5" mostdamage="30" random="5" />
 	<flags>
@@ -132,7 +132,5 @@
 		<item id="3002" countmax="1" chance="1" /> <!-- a voodoo doll -->
 		<item id="3069" countmax="1" chance="35" /> <!-- a volcanic rod -->
 		<item id="3026" countmax="15" chance="125" /> <!-- a white pearl -->
-		<item id="5944" countmax="8" chance="125" /> <!-- a soul orb -->
-		<item id="5903" countmax="1" chance="1000" /> <!-- Ferumbras' hat -->
 	</loot>
 </monster>

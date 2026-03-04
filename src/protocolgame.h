@@ -1,6 +1,6 @@
 /**
  * Tibia GIMUD Server - a free and open-source MMORPG server emulator
- * Copyright (C) 2019 Sabrehaven and Mark Samman <mark.samman@gmail.com>
+ * Copyright (C) 2017  Alejandro Mujica <alejandrodemujica@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -50,8 +50,8 @@ class ProtocolGame final : public Protocol
 {
 	public:
 		// static protocol information
-		enum { server_sends_first = true };
-		enum { protocol_identifier = 0 }; // Not required as we send first
+		enum {server_sends_first = false};
+		enum {protocol_identifier = 0x0A}; // Not required as we send first
 		
 		static const char* protocol_name() {
 			return "gameworld protocol";
@@ -59,7 +59,7 @@ class ProtocolGame final : public Protocol
 
 		explicit ProtocolGame(Connection_ptr connection) : Protocol(connection) {}
 
-		void login(const std::string& name, uint32_t accnumber, OperatingSystem_t operatingSystem, bool isFake);
+		void login(const std::string& name, uint32_t accnumber, OperatingSystem_t operatingSystem);
 		void logout(bool displayEffect, bool forced);
 
 		uint16_t getVersion() const {
@@ -71,6 +71,7 @@ class ProtocolGame final : public Protocol
 			return std::static_pointer_cast<ProtocolGame>(shared_from_this());
 		}
 		void connect(uint32_t playerId, OperatingSystem_t operatingSystem);
+		void sendUpdateRequest();
 		void disconnectClient(const std::string& message) const;
 		void writeToOutputBuffer(const NetworkMessage& msg);
 
@@ -85,7 +86,6 @@ class ProtocolGame final : public Protocol
 		// we have all the parse methods
 		void parsePacket(NetworkMessage& msg) final;
 		void onRecvFirstMessage(NetworkMessage& msg) final;
-		void onConnect() override;
 
 		//Parse methods
 		void parseAutoWalk(NetworkMessage& msg);
@@ -113,13 +113,10 @@ class ProtocolGame final : public Protocol
 		void parseTextWindow(NetworkMessage& msg);
 		void parseHouseWindow(NetworkMessage& msg);
 
-		void parseQuestLine(NetworkMessage& msg);
-
 		void parseInviteToParty(NetworkMessage& msg);
 		void parseJoinParty(NetworkMessage& msg);
 		void parseRevokePartyInvite(NetworkMessage& msg);
 		void parsePassPartyLeadership(NetworkMessage& msg);
-		void parseEnableSharedPartyExperience(NetworkMessage& msg);
 
 		void parseSeekInContainer(NetworkMessage& msg);
 
@@ -141,7 +138,6 @@ class ProtocolGame final : public Protocol
 		void parseCloseChannel(NetworkMessage& msg);
 
 		//Send functions
-		void sendChannelMessage(const std::string& author, const std::string& text, SpeakClasses type, uint16_t channel);
 		void sendClosePrivate(uint16_t channelId);
 		void sendCreatePrivateChannel(uint16_t channelId, const std::string& channelName);
 		void sendChannelsDialog();
@@ -159,9 +155,6 @@ class ProtocolGame final : public Protocol
 		void sendPingBack();
 		void sendCreatureTurn(const Creature* creature, uint32_t stackpos);
 		void sendCreatureSay(const Creature* creature, SpeakClasses type, const std::string& text, const Position* pos = nullptr);
-
-		void sendQuestLog();
-		void sendQuestLine(const Quest* quest);
 
 		void sendCancelWalk();
 		void sendChangeSpeed(const Creature* creature, uint32_t speed);
@@ -241,6 +234,7 @@ class ProtocolGame final : public Protocol
 		void AddPlayerSkills(NetworkMessage& msg);
 		void AddWorldLight(NetworkMessage& msg, const LightInfo& lightInfo);
 		void AddCreatureLight(NetworkMessage& msg, const Creature* creature);
+		void AddCreatureSpeak(NetworkMessage& msg, const Creature* creature, SpeakClasses type, const std::string& text, uint16_t channelId, const Position* pos = nullptr);
 
 		//tiles
 		static void RemoveTileThing(NetworkMessage& msg, const Position& pos, uint32_t stackpos);
@@ -268,10 +262,7 @@ class ProtocolGame final : public Protocol
 		Player* player = nullptr;
 
 		uint32_t eventConnect = 0;
-		uint32_t challengeTimestamp = 0;
-		uint16_t version;
-
-		uint8_t challengeRandom = 0;
+		uint16_t version = CLIENT_VERSION_MIN;
 
 		bool debugAssertSent = false;
 		bool acceptPackets = false;

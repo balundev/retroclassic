@@ -1,6 +1,6 @@
 /**
  * Tibia GIMUD Server - a free and open-source MMORPG server emulator
- * Copyright (C) 2019 Sabrehaven and Mark Samman <mark.samman@gmail.com>
+ * Copyright (C) 2017  Alejandro Mujica <alejandrodemujica@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -103,17 +103,6 @@ bool ChatChannel::removeUser(const Player& player)
 
 	executeOnLeaveEvent(player);
 	return true;
-}
-
-bool ChatChannel::hasUser(const Player& player) {
-	return users.find(player.getID()) != users.end();
-}
-
-void ChatChannel::sendToAll(const std::string& message, SpeakClasses type) const
-{
-	for (const auto& it : users) {
-		it.second->sendChannelMessage("", message, type, id);
-	}
 }
 
 bool ChatChannel::talk(const Player& fromPlayer, SpeakClasses type, const std::string& text)
@@ -329,7 +318,7 @@ ChatChannel* Chat::createChannel(const Player& player, uint16_t channelId)
 
 		case CHANNEL_PRIVATE: {
 			//only 1 private channel for each premium player
-			if (getPrivateChannel(player)) {
+			if (!player.isPremium() || getPrivateChannel(player)) {
 				return nullptr;
 			}
 
@@ -522,7 +511,7 @@ ChannelList Chat::getChannelList(const Player& player)
 		}
 	}
 
-	if (!hasPrivate) {
+	if (!hasPrivate && player.isPremium()) {
 		list.push_front(&dummyPrivate);
 	}
 	return list;

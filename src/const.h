@@ -1,6 +1,6 @@
 /**
  * Tibia GIMUD Server - a free and open-source MMORPG server emulator
- * Copyright (C) 2019 Sabrehaven and Mark Samman <mark.samman@gmail.com>
+ * Copyright (C) 2017  Alejandro Mujica <alejandrodemujica@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -50,12 +50,6 @@ enum MagicEffectClasses : uint8_t {
 	CONST_ME_SOUND_PURPLE = 23,
 	CONST_ME_SOUND_BLUE = 24,
 	CONST_ME_SOUND_WHITE = 25,
-	CONST_ME_BUBBLES = 26,
-	CONST_ME_CRAPS = 27,
-	CONST_ME_GIFT_WRAPS = 28,
-	CONST_ME_FIREWORK_YELLOW = 29,
-	CONST_ME_FIREWORK_RED = 30,
-	CONST_ME_FIREWORK_BLUE = 31,
 };
 
 enum ShootType_t : uint8_t {
@@ -76,7 +70,6 @@ enum ShootType_t : uint8_t {
 	CONST_ANI_SNOWBALL = 13,
 	CONST_ANI_POWERBOLT = 14,
 	CONST_ANI_POISON = 15,
-	CONST_ANI_INFERNALBOLT = 16,
 };
 
 enum SpeakClasses : uint8_t {
@@ -129,22 +122,6 @@ enum FluidTypes_t : uint8_t
 	FLUID_MANAFLUID,
 	FLUID_LIFEFLUID,
 	FLUID_LEMONADE,
-	FLUID_RUM,
-	FLUID_COCONUTMILK,
-	FLUID_FRUITJUICE,
-};
-
-const uint8_t reverseFluidMap[] = {
-	FLUID_NONE,
-	FLUID_WATER,
-	FLUID_MANAFLUID,
-	FLUID_BEER,
-	FLUID_NONE,
-	FLUID_LIFEFLUID,
-	FLUID_SLIME,
-	FLUID_NONE,
-	FLUID_LEMONADE,
-	FLUID_MILK,
 };
 
 enum FluidColor_t : uint8_t
@@ -153,12 +130,10 @@ enum FluidColor_t : uint8_t
 	FLUID_COLOR_BLUE = 1,
 	FLUID_COLOR_PURPLE = 2,
 	FLUID_COLOR_BROWN = 3,
-	FLUID_COLOR_BROWN1 = 4,
-	FLUID_COLOR_RED = 5,
-	FLUID_COLOR_GREEN = 6,
-	FLUID_COLOR_BROWN2 = 7,
-	FLUID_COLOR_YELLOW = 8,
-	FLUID_COLOR_WHITE = 9,
+	FLUID_COLOR_RED = 4,
+	FLUID_COLOR_GREEN = 5,
+	FLUID_COLOR_YELLOW = 6,
+	FLUID_COLOR_WHITE = 7,
 };
 
 enum SquareColor_t : uint8_t {
@@ -189,8 +164,7 @@ enum Icons_t {
 	ICON_MANASHIELD = 1 << 4,
 	ICON_PARALYZE = 1 << 5,
 	ICON_HASTE = 1 << 6,
-	ICON_SWORDS = 1 << 7,
-	ICON_DROWNING = 1 << 8,
+	ICON_SWORDS = 1 << 7
 };
 
 enum WeaponType_t : uint8_t {
@@ -242,14 +216,7 @@ enum PartyShields_t : uint8_t {
 	SHIELD_WHITEYELLOW = 1,
 	SHIELD_WHITEBLUE = 2,
 	SHIELD_BLUE = 3,
-	SHIELD_YELLOW = 4,
-	SHIELD_BLUE_SHAREDEXP = 5,
-	SHIELD_YELLOW_SHAREDEXP = 6,
-	SHIELD_BLUE_NOSHAREDEXP_BLINK = 7,
-	SHIELD_YELLOW_NOSHAREDEXP_BLINK = 8,
-	SHIELD_BLUE_NOSHAREDEXP = 9,
-	SHIELD_YELLOW_NOSHAREDEXP = 10,
-	SHIELD_GRAY = 11,
+	SHIELD_YELLOW = 4
 };
 
 enum item_t : uint16_t {
@@ -287,8 +254,6 @@ enum item_t : uint16_t {
 
 	ITEM_FULLSPLASH = 2886,
 	ITEM_SMALLSPLASH = 2889,
-
-	ITEM_BAG = 2853,
 
 	ITEM_PARCEL = 3503,
 	ITEM_PARCEL_STAMPED = 3504,
@@ -343,48 +308,9 @@ enum PlayerFlags : uint64_t {
 	PlayerFlag_SpecialMoveUse = static_cast<uint64_t>(1) << 38,
 };
 
-enum ReloadTypes_t : uint8_t {
-	RELOAD_TYPE_ALL,
-	RELOAD_TYPE_ACTIONS,
-	RELOAD_TYPE_CHAT,
-	RELOAD_TYPE_COMMANDS,
-	RELOAD_TYPE_CONFIG,
-	RELOAD_TYPE_CREATURESCRIPTS,
-	RELOAD_TYPE_EVENTS,
-	RELOAD_TYPE_GLOBAL,
-	RELOAD_TYPE_GLOBALEVENTS,
-	RELOAD_TYPE_ITEMS,
-	RELOAD_TYPE_MONSTERS,
-	RELOAD_TYPE_MOUNTS,
-	RELOAD_TYPE_MOVEMENTS,
-	RELOAD_TYPE_NPCS,
-	RELOAD_TYPE_QUESTS,
-	RELOAD_TYPE_RAIDS,
-	RELOAD_TYPE_SPELLS,
-	RELOAD_TYPE_TALKACTIONS,
-	RELOAD_TYPE_WEAPONS,
-};
-
-enum ClientVersion_t : uint16_t {
-	CLIENT_VERSION_780 = 780,
-	CLIENT_VERSION_781 = 781,
-	CLIENT_VERSION_790 = 790,
-	CLIENT_VERSION_792 = 792,
-};
-
 static constexpr int32_t CHANNEL_GUILD = 0x00;
 static constexpr int32_t CHANNEL_PARTY = 0x01;
 static constexpr int32_t CHANNEL_RULE_REP = 0x02;
 static constexpr int32_t CHANNEL_PRIVATE = 0xFFFF;
-
-//Reserved player storage key ranges;
-//[10000000 - 20000000];
-static constexpr int32_t PSTRG_RESERVED_RANGE_START = 10000000;
-static constexpr int32_t PSTRG_RESERVED_RANGE_SIZE = 10000000;
-//[1000 - 1500];
-static constexpr int32_t PSTRG_OUTFITS_RANGE_START = (PSTRG_RESERVED_RANGE_START + 1000);
-static constexpr int32_t PSTRG_OUTFITS_RANGE_SIZE = 500;
-
-#define IS_IN_KEYRANGE(key, range) (key >= PSTRG_##range##_START && ((key - PSTRG_##range##_START) <= PSTRG_##range##_SIZE))
 
 #endif

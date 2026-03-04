@@ -1,6 +1,6 @@
 /**
  * Tibia GIMUD Server - a free and open-source MMORPG server emulator
- * Copyright (C) 2019 Sabrehaven and Mark Samman <mark.samman@gmail.com>
+ * Copyright (C) 2017  Alejandro Mujica <alejandrodemujica@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -102,9 +102,8 @@ enum CombatType_t : uint16_t {
 	COMBAT_LIFEDRAIN = 1 << 5,
 	COMBAT_MANADRAIN = 1 << 6,
 	COMBAT_HEALING = 1 << 7,
-	COMBAT_DROWNDAMAGE = 1 << 8,
 
-	COMBAT_COUNT = 10
+	COMBAT_COUNT = 9
 };
 
 enum CombatParam_t {
@@ -250,7 +249,6 @@ enum ConditionType_t {
 	CONDITION_EXHAUST = 1 << 17,
 	CONDITION_PACIFIED = 1 << 18,
 	CONDITION_AGGRESSIVE = 1 << 19,
-	CONDITION_DROWN = 1 << 20,
 };
 
 enum ConditionId_t : int8_t {
@@ -347,11 +345,6 @@ enum ReturnValue {
 	RETURNVALUE_CANONLYUSEONESHIELD,
 	RETURNVALUE_NOPARTYMEMBERSINRANGE,
 	RETURNVALUE_YOUARENOTTHEOWNER,
-	RETURNVALUE_TRADEPLAYERFARAWAY,
-	RETURNVALUE_YOUDONTOWNTHISHOUSE,
-	RETURNVALUE_TRADEPLAYERALREADYOWNSAHOUSE,
-	RETURNVALUE_TRADEPLAYERHIGHESTBIDDER,
-	RETURNVALUE_YOUCANNOTTRADETHISHOUSE,
 };
 
 struct Outfit_t {
@@ -361,7 +354,6 @@ struct Outfit_t {
 	uint8_t lookBody = 0;
 	uint8_t lookLegs = 0;
 	uint8_t lookFeet = 0;
-	uint8_t lookAddons = 0;
 };
 
 struct LightInfo {
@@ -371,26 +363,15 @@ struct LightInfo {
 	constexpr LightInfo(uint8_t level, uint8_t color) : level(level), color(color) {}
 };
 
-enum CombatOrigin
-{
-	ORIGIN_NONE,
-	ORIGIN_CONDITION,
-	ORIGIN_SPELL,
-	ORIGIN_MELEE,
-	ORIGIN_RANGED,
-};
-
 struct CombatDamage
 {
 	CombatType_t type;
 	int32_t value;
 	int32_t min;
 	int32_t max;
-	CombatOrigin origin;
 
 	CombatDamage()
 	{
-		origin = ORIGIN_NONE;
 		type = COMBAT_NONE;
 		value = 0;
 		min = 0;

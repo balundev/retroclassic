@@ -1,6 +1,6 @@
 /**
 * Tibia GIMUD Server - a free and open-source MMORPG server emulator
-* Copyright (C) 2019 Sabrehaven and Mark Samman <mark.samman@gmail.com>
+* Copyright (C) 2017  Alejandro Mujica <alejandrodemujica@gmail.com>
 *
 * This program is free software; you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -38,8 +38,6 @@ enum NpcBehaviourType_t
 	BEHAVIOUR_TYPE_NUMBER, // return a number
 	BEHAVIOUR_TYPE_OPERATION, // <, =, >, >=, <=, <>
 	BEHAVIOUR_TYPE_MESSAGE_COUNT, // get quantity in player message
-	BEHAVIOUR_TYPE_MESSAGE_COUNT_NO_LIMIT, // get quantity in player message without any max value restriction
-	BEHAVIOUR_TYPE_MESSAGE_TRANSFERTOPLAYERNAME_STATE, // set player name parsed fro message to string object and return state if it is possible to transfer
 	BEHAVIOUR_TYPE_IDLE, // idle npc
 	BEHAVIOUR_TYPE_QUEUE, // queue talking creature
 	BEHAVIOUR_TYPE_TOPIC, // get/set topic
@@ -63,7 +61,6 @@ enum NpcBehaviourType_t
 	BEHAVIOUR_TYPE_SPELLLEVEL, // get spell level
 	BEHAVIOUR_TYPE_TEACHSPELL, // player learn spell
 	BEHAVIOUR_TYPE_LEVEL, // get player level
-	BEHAVIOUR_TYPE_GUILDLEVEL, // get player guild level
 	BEHAVIOUR_TYPE_RANDOM, // random value
 	BEHAVIOUR_TYPE_QUESTVALUE, // get/set quest value
 	BEHAVIOUR_TYPE_TELEPORT, // teleport player to position
@@ -72,7 +69,6 @@ enum NpcBehaviourType_t
 	BEHAVIOUR_TYPE_KNIGHT, // get/set vocation
 	BEHAVIOUR_TYPE_PALADIN, // get/set vocation
 	BEHAVIOUR_TYPE_ISPREMIUM, // is account premium
-	BEHAVIOUR_TYPE_ISREALPREMIUM, // is REALLY account premium because many isPremium features are for free players also
 	BEHAVIOUR_TYPE_PVPENFORCED, // get world type pvpenforced
 	BEHAVIOUR_TYPE_MALE, // is player male
 	BEHAVIOUR_TYPE_FEMALE, // is player female
@@ -83,24 +79,12 @@ enum NpcBehaviourType_t
 	BEHAVIOUR_TYPE_SUMMON, // summons a monster
 	BEHAVIOUR_TYPE_EXPERIENCE, // grant experience to a player
 	BEHAVIOUR_TYPE_BALANCE, // return player balance
-	BEHAVIOUR_TYPE_GUILDBALANCE, // return guild balance
 	BEHAVIOUR_TYPE_WITHDRAW, // withdraw from player bank balance
-	BEHAVIOUR_TYPE_GUILDWITHDRAW, // withdraw from guild bank balance
 	BEHAVIOUR_TYPE_DEPOSIT, // deposit x amount of gold
-	BEHAVIOUR_TYPE_GUILDDEPOSIT, // deposit x amount of gold to guild
 	BEHAVIOUR_TYPE_TRANSFER, // transfer x amount of gold
-	BEHAVIOUR_TYPE_EXPERIENCESTAGE, // get experience staged based on player level
 	BEHAVIOUR_TYPE_BLESS, // add blessing to player
 	BEHAVIOUR_TYPE_CREATECONTAINER, // create a container of an item in particular
 	BEHAVIOUR_TYPE_TOWN, // change player town
-	BEHAVIOUR_TYPE_DRUNK, // get/set drunk (set not done)
-	BEHAVIOUR_TYPE_ADDOUTFITADDON, // Add Outfit Addon
-	BEHAVIOUR_TYPE_ADDOUTFIT, // Add Outfit
-	BEHAVIOUR_TYPE_DELETEAMOUNT, // deletes an item according specified amount
-	BEHAVIOUR_TYPE_EXPIRINGQUESTVALUE, // get/set expiring quest value
-	BEHAVIOUR_TYPE_SLOTITEM, // get slot item
-	BEHAVIOUR_TYPE_PZFREE, // is player pz not locked
-	BEHAVIOUR_TYPE_CLIENTVERSION, // get client version
 };
 
 enum NpcBehaviourOperator_t
@@ -112,7 +96,6 @@ enum NpcBehaviourOperator_t
 	BEHAVIOUR_OPERATOR_LESSER_OR_EQUALS = 'L',
 	BEHAVIOUR_OPERATOR_NOT_EQUALS = 'N',
 	BEHAVIOUR_OPERATOR_MULTIPLY = '*',
-	BEHAVIOUR_OPERATOR_DIVIDE = '/',
 	BEHAVIOUR_OPERATOR_SUM = '+',
 	BEHAVIOUR_OPERATOR_RES = '-',
 };
@@ -279,7 +262,6 @@ class BehaviourDatabase
 
 		int32_t checkOperation(Player* player, NpcBehaviourNode* node, const std::string& message);
 		int32_t searchDigit(const std::string& message);
-		int32_t searchDigitNoLimit(const std::string& message);
 		bool searchWord(const std::string& pattern, const std::string& message);
 
 		std::string parseResponse(Player* player, const std::string& message);

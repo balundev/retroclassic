@@ -70,15 +70,6 @@ local list = {
 	[2194] = {x = 1, y = -1, z = -1},
 	[2196] = {x = 1, y = 1, z = -1},
 	[2198] = {x = -1, y = 1, z = -1},
-	[5257] = {x = -1, y = 0, z = -1},
-	[5258] = {x = 0, y = -1, z = -1},
-	[5259] = {x = -1, y = 0, z = -1},
-	[5544] = {x = 0, y = 0, z = 1},
-	[5691] = {x = 1, y = 0, z = 1},
-	[5731] = {x = 0, y = 0, z = 1},
-	[5763] = {x = 0, y = 0, z = 1},
-	[6172] = {x = 0, y = 0, z = 1},
-	[6173] = {x = 0, y = 0, z = 1},
 }
 
 function onStepIn(creature, item, position, fromPosition)
@@ -90,7 +81,8 @@ function onStepIn(creature, item, position, fromPosition)
 		return false
 	end
 	
-	Tile(item:getPosition()):relocateTo(relPos)
+	doRelocate(position, relPos)
+
 	if item:getId() == 293 then
 		item:transform(294)
 		item:decay()

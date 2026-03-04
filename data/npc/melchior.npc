@@ -2,7 +2,7 @@
 # melchior.npc: Datenbank für den blinden Bettler Melchior
 
 Name = "Melchior"
-Outfit = (130,0-25-59-115-0)
+Outfit = (130,0-25-59-115)
 Home = [33143,32828,7]
 Radius = 60
 

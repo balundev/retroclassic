@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF - 8"?>
-<monster name="Behemoth" nameDescription="a behemoth" race="blood" experience="2500" speed="130" manacost="0">
+<monster name="behemoth" nameDescription="a behemoth" race="blood" experience="2500" speed="130" manacost="0">
 	<health now="4000" max="4000" />
-	<look type="55" head="0" body="0" legs="0" feet="0" corpse="5999" />
+	<look type="55" head="0" body="0" legs="0" feet="0" corpse="4112" />
 	<targetchange interval="1000" chance="5" />
 	<targetstrategy nearest="70" weakest="0" mostdamage="30" random="0" />
 	<flags>
@@ -56,10 +56,5 @@
 		<item id="3554" countmax="1" chance="4" /> <!-- steel boots -->
 		<item id="3058" countmax="1" chance="8" /> <!-- a strange symbol -->
 		<item id="3265" countmax="1" chance="40" /> <!-- a two handed sword -->
-		<item id="5893" countmax="1" chance="9" /> <!-- perfect behemoth fang -->
-		<item id="5930" countmax="1" chance="9" /> <!-- behemoth claw -->
 	</loot>
-	<script>
-		<event name="KillingInTheNameOf" />
-	</script>
 </monster>
