@@ -43,10 +43,10 @@ loginProtocolPort = 7171
 gameProtocolPort = 7172
 statusProtocolPort = 7171
 maxPlayers = 0
-motd = "Welcome to Tibianus!"
+motd = "Welcome to Retibia!"
 onePlayerOnlinePerAccount = true
 allowClones = false
-serverName = "Tibianus"
+serverName = "Retibia"
 statusTimeout = 5000
 replaceKickOnLogin = true
 maxPacketsPerSecond = -1
@@ -73,15 +73,15 @@ mapAuthor = "CipSoft"
 
 -- MySQL
 mysqlHost = "127.0.0.1"
-mysqlUser = "root"
-mysqlPass = ""
-mysqlDatabase = "sabrehaven"
+mysqlUser = "tfs"
+mysqlPass = "twojehaslo"
+mysqlDatabase = "retroclassic"
 mysqlPort = 3306
 mysqlSock = ""
 
 -- Misc.
 allowChangeOutfit = true
-freePremium = false
+freePremium = true
 kickIdlePlayerAfterMinutes = 15
 maxMessageBuffer = 8
 
@@ -93,10 +93,10 @@ newbieLevelThreshold = 5
 
 -- Rates
 -- NOTE: rateExp is not used if you have enabled stages in data/XML/stages.xml
-rateExp = 1
-rateSkill = 3
-rateLoot = 2
-rateMagic = 2
+rateExp = 100
+rateSkill = 30
+rateLoot = 7
+rateMagic = 20
 rateSpawn = 0
 
 -- Monsters
